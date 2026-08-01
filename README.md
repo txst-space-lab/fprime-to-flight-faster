@@ -44,7 +44,7 @@ tools/      fetch + analysis scripts that produce data/ and figures/
 | File | What it is |
 |---|---|
 | `poster.typ` | The poster. Single source of truth for what gets printed. |
-| `images/ci-cube.jpeg` | Figure 3 — the skeleton CI cube on standoffs. |
+| `images/ci-cube.jpeg` | Figure 2 — the skeleton CI cube on standoffs. |
 | `images/screenshot-github-checks.png` | Figure 1 — the GitHub merge-gate checks view. Derived from `images/screenshot-github-failing-checks.png` (bottom row faded to imply the list continues). |
 | `docs/poster-layout.md` | Layout plan — panel-by-panel content map with word budgets, derived from the `.potx` template's actual box coordinates. |
 | `docs/abstract.md` | The submitted abstract, on its own, for pasting into submission forms and program listings. |
@@ -72,23 +72,17 @@ file:
 - `step(n)[text]` — a numbered pipeline step
 - `fig(path, caption, height: ...)` — a real figure
 - `shot(path, caption, height: ...)` — a screenshot, scaled to fit rather than cropped
-- `fig-todo(caption, height: ...)` — a dashed placeholder for a missing figure
 - `todo[note]` — inline red marker for unresolved content
 
-Placeholders are deliberately loud. A missing figure or an unanswered number
-should be impossible to miss in a draft, and impossible to send to the printer
-by accident.
+Placeholders are deliberately loud. An unanswered number should be impossible
+to miss in a draft, and impossible to send to the printer by accident.
 
 ### Before printing
 
 Search for `#todo[` in `poster.typ` — it should return nothing. The open items
-are tracked in `docs/notes-source-material.md`; the two that matter most:
+are tracked in `docs/notes-source-material.md`; the one that matters most:
 
-1. **Figure 2, the system architecture diagram, does not exist yet.** It is the
-   single highest-value element on the poster and currently a placeholder. The
-   GitHub checks screenshot (Figure 1) does not substitute for it: it shows the
-   merge gate's verdict, not the hardware path that produces it.
-2. **The defect-catch count is still soft.** The gate blocked 65 pull-request
+1. **The defect-catch count is still soft.** The gate blocked 65 pull-request
    branches, but CI history cannot separate a real regression from a bench
    flake, so the poster cites that as a floor rather than a defect count.
 

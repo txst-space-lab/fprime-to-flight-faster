@@ -81,25 +81,6 @@
   block(inset: (top: 6pt), body),
 )
 
-// Placeholder for a figure that does not exist yet. Prints a visible box so a
-// missing asset is obvious in every draft rather than silently absent.
-#let fig-todo(caption, height: 8in) = block(
-  width: 100%,
-  {
-    block(
-      width: 100%,
-      height: height,
-      fill: wash,
-      stroke: (paint: rule, thickness: 3pt, dash: "dashed"),
-      align(
-        center + horizon,
-        text(size: 30pt, fill: muted, weight: 600, [FIGURE NEEDED \ #caption]),
-      ),
-    )
-    block(inset: (top: 8pt), text(size: 20pt, fill: muted, caption))
-  },
-)
-
 // A real figure with a finding-first caption.
 #let fig(path, caption, height: 8in) = block(
   width: 100%,
@@ -256,13 +237,6 @@
     #text(size: 21pt, fill: muted)[
       Measured from 1,917 commits, Aug 2025 – Aug 2026.
     ]
-
-    #v(18pt)
-
-    #shot(
-      "images/screenshot-github-checks.svg",
-      "Figure 1. The gate as a developer sees it: integration-uart and integration-radio run on a real satellite, and a red check blocks the merge.",
-    )
   ],
 
   // ============================================================ COLUMN 3 / R1
@@ -348,7 +322,7 @@
   panel("Per-Commit Pipeline", subtitle: "Commit to merge gate in ~18 minutes")[
     #set text(size: 23pt)
     // Numbered from the list so steps can be inserted without renumbering by
-    // hand. Keep the wording identical to Figure 2.
+    // hand.
     #for (i, s) in (
       [Commit opens a pull request on GitHub.],
       [Cloud runners lint and run unit tests — no hardware needed.],
@@ -383,14 +357,14 @@
       // 6.0in, not more: the three charts below size themselves from their SVG
       // aspect ratios, and anything taller here pushes the poster onto a second
       // page. Re-check `pdfinfo poster.pdf | grep Pages` after changing this.
-      fig-todo(
-        "Figure 2. Per-commit pipeline: GitHub to runner to build host to programmer and PSU to PROVES Kit to GDS to merge gate.",
-        height: 4.7in,
+      shot(
+        "images/screenshot-github-checks.svg",
+        "Figure 1. The gate as a developer sees it: integration-uart and integration-radio run on a real satellite, and a red check blocks the merge.",
       ),
 
       fig(
         "images/ci-cube.jpeg",
-        "Figure 3. The skeleton CI cube on standoffs — parts swap without disassembling the satellite.",
+        "Figure 2. The skeleton CI cube on standoffs — parts swap without disassembling the satellite.",
         height: 4.7in,
       ),
     )
@@ -405,17 +379,17 @@
 
       chart(
         "figures/fig-pipeline-stages.svg",
-        "Figure 4. Satellite time is 70% of the critical path — the gate costs hardware minutes, not build minutes.",
+        "Figure 3. Satellite time is 70% of the critical path — the gate costs hardware minutes, not build minutes.",
       ),
 
       chart(
         "figures/fig-hil-reliability.svg",
-        "Figure 5. Pass rate rose 31% → 61% while monthly volume nearly tripled, as the state-reset fixes landed.",
+        "Figure 4. Pass rate rose 31% → 61% while monthly volume nearly tripled, as the state-reset fixes landed.",
       ),
 
       chart(
         "figures/fig-feedback-time.svg",
-        "Figure 6. Half of all commits get a hardware verdict within 18 minutes; 90% within 39.",
+        "Figure 5. Half of all commits get a hardware verdict within 18 minutes; 90% within 39.",
       ),
     )
   ],

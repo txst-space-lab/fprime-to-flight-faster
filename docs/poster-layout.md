@@ -55,8 +55,8 @@ Three short paragraphs, no bullets:
 **Header:** Per-Commit Pipeline
 **Subheader:** Commit → real satellite → merge gate, in ~18 minutes
 
-Numbered steps, one line each — this is the text twin of the system diagram in
-Figure 2, so keep the vocabulary identical between them:
+Numbered steps, one line each — this is the only description of the hardware
+path on the poster, so keep the vocabulary consistent with the captions:
 
 1. Commit opens a PR on GitHub.
 2. Cloud runners lint and run unit tests — no hardware needed.
@@ -154,19 +154,16 @@ Captions are sentence-case, one line, and state the *finding*, not the subject
 
 | Slot | Placeholder | Figure | Status |
 |---|---|---|---|
-| 1 | `idx 17` — y18.4 x12.5 w7.0 | **System architecture diagram** | `[NEEDED — build this]` |
+| 1 | `idx 17` — y18.4 x12.5 w7.0 | Checks in GitHub PR view | placed as Figure 1, in the figure zone |
 | 2 | `idx 23` — y18.4 x24.5 w7.0 | Current CI cube on standoffs | have (`images/ci-cube.jpeg`?) |
-| 3 | `idx 13` — y23.3 x16.4 w7.0 | Checks in GitHub PR view | placed as Figure 1, in the Results panel |
+| 3 | `idx 13` — y23.3 x16.4 w7.0 | — | dropped |
 | 4 | `idx 19` — y23.3 x24.5 w7.0 | Pass/fail rate over time | `[NEEDED — export from CI]` |
 | 5 | `idx 15` — y28.1 x12.5 w11.0 | Before/after: assembled cube → skeleton cube | optional |
 | 6 | `idx 21` — y28.2 x24.5 w11.0 | Early bench setup, first integration bench | optional |
 
-> **The system architecture diagram (Figure 2 on the poster) is the biggest gap in the whole poster.** The original visuals list
-> is entirely photographs and screenshots. One clean block diagram —
-> GitHub → runner → build host → SWD programmer + programmable PSU →
-> PROVES Kit → GDS → merge gate — will do more work than every other element
-> combined, and it's what people will point at while you talk. Give it the
-> top-left figure slot.
+> The system architecture diagram was dropped; the numbered steps in the
+> Per-Commit Pipeline panel carry the hardware path instead, and the GitHub
+> checks screenshot takes the top-left figure slot.
 >
 > Slots 5 and 6 are the first things to cut if space gets tight. The "at my
 > house" photo is charming but only earns a slot if it makes a point about how
