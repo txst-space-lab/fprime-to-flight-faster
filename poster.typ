@@ -61,6 +61,9 @@
   width: 100%,
   inset: (y: 10pt),
   {
+    // Extra leading on this one paragraph: the label sits 10pt further off the
+    // number than the poster's default line spacing would put it.
+    set par(leading: 0.62em + 10pt)
     text(size: 76pt, weight: 800, fill: maroon, value)
     linebreak()
     text(size: 24pt, fill: muted, label)
@@ -249,6 +252,7 @@
     #grid(
       columns: (1fr, 1fr),
       column-gutter: 20pt,
+      row-gutter: 30pt,
       stat("1,935", "test jobs run on real hardware"),
       stat("132 h", "of hardware test runtime"),
 
