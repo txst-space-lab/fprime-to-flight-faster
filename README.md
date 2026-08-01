@@ -46,6 +46,7 @@ tools/      fetch + analysis scripts that produce data/ and figures/
 | `poster.typ` | The poster. Single source of truth for what gets printed. |
 | `images/ci-cube.jpeg` | Figure 2 — the skeleton CI cube on standoffs. |
 | `images/screenshot-github-checks.png` | Figure 1 — the GitHub merge-gate checks view. Derived from `images/screenshot-github-failing-checks.png` (bottom row faded to imply the list continues). |
+| `docs/requirements.md` | Hard print requirements — canvas size, minimum font size, and how to verify them. Read before changing layout. |
 | `docs/poster-layout.md` | Layout plan — panel-by-panel content map with word budgets, derived from the `.potx` template's actual box coordinates. |
 | `docs/abstract.md` | The submitted abstract, on its own, for pasting into submission forms and program listings. |
 | `docs/notes-source-material.md` | Submitted and declined abstracts, corrections to them, and the list of open items to resolve before printing. |
