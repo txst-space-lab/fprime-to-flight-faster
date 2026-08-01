@@ -1,6 +1,6 @@
 # Source Material — not for the poster
 
-Reference text kept out of `poster-layout.md` so the layout file holds exactly
+Reference text kept out of `docs/poster-layout.md` so the layout file holds exactly
 one version of each claim.
 
 ## Submitted abstract

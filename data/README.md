@@ -19,9 +19,9 @@ python3 tools/analyze-ci.py  # derived CSVs + figures/*.svg
 | `ci-runs.csv` | 1,938 | Raw export, one row per workflow run (incl. `head_sha`) |
 | `ci-jobs.csv` | 7,091 | Raw export, one row per job within a run |
 | `ci-summary.csv` | 14 | Headline numbers for the poster's stat tiles, each with its definition |
-| `ci-pipeline-stages.csv` | 6 | Median/p90 duration per stage, current pipeline — source for `fig-pipeline-stages.svg` |
-| `ci-hil-monthly.csv` | 11 | HIL jobs passed/failed per month — source for `fig-hil-reliability.svg` |
-| `ci-feedback-time.csv` | 317 | Per-run commit-to-verdict wall clock, current pipeline — source for `fig-feedback-time.svg` |
+| `ci-pipeline-stages.csv` | 6 | Median/p90 duration per stage, current pipeline — source for `figures/fig-pipeline-stages.svg` |
+| `ci-hil-monthly.csv` | 11 | HIL jobs passed/failed per month — source for `figures/fig-hil-reliability.svg` |
+| `ci-feedback-time.csv` | 317 | Per-run commit-to-verdict wall clock, current pipeline — source for `figures/fig-feedback-time.svg` |
 
 ## Definitions and caveats — read before quoting a number
 

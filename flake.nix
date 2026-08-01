@@ -50,10 +50,10 @@
 
           shellHook = ''
             echo "typst $(typst --version | cut -d' ' -f2) — poster toolchain"
-            echo "  typst watch poster.typ    live preview"
-            echo "  typst compile poster.typ  build poster.pdf"
-            echo "  typstyle -i poster.typ    format"
-            echo "  typst fonts               list available fonts"
+            echo "  typst watch poster.typ               live preview"
+            echo "  typst compile poster.typ poster.pdf  build poster.pdf"
+            echo "  typstyle -i poster.typ               format"
+            echo "  typst fonts                          list available fonts"
           '';
         };
       });

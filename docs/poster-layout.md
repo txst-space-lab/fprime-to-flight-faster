@@ -155,7 +155,7 @@ Captions are sentence-case, one line, and state the *finding*, not the subject
 | Slot | Placeholder | Figure | Status |
 |---|---|---|---|
 | 1 | `idx 17` — y18.4 x12.5 w7.0 | **System architecture diagram** | `[NEEDED — build this]` |
-| 2 | `idx 23` — y18.4 x24.5 w7.0 | Current CI cube on standoffs | have (`IMG_7776.jpeg`?) |
+| 2 | `idx 23` — y18.4 x24.5 w7.0 | Current CI cube on standoffs | have (`images/ci-cube.jpeg`?) |
 | 3 | `idx 13` — y23.3 x16.4 w7.0 | Passing checks in GitHub PR view | have |
 | 4 | `idx 19` — y23.3 x24.5 w7.0 | Pass/fail rate over time | `[NEEDED — export from CI]` |
 | 5 | `idx 15` — y28.1 x12.5 w11.0 | Before/after: assembled cube → skeleton cube | optional |
@@ -243,5 +243,5 @@ Acknowledgments + funding line, one line, small type.
 - **Numbers pulled to the top.** They were buried in the third paragraph.
 - **Duplicate "Hardware control" headings merged.** The old outline had the same
   subhead under both "What we learned" and "Future improvements."
-- **Declined alternative abstract moved out** to `notes-source-material.md` so
+- **Declined alternative abstract moved out** to `docs/notes-source-material.md` so
   the layout file has exactly one version of each claim.

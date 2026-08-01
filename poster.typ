@@ -3,8 +3,8 @@
 // Build:  typst compile poster.typ poster.pdf
 // Watch:  typst watch poster.typ
 //
-// Layout follows poster-layout.md. Content marked TODO is tracked in
-// notes-source-material.md under "Open items to resolve before printing".
+// Layout follows docs/poster-layout.md. Content marked TODO is tracked in
+// docs/notes-source-material.md under "Open items to resolve before printing".
 
 // ---------------------------------------------------------------- constants
 
@@ -369,7 +369,7 @@
       ),
 
       fig(
-        "IMG_7776.jpeg",
+        "images/ci-cube.jpeg",
         "Figure 2. The skeleton CI cube on standoffs — parts swap without disassembling the satellite.",
         height: 6.0in,
       ),

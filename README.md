@@ -10,9 +10,9 @@ landscape PDF sized for the Texas State research poster template.
 ## Quick start
 
 ```sh
-direnv allow          # one time; brings the toolchain into your shell
-typst watch poster.typ   # live preview while editing
-typst compile poster.typ poster.pdf
+direnv allow                         # one time; brings the toolchain in
+typst watch poster.typ               # live preview while editing
+typst compile poster.typ poster.pdf  # build
 ```
 
 Without direnv:
@@ -22,19 +22,32 @@ nix develop           # same shell, entered manually
 nix build             # -> result/poster.pdf
 ```
 
-## Files
+## Layout
+
+```
+poster.typ  the poster — single source of truth for what gets printed
+figures/    generated SVG charts, plus _proof.typ for previewing them
+images/     photographs used as figures
+docs/       prose: abstract, layout plan, source material. Not printed.
+data/       CI export and the derived CSVs behind every number on the poster
+tools/      fetch + analysis scripts that produce data/ and figures/
+```
 
 | File | What it is |
 |---|---|
 | `poster.typ` | The poster. Single source of truth for what gets printed. |
-| `poster-layout.md` | Layout plan — panel-by-panel content map with word budgets, derived from the `.potx` template's actual box coordinates. |
-| `abstract.md` | The submitted abstract, on its own, for pasting into submission forms and program listings. |
-| `notes-source-material.md` | Submitted and declined abstracts, corrections to them, and the list of open items to resolve before printing. Not printed. |
-| `proves-ci-changes-code-review.md` | Review of the flight-software repo's CI/test history — where the poster's failure modes, mitigations, and pipeline description are sourced from. Not printed. |
-| `POSTER_ F Prime to Flight Faster_….md` | Original brain-dump outline. Kept for reference. |
-| `Research Poster Template 202506.potx` | Texas State PowerPoint template the layout is matched to. |
-| `IMG_7776.jpeg` | Figure 2 — the skeleton CI cube on standoffs. |
+| `images/ci-cube.jpeg` | Figure 2 — the skeleton CI cube on standoffs. |
+| `docs/poster-layout.md` | Layout plan — panel-by-panel content map with word budgets, derived from the `.potx` template's actual box coordinates. |
+| `docs/abstract.md` | The submitted abstract, on its own, for pasting into submission forms and program listings. |
+| `docs/notes-source-material.md` | Submitted and declined abstracts, corrections to them, and the list of open items to resolve before printing. |
+| `docs/proves-ci-changes-code-review.md` | Review of the flight-software repo's CI/test history — where the poster's failure modes, mitigations, and pipeline description are sourced from. |
+| `docs/original-outline.md` | Original brain-dump outline. Kept for reference. |
+| `data/README.md` | What each CSV is and how the headline numbers are defined. |
 | `flake.nix` / `.envrc` | Reproducible toolchain (Typst, tinymist, typstyle, image tools, pinned fonts). |
+
+The Texas State PowerPoint template (`Research Poster Template 202506.potx`)
+that the layout is matched to is not checked in; `docs/poster-layout.md` records
+its box coordinates.
 
 ## Editing the poster
 
@@ -59,7 +72,7 @@ by accident.
 ### Before printing
 
 Search for `#todo[` in `poster.typ` — it should return nothing. The open items
-are tracked in `notes-source-material.md`; the two that matter most:
+are tracked in `docs/notes-source-material.md`; the two that matter most:
 
 1. **Figure 1, the system architecture diagram, does not exist yet.** It is the
    single highest-value element on the poster and currently a placeholder.
