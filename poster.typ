@@ -63,7 +63,7 @@
   {
     text(size: 76pt, weight: 800, fill: maroon, value)
     linebreak()
-    text(size: 22pt, fill: muted, label)
+    text(size: 24pt, fill: muted, label)
   },
 )
 
@@ -92,7 +92,7 @@
       stroke: 2pt + rule,
       image(path, width: 100%, height: 100%, fit: "cover"),
     )
-    block(inset: (top: 8pt), text(size: 20pt, fill: muted, caption))
+    block(inset: (top: 8pt), text(size: 24pt, fill: muted, caption))
   },
 )
 
@@ -107,7 +107,7 @@
       stroke: 2pt + rule,
       image(path, width: 100%),
     )
-    block(inset: (top: 8pt), text(size: 20pt, fill: muted, caption))
+    block(inset: (top: 8pt), text(size: 24pt, fill: muted, caption))
   },
 )
 
@@ -120,7 +120,7 @@
   width: 100%,
   {
     image(path, width: 100%)
-    block(inset: (top: 8pt), text(size: 20pt, fill: muted, caption))
+    block(inset: (top: 8pt), text(size: 24pt, fill: muted, caption))
   },
 )
 
@@ -227,11 +227,11 @@
         block(
           fill: white,
           inset: (x: 8pt),
-          text(size: 22pt, weight: 700, fill: maroon, tracking: 2pt)[TERMINOLOGY],
+          text(size: 24pt, weight: 700, fill: maroon, tracking: 2pt)[TERMINOLOGY],
         ),
       )
       #set par(spacing: 0.75em)
-      #set text(size: 22pt, fill: muted)
+      #set text(size: 24pt, fill: muted)
       #for (term, defn) in (
         ([F´ (F Prime)], [NASA JPL's open-source flight software framework.]),
         ([HIL], [hardware-in-the-loop.]),
@@ -260,7 +260,7 @@
     )
 
     #v(10pt)
-    #text(size: 21pt, fill: muted)[
+    #text(size: 24pt, fill: muted)[
       Measured from 1,917 commits, Aug 2025 – Aug 2026.
     ]
   ],
@@ -270,7 +270,7 @@
     "What Broke, and What Fixed It",
     subtitle: "The lessons other teams can reuse",
   )[
-    #set text(size: 20pt)
+    #set text(size: 24pt)
     #table(
       columns: (1fr, 1fr, 1fr),
       inset: 12pt,
@@ -283,9 +283,9 @@
       },
 
       table.header(
-        text(weight: 700, size: 22pt)[Symptom],
-        text(weight: 700, size: 22pt)[Root cause],
-        text(weight: 700, size: 22pt)[Mitigation],
+        text(weight: 700, size: 24pt)[Symptom],
+        text(weight: 700, size: 24pt)[Root cause],
+        text(weight: 700, size: 24pt)[Mitigation],
       ),
 
       [Board unreachable after a bad flash],
@@ -346,7 +346,7 @@
 
   // ============================================================ COLUMN 1 / R2
   panel("Per-Commit Pipeline", subtitle: "Commit to merge gate in ~18 minutes")[
-    #set text(size: 23pt)
+    #set text(size: 24pt)
     // Numbered from the list so steps can be inserted without renumbering by
     // hand.
     #for (i, s) in (
@@ -365,7 +365,7 @@
 
     #v(14pt)
     #block(width: 100%, inset: 18pt, fill: wash)[
-      #text(size: 21pt)[
+      #text(size: 24pt)[
         *Verified every run:* commanding · telemetry · eventing · IMU ·
         thermal management · antenna deployment · real-time clock · filesystem ·
         power management · hardware watchdog
@@ -423,7 +423,7 @@
   // ============================================================ COLUMN 4 / R2
   {
     panel("Future Work")[
-      #set text(size: 22pt)
+      #set text(size: 24pt)
       - *Flat bench layout* replacing the cube form factor, so parts swap
         without rebuilding a structure
       - *Backplane* instead of hand-built per-component wire harnesses
@@ -434,23 +434,23 @@
         keep results reliable
     ]
 
-    v(1in)
+    v(0.7in)
 
     panel("Build This Yourself", accent: gold)[
       #grid(
         columns: (1fr, auto),
         column-gutter: 24pt,
         {
-          set text(size: 23pt)
+          set text(size: 24pt)
           [
             Every piece of hardware and software described here is open source.
 
             #v(10pt)
-            *PROVES Kit hardware* #linebreak() #text(font: mono, size: 20pt)[proveskit.com]
+            *PROVES Kit hardware* #linebreak() #text(font: mono, size: 24pt)[proveskit.com]
             #v(6pt)
-            *Flight software + CI* #linebreak() #text(font: mono, size: 18pt)[github.com/Open-Source-Space-Foundation/ #linebreak() proves-core-reference]
+            *Flight software + CI* #linebreak() #text(font: mono, size: 24pt)[github.com/Open-Source-Space-Foundation/ #linebreak() proves-core-reference]
             #v(6pt)
-            *F´* #linebreak() #text(font: mono, size: 20pt)[github.com/nasa/fprime]
+            *F´* #linebreak() #text(font: mono, size: 24pt)[github.com/nasa/fprime]
           ]
         },
         // Regenerate with:
@@ -465,10 +465,10 @@
       )
     ]
 
-    v(0.6in)
+    v(0.4in)
 
     block(width: 100%, inset: 16pt, fill: wash)[
-      #text(size: 19pt, fill: muted)[
+      #text(size: 24pt, fill: muted)[
         *Acknowledgments.* #todo[funding line, collaborators, department and
           college names for the template affiliation block]
       ]
