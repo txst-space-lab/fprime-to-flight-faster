@@ -1,4 +1,4 @@
-// F Prime to Flight Faster — 48in x 36in research poster
+// F Prime to Flight Faster: 48in x 36in research poster
 //
 // Build:  typst compile poster.typ poster.pdf
 // Watch:  typst watch poster.typ
@@ -114,7 +114,7 @@
 // A generated chart from tools/analyze-ci.py. Unlike `fig`, these get no frame
 // and no fixed height: the SVGs are transparent, carry their own titles, and are
 // all exported at one 7:5.6 canvas, so scaling to the column width lines every
-// chart in a row up on a common baseline. Regenerate before printing —
+// chart in a row up on a common baseline. Regenerate before printing:
 //   python3 tools/analyze-ci.py
 #let chart(path, caption) = block(
   width: 100%,
@@ -132,6 +132,10 @@
   width: 100%,
   inset: (bottom: 28pt),
   stroke: (bottom: 6pt + maroon),
+  grid(
+  columns: (1fr, auto),
+  column-gutter: 1in,
+  align: (left + horizon, right + top),
   {
     text(size: 96pt, weight: 800, fill: maroon)[
       F Prime to Flight Faster
@@ -160,6 +164,11 @@
       ],
     )
   },
+
+  // The dark wordmark reads directly on the white page; the -light variant is
+  // the white-on-transparent one and needs a maroon plate behind it.
+  image("images/txst-logo-dark.svg", width: 9in),
+  ),
 )
 
 #v(30pt)
@@ -202,24 +211,41 @@
 
     #v(10pt)
 
-    // Glossary: one term per line so a reader can scan for the acronym they
-    // don't know instead of reading a paragraph to find it.
-    #text(size: 22pt, fill: muted)[
-      #set par(spacing: 0.5em)
-      *F´ (F Prime)* — NASA JPL's open-source flight software framework.
-
-      *HIL* — hardware-in-the-loop.
-
-      *GDS* — F´ Ground Data System.
-
-      *SWD* — Serial Wire Debug, a direct programming path to the microcontroller.
-
-      *PROVES* — an open-source CubeSat kit and program.
+    // Glossary: boxed and labeled so it reads as a reference sidebar rather
+    // than more body copy. One term per line so a reader can scan for the
+    // acronym they don't know instead of reading a paragraph to find it.
+    #block(
+      width: 100%,
+      inset: (x: 20pt, top: 26pt, bottom: 20pt),
+      stroke: 3pt + maroon,
+    )[
+      // Label sits on the rule, knocked out with a white plate behind it.
+      #place(
+        top + left,
+        dy: -38pt,
+        dx: -6pt,
+        block(
+          fill: white,
+          inset: (x: 8pt),
+          text(size: 22pt, weight: 700, fill: maroon, tracking: 2pt)[TERMINOLOGY],
+        ),
+      )
+      #set par(spacing: 0.75em)
+      #set text(size: 22pt, fill: muted)
+      #for (term, defn) in (
+        ([F´ (F Prime)], [NASA JPL's open-source flight software framework.]),
+        ([HIL], [hardware-in-the-loop.]),
+        ([GDS], [F´ Ground Data System.]),
+        ([SWD], [Serial Wire Debug, a direct programming path to the microcontroller.]),
+        ([PROVES], [an open-source CubeSat kit and program.]),
+      ) {
+        block[#text(weight: 700, fill: ink, term): #defn]
+      }
     ]
   ],
 
   // ============================================================ COLUMN 2 / R1
-  panel("Results", subtitle: "Two sites, every commit")[
+  panel("Results", subtitle: "Confidence with every commit")[
     #grid(
       columns: (1fr, 1fr),
       column-gutter: 20pt,
@@ -264,7 +290,7 @@
 
       [Board unreachable after a bad flash],
       [Reprogramming depended on the software under test],
-      [Program over SWD/GDB — an independent path to the MCU],
+      [Program over SWD/GDB, an independent path to the MCU],
 
       [Watchdog resets flash],
       [Hardware watchdog fired during long software loads],
@@ -272,15 +298,15 @@
 
       [Passes locally, fails in CI],
       [Residual SD card state between runs],
-      [Reformat the SD card before *and* after every run — a crashed run leaves it dirty],
+      [Reformat the SD card before *and* after every run; a crashed run leaves it dirty],
 
       [Same test, different result per site],
       [Lab-to-lab hardware differences (e.g. RTC battery backup)],
       [Tag each test with the hardware it needs; a runner executes only the tests it can support],
 
       [Intermittent, unreproducible failures],
-      [Radio is half-duplex — the satellite cannot hear a command while it is transmitting],
-      [Retry with jittered exponential backoff; log all telemetry to correlate failures afterward],
+      [Various],
+      [Log and archive all telemetry to correlate failures after runs],
     )
   ],
 
@@ -325,7 +351,7 @@
     // hand.
     #for (i, s) in (
       [Commit opens a pull request on GitHub.],
-      [Cloud runners lint and run unit tests — no hardware needed.],
+      [Cloud runners lint and run unit tests; no hardware needed.],
       [Build machine compiles F´ flight software; static gates fail here, not on the bench.],
       [Programmable power supply cycles the satellite.],
       [SWD/GDB flashes the microcontroller.],
@@ -364,7 +390,7 @@
 
       fig(
         "images/ci-cube.jpeg",
-        "Figure 2. The skeleton CI cube on standoffs — parts swap without disassembling the satellite.",
+        "Figure 2. The skeleton CI cube on standoffs; parts swap without disassembling the satellite.",
         height: 4.7in,
       ),
     )
@@ -379,7 +405,7 @@
 
       chart(
         "figures/fig-pipeline-stages.svg",
-        "Figure 3. Satellite time is 70% of the critical path — the gate costs hardware minutes, not build minutes.",
+        "Figure 3. Satellite time is 70% of the critical path; the gate costs hardware minutes, not build minutes.",
       ),
 
       chart(
