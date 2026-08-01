@@ -68,10 +68,10 @@ CRITICAL = "#d03b3b"
 STAGES = [
     ("lint", "Lint", CLOUD),
     ("unit-test", "Unit tests", CLOUD),
-    ("build", "Build FSW", CLOUD),
+    ("build", "Build", CLOUD),
     ("yamcs-build", "YAMCS check", CLOUD),
     ("integration-uart", "HIL: UART", HARDWARE),
-    ("integration-radio", "HIL: LoRa RF", HARDWARE),
+    ("integration-radio", "HIL: Radio", HARDWARE),
 ]
 
 
@@ -209,12 +209,12 @@ def fig_pipeline_stages(jobs):
     header(
         fig,
         "Hardware testing dominates the pipeline",
-        "solid bar = median, pale tail = 90th percentile",
+        "solid bar = median, pale bar = 90th percentile",
     )
     fig.legend(
         handles=[
             Patch(facecolor=CLOUD, label="Software only"),
-            Patch(facecolor=HARDWARE, label="On the real satellite (HIL)"),
+            Patch(facecolor=HARDWARE, label="Hardware-in-the-Loop (HIL)"),
         ],
         loc="upper left",
         bbox_to_anchor=(0.012, 0.855),
