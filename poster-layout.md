@@ -1,0 +1,217 @@
+# Poster Layout — F Prime to Flight Faster
+
+Mapped to `Research Poster Template 202506.potx`, **Poster A** layout.
+Canvas: **48 in × 36 in landscape**. Four columns.
+
+Panel coordinates below are inches from the top-left of the poster and match the
+template's existing text boxes and picture placeholders — drop content in, don't
+move the boxes.
+
+`[NEEDED]` marks content that does not exist yet in the source outline.
+Word budgets are enforceable: at poster type sizes, going over means shrinking
+the font below readable-at-4-feet.
+
+---
+
+## TITLE BAND — `y 1.0–4.6`, full width
+
+**Title** (`Title 23`, y1.0 h1.9)
+
+> F Prime to Flight Faster: Hardware-in-the-Loop Continuous Integration for Accelerated CubeSat Development
+
+**Authors** (`Text Placeholder 58`, y2.8 h1.0)
+
+> Nate Gay¹, Saidi Adams¹, Michael Pham²
+
+**Affiliations** (`Text Placeholder 59`, y3.9 h0.7)
+
+> ¹Texas State University Space Lab · ²Open Source Space Foundation · nategay@txstate.edu
+
+---
+
+## COLUMN 1 — `x 1.5, w 10.0`
+
+### Panel 1A — The Problem  ·  `y 6.5, h 15.0`  ·  ~120 words
+
+**Header:** Integration Is Where Small-Sat Teams Slow Down
+
+Three short paragraphs, no bullets:
+
+1. Small satellite flight software teams iterate fast in development and then
+   stall at integration, because software must be validated against real
+   hardware that is itself changing.
+2. Bench testing is manual, intermittent, and happens late — defects are found
+   days after the commit that caused them, when the context is gone.
+3. **Our claim:** hardware-in-the-loop testing can be a per-commit pre-merge
+   gate, not a milestone. In the PROVES program, every commit ran on a real
+   engineering satellite before it could merge.
+
+> Define on first use — the audience arrives cold: **F´ (F Prime)**,
+> **HIL (hardware-in-the-loop)**, **GDS (Ground Data System)**,
+> **PROVES**, **SWD (Serial Wire Debug)**.
+
+### Panel 1B — How It Works  ·  `y 22.0, h 13.0`  ·  ~110 words + numbered flow
+
+**Header:** Per-Commit Pipeline
+**Subheader:** Commit → real satellite → merge gate, in ~5 minutes
+
+Numbered steps, one line each — this is the text twin of the system diagram in
+Figure 1, so keep the vocabulary identical between them:
+
+1. Commit opens a PR on GitHub.
+2. Self-hosted GitHub Actions runner picks up the job.
+3. Build machine compiles F´ flight software (separate from the test host).
+4. Programmable power supply cycles the engineering satellite.
+5. SWD/GDB flashes the microcontroller — no dependency on working flight code.
+6. SD card is reformatted to clear residual state.
+7. F´ GDS comes up; integration tests run over UART **and** radio.
+8. Result gates the merge. Red means no merge.
+
+**Verified each run:** commanding · telemetry · eventing · IMU · thermal ·
+antenna deployment · RTC · filesystem · power management · hardware watchdog
+
+---
+
+## COLUMN 2 — `x 12.5, w 11.0`
+
+### Panel 2A — Results  ·  `y 6.5, h 11.2`  ·  numbers, not prose
+
+**Header:** Results
+**Subheader:** Two sites, eighteen months, every commit
+
+Set these as a grid of large figures — the number in display type, the label
+small beneath. This panel should be readable from across the room and is the
+single most important block on the poster.
+
+| Figure | Label |
+|---|---|
+| **1,550+** | commits gated on real hardware |
+| **~5,400** | minutes of hardware test runtime |
+| **~5 min** | median pipeline run time |
+| **2** | independent HIL stations (TXST, Cal Poly Pomona) |
+| **10** | flight-critical subsystems exercised per run |
+| **100%** | of merges to `main` hardware-validated |
+
+`[NEEDED]` The strongest number is still missing: **how many defects the gate
+caught before `main`.** A count — or a before/after integration-cycle-time
+comparison — converts the central claim from assertion into evidence. If the
+data isn't recoverable from CI history, say so and cite something narrower
+(e.g. "N runs failed on hardware after passing software-only tests").
+
+`[NEEDED]` Flake rate before vs. after the mitigations in Panel 3A.
+
+---
+
+## COLUMN 3 — `x 24.5, w 11.0`
+
+### Panel 3A — Failure Modes & Fixes  ·  `y 6.5, h 11.2`  ·  table
+
+**Header:** What Broke, and What Fixed It
+**Subheader:** The parts other teams will photograph
+
+This is the highest-value content on the poster and was the thinnest section of
+the original outline. Format as a three-column table — symptom is what another
+team will recognize in their own lab, so lead with it.
+
+| Symptom | Root cause | Mitigation |
+|---|---|---|
+| Board unreachable after a bad flash | Reprogramming depended on the software under test | Program over SWD/GDB — independent path to the MCU |
+| Watchdog resets mid-load | Hardware watchdog fired during long software loads | Programmable power supply; sequence power with the load |
+| Passes locally, fails in CI | Residual SD card state between runs | Reformat the SD card every run |
+| Same test, different result per site | Lab-to-lab hardware differences (e.g. RTC battery backup) | `[NEEDED — how was this resolved?]` Document per-site hardware profile |
+| Intermittent, unreproducible failures | Limited telemetry bandwidth, dropped packets | `[NEEDED]` retries? bandwidth budget? test redesign? |
+| CI silently offline | A machine was physically unplugged; no one could reach the lab | `[NEEDED]` Physical access control / remote power / liveness alert |
+
+> Every `[NEEDED]` row above is a mitigation the original outline listed as a
+> problem without a fix. A row with no fix is fine — label it "open" honestly —
+> but decide which it is before printing.
+
+---
+
+## FIGURE ZONE — center, `x 12.5–35.5, y 18.4–35.0`
+
+The template supplies six picture placeholders with paired caption boxes.
+Captions are sentence-case, one line, and state the *finding*, not the subject
+("Flake rate fell after X" beats "Graph of test results").
+
+| Slot | Placeholder | Figure | Status |
+|---|---|---|---|
+| 1 | `idx 17` — y18.4 x12.5 w7.0 | **System architecture diagram** | `[NEEDED — build this]` |
+| 2 | `idx 23` — y18.4 x24.5 w7.0 | Current CI cube on standoffs | have (`IMG_7776.jpeg`?) |
+| 3 | `idx 13` — y23.3 x16.4 w7.0 | Passing checks in GitHub PR view | have |
+| 4 | `idx 19` — y23.3 x24.5 w7.0 | Pass/fail rate over time | `[NEEDED — export from CI]` |
+| 5 | `idx 15` — y28.1 x12.5 w11.0 | Before/after: assembled cube → skeleton cube | optional |
+| 6 | `idx 21` — y28.2 x24.5 w11.0 | Early bench setup, first integration station | optional |
+
+> **Figure 1 is the biggest gap in the whole poster.** The original visuals list
+> is entirely photographs and screenshots. One clean block diagram —
+> GitHub → runner → build host → SWD programmer + programmable PSU →
+> PROVES Kit → GDS → merge gate — will do more work than every other element
+> combined, and it's what people will point at while you talk. Give it the
+> top-left figure slot.
+>
+> Slots 5 and 6 are the first things to cut if space gets tight. The "at my
+> house" photo is charming but only earns a slot if it makes a point about how
+> low the barrier to entry is — which is actually a good point, if you frame the
+> caption that way.
+
+---
+
+## COLUMN 4 — `x 36.5, w 10.0`
+
+### Panel 4A — What Worked  ·  `y 6.5, h 13.5`  ·  ~100 words
+
+**Header:** What Made the Difference
+**Subheader:** Ranked by impact
+
+1. **Deterministic hardware state.** Reformat storage, cycle power, flash over
+   an independent path. Most flakiness was state, not code.
+2. **Separate build and integration machines.** Build load stopped perturbing
+   timing-sensitive hardware tests.
+3. **Skeleton cube on standoffs.** Swapping a part went from disassembling a
+   satellite to reaching in. Maintainability of the test rig *is* pipeline
+   uptime.
+4. **Flight-like transport.** Adding radio alongside UART caught a class of
+   failures UART never saw.
+
+### Panel 4B — Next  ·  `y 20.6, h 4.5`  ·  ~60 words
+
+**Header:** Future Work
+
+- **Flat bench layout** replacing the cube form factor — parts swap without
+  rebuilding a structure
+- **Backplane** instead of hand-built wire harnesses per component
+  (cf. OreSat's approach) `[Manuel — needs a full attribution for an
+  outside reader, or drop the name]`
+- **Reproducible station setup** — Nix, bootable image, or Ansible, for both
+  build and integration hosts
+- **Capability-tagged tests** so a station runs only what its hardware supports
+- **Remote power control** so a station is never lost to a physical unplug
+
+### Panel 4C — Build This Yourself  ·  `y 25.7, h 4.5`
+
+**Header:** Everything Here Is Open Source
+
+The poster's actual call to action — give it real estate and a **large QR code**.
+
+- PROVES Kit hardware: `[URL NEEDED]`
+- Flight software + CI workflows: `[URL NEEDED]`
+- F´ (NASA JPL): github.com/nasa/fprime
+- Bench setup instructions: `[NEEDED — listed as future work; if not ready,
+  point the QR at the repo README instead]`
+
+Acknowledgments + funding line, one line, small type.
+
+---
+
+## Notes on what changed
+
+- **Abstract removed.** A five-paragraph abstract is unreadable on a poster;
+  its content is redistributed into Problem, How It Works, and Results.
+- **"This talk will highlight…" rewritten throughout.** Present-tense findings —
+  the poster is the artifact, not a trailer for a talk.
+- **Numbers pulled to the top.** They were buried in the third paragraph.
+- **Duplicate "Hardware control" headings merged.** The old outline had the same
+  subhead under both "What we learned" and "Future improvements."
+- **Declined alternative abstract moved out** to `notes-source-material.md` so
+  the layout file has exactly one version of each claim.

@@ -1,0 +1,15 @@
+metric,value,definition
+window_start,2025-08-24,first CI run in the export
+window_end,2026-08-01,last CI run in the export
+pipeline_runs,1938,total ci.yaml workflow runs
+hil_jobs_decided,1565,HIL jobs that passed or failed (excludes cancelled/skipped)
+hil_jobs_failed,952,HIL jobs that failed
+pr_branches_gated,212,distinct PR branches the HIL gate ran on
+branches_blocked_then_fixed,65,PR branches where HIL failed and a later run passed — the gate blocked a merge until it was fixed (mixes real regressions with flakes; CI history cannot separate them)
+median_feedback_min,17.7,median commit-to-verdict wall clock since 2026-05-19
+p90_feedback_min,38.7,90th percentile commit-to-verdict since 2026-05-19
+critical_path_min,13.4,"build + slowest HIL job, medians, current pipeline"
+median_hil_job_min,7.3,"median HIL job duration, current pipeline"
+hil_pass_rate_first_month_pct,30.6,HIL pass rate in 2025-10
+hil_pass_rate_last6mo_pct,53.6,HIL pass rate over 2026-02..2026-07
+hil_benches,10,"distinct self-hosted lab benches that ran HIL jobs — ephemeral 'GitHub Actions NNN' runner names are excluded and names are case-folded, so this counts machines rather than runner registrations"

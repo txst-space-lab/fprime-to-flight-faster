@@ -1,0 +1,18 @@
+# direnv / nix
+.direnv/
+.envrc.local
+result
+result-*
+
+# typst build output
+*.pdf
+!docs/**/*.pdf
+
+# raw GitHub API payloads behind data/*.csv — regenerate with tools/fetch-ci-data.sh
+.cache/
+
+# PNG proofs of the figures; the SVGs in figures/ are what the poster imports
+figures/proof/
+
+# macOS
+.DS_Store

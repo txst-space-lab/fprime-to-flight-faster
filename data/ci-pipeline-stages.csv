@@ -1,0 +1,7 @@
+stage,label,runs_on,n,median_s,p90_s
+lint,Lint,software only,345,29,34
+unit-test,Unit tests,software only,343,113,137
+build,Build FSW,software only,340,228,293
+yamcs-build,YAMCS check,software only,272,19,24
+integration-uart,HIL: UART,real satellite,269,386,482
+integration-radio,HIL: LoRa RF,real satellite,258,578,733

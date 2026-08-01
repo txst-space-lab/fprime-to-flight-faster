@@ -1,0 +1,27 @@
+name: poster
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@v16
+      - uses: DeterminateSystems/magic-nix-cache-action@v8
+
+      # Builds packages.default from flake.nix -> result/poster.pdf, with the
+      # pinned font set, so CI renders byte-for-byte what the dev shell does.
+      - name: Build poster
+        run: nix build --print-build-logs
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: poster
+          path: result/poster.pdf
+          if-no-files-found: error
