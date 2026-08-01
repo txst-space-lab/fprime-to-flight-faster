@@ -2,6 +2,9 @@ metric,value,definition
 window_start,2025-08-24,first CI run in the export
 window_end,2026-08-01,last CI run in the export
 pipeline_runs,1938,total ci.yaml workflow runs
+commits_gated,1917,distinct head commits that ran the pipeline — fewer than the run count because a commit re-runs on retry; and far fewer than the HIL job count because each run has dispatched TWO HIL jobs (UART + LoRa RF) since the 2026-05-19 split
+hil_jobs_dispatched,1935,"HIL jobs sent to a bench, any conclusion"
+hil_hours,132,"total HIL job runtime, hours, individual jobs clipped to 1h"
 hil_jobs_decided,1565,HIL jobs that passed or failed (excludes cancelled/skipped)
 hil_jobs_failed,952,HIL jobs that failed
 pr_branches_gated,212,distinct PR branches the HIL gate ran on

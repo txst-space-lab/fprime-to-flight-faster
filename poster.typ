@@ -216,8 +216,8 @@
     #grid(
       columns: (1fr, 1fr),
       column-gutter: 20pt,
-      stat("1,565", "test jobs run on real hardware"),
-      stat("118 h", "of hardware test runtime"),
+      stat("1,935", "test jobs run on real hardware"),
+      stat("132 h", "of hardware test runtime"),
       stat("18 min", "median commit to hardware verdict"),
       stat("212", "pull requests gated on hardware"),
       stat("10", "flight-critical subsystems per run"),
@@ -226,7 +226,7 @@
 
     #v(10pt)
     #text(size: 21pt, fill: muted)[
-      Measured from 1,938 CI runs, Aug 2025 – Aug 2026. The gate blocked *65*
+      Measured from 1,917 commits, Aug 2025 – Aug 2026. The gate blocked *65*
       pull-request branches until a later run passed. CI history cannot separate
       a real regression from a bench flake, so that figure is a floor on defects
       caught, not a defect count. #todo[team recollection: how many of the 65

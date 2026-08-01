@@ -16,7 +16,7 @@ python3 tools/analyze-ci.py  # derived CSVs + figures/*.svg
 
 | File | Rows | What it is |
 |---|---|---|
-| `ci-runs.csv` | 1,938 | Raw export, one row per workflow run |
+| `ci-runs.csv` | 1,938 | Raw export, one row per workflow run (incl. `head_sha`) |
 | `ci-jobs.csv` | 7,091 | Raw export, one row per job within a run |
 | `ci-summary.csv` | 14 | Headline numbers for the poster's stat tiles, each with its definition |
 | `ci-pipeline-stages.csv` | 6 | Median/p90 duration per stage, current pipeline — source for `fig-pipeline-stages.svg` |
@@ -35,7 +35,19 @@ changed.
 
 **Rates exclude `cancelled` and `skipped`.** Those outcomes say nothing about
 the code under test. `ci-summary.csv` counts 1,565 *decided* HIL jobs out of
-1,935 total.
+1,935 dispatched (241 skipped, 129 cancelled).
+
+**Jobs are not runs.** Since the 2026-05-19 split each run dispatches *two* HIL
+jobs (UART + LoRa RF), so job counts run ahead of run counts. Pick deliberately:
+
+| | |
+|---|---|
+| 1,938 | CI runs |
+| 1,917 | distinct head commits — the poster's "measured from" figure |
+| 1,935 | HIL jobs dispatched — the poster's "test jobs run on real hardware" |
+| 1,576 | runs containing at least one HIL job |
+| 1,565 | HIL jobs that returned pass/fail |
+| 1,286 | runs where HIL actually returned a verdict |
 
 **`branches_blocked_then_fixed` (65) is a proxy, not a defect count.** It counts
 PR branches where a HIL job failed and a later run on the same branch passed —

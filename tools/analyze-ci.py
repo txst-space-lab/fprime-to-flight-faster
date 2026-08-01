@@ -362,10 +362,21 @@ def summary(runs, jobs, stages, monthly, feedback, med, p90):
     benches = jobs.loc[jobs.is_hil, "runner_name"].dropna()
     n_benches = benches[~benches.str.startswith("GitHub Actions ")].str.lower().nunique()
 
+    all_hil = jobs[jobs.is_hil]
+    # Clip pathological durations: one hung job sat at the 24h runner timeout and
+    # would otherwise add a fifth of the total on its own.
+    hil_hours = round(all_hil.duration_s.clip(lower=0, upper=3600).sum() / 3600)
+
     rows = [
         ("window_start", runs.created_at.min().date(), "first CI run in the export"),
         ("window_end", runs.created_at.max().date(), "last CI run in the export"),
         ("pipeline_runs", len(runs), "total ci.yaml workflow runs"),
+        ("commits_gated", runs.head_sha.nunique(),
+         "distinct head commits that ran the pipeline — fewer than the run count because a commit "
+         "re-runs on retry; and far fewer than the HIL job count because each run has dispatched TWO "
+         "HIL jobs (UART + LoRa RF) since the 2026-05-19 split"),
+        ("hil_jobs_dispatched", len(all_hil), "HIL jobs sent to a bench, any conclusion"),
+        ("hil_hours", hil_hours, "total HIL job runtime, hours, individual jobs clipped to 1h"),
         ("hil_jobs_decided", len(hil), "HIL jobs that passed or failed (excludes cancelled/skipped)"),
         ("hil_jobs_failed", int((hil.conclusion == "failure").sum()), "HIL jobs that failed"),
         ("pr_branches_gated", pr_hil.head_branch.nunique(), "distinct PR branches the HIL gate ran on"),

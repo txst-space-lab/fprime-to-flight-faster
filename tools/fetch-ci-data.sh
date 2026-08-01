@@ -27,11 +27,11 @@ done
 # The runs endpoint pages can overlap when new runs land mid-crawl, so dedupe.
 jq -s -r '
   ["run_id","run_number","created_at","updated_at","run_started_at","duration_s",
-   "event","status","conclusion","head_branch","actor","run_attempt"],
+   "event","status","conclusion","head_branch","head_sha","actor","run_attempt"],
   ([.[].workflow_runs[]] | unique_by(.id) | sort_by(.created_at) | .[] |
    [.id, .run_number, .created_at, .updated_at, .run_started_at,
     ((.updated_at|fromdate) - ((.run_started_at // .created_at)|fromdate)),
-    .event, .status, .conclusion, .head_branch, .actor.login, .run_attempt])
+    .event, .status, .conclusion, .head_branch, .head_sha, .actor.login, .run_attempt])
   | @csv' "$CACHE"/runs/p*.json >"$ROOT/data/ci-runs.csv"
 
 jq -s -r '[.[].workflow_runs[]] | unique_by(.id) | .[].id' "$CACHE"/runs/p*.json \
