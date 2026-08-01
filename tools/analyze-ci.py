@@ -320,10 +320,13 @@ def fig_feedback_time(runs, jobs):
     # bulk of the distribution legible instead of squashing it against the axis.
     ax.hist(cur.duration_min.clip(upper=60), bins=range(0, 63, 3), color=CLOUD, linewidth=2, edgecolor="white")
     ax.axvline(med, color=MAROON, linewidth=3, zorder=5)
-    top = ax.get_ylim()[1]
+    # Reserve headroom above the tallest bar so the median callout sits in clear
+    # space instead of on top of the modal bin.
+    tallest = ax.get_ylim()[1]
+    ax.set_ylim(0, tallest * 1.32)
     ax.annotate(
         f"median\n{med:.0f} min",
-        (med, top * 0.98),
+        (med, tallest * 1.30),
         textcoords="offset points",
         xytext=(12, 0),
         va="top",
