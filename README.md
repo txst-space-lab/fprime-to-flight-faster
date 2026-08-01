@@ -7,6 +7,14 @@ Michael Pham.
 Built with [Typst](https://typst.app). Output is a single 48 in × 36 in
 landscape PDF sized for the Texas State research poster template.
 
+## Prerequisites
+
+- [Nix](https://nixos.org/download)
+- [direnv](https://direnv.net)
+
+Everything else — Typst, `qrencode`, image tools, and the pinned fonts — comes
+from `flake.nix`. Nothing needs to be installed system-wide.
+
 ## Quick start
 
 ```sh
@@ -36,7 +44,8 @@ tools/      fetch + analysis scripts that produce data/ and figures/
 | File | What it is |
 |---|---|
 | `poster.typ` | The poster. Single source of truth for what gets printed. |
-| `images/ci-cube.jpeg` | Figure 2 — the skeleton CI cube on standoffs. |
+| `images/ci-cube.jpeg` | Figure 3 — the skeleton CI cube on standoffs. |
+| `images/screenshot-github-checks.png` | Figure 1 — the GitHub merge-gate checks view. Derived from `images/screenshot-github-failing-checks.png` (bottom row faded to imply the list continues). |
 | `docs/poster-layout.md` | Layout plan — panel-by-panel content map with word budgets, derived from the `.potx` template's actual box coordinates. |
 | `docs/abstract.md` | The submitted abstract, on its own, for pasting into submission forms and program listings. |
 | `docs/notes-source-material.md` | Submitted and declined abstracts, corrections to them, and the list of open items to resolve before printing. |
@@ -62,6 +71,7 @@ file:
 - `stat(value, label)` — one large number with its caption
 - `step(n)[text]` — a numbered pipeline step
 - `fig(path, caption, height: ...)` — a real figure
+- `shot(path, caption, height: ...)` — a screenshot, scaled to fit rather than cropped
 - `fig-todo(caption, height: ...)` — a dashed placeholder for a missing figure
 - `todo[note]` — inline red marker for unresolved content
 
@@ -74,8 +84,10 @@ by accident.
 Search for `#todo[` in `poster.typ` — it should return nothing. The open items
 are tracked in `docs/notes-source-material.md`; the two that matter most:
 
-1. **Figure 1, the system architecture diagram, does not exist yet.** It is the
-   single highest-value element on the poster and currently a placeholder.
+1. **Figure 2, the system architecture diagram, does not exist yet.** It is the
+   single highest-value element on the poster and currently a placeholder. The
+   GitHub checks screenshot (Figure 1) does not substitute for it: it shows the
+   merge gate's verdict, not the hardware path that produces it.
 2. **The defect-catch count is still soft.** The gate blocked 65 pull-request
    branches, but CI history cannot separate a real regression from a bench
    flake, so the poster cites that as a floor rather than a defect count.

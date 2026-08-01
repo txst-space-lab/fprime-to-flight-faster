@@ -115,6 +115,21 @@
   },
 )
 
+// A screenshot. Unlike `fig`, this scales to fit the full column width instead
+// of cropping, so no UI text is cut off and the image reads at arm's length.
+#let shot(path, caption) = block(
+  width: 100%,
+  {
+    block(
+      width: 100%,
+      clip: true,
+      stroke: 2pt + rule,
+      image(path, width: 100%),
+    )
+    block(inset: (top: 8pt), text(size: 20pt, fill: muted, caption))
+  },
+)
+
 // A generated chart from tools/analyze-ci.py. Unlike `fig`, these get no frame
 // and no fixed height: the SVGs are transparent, carry their own titles, and are
 // all exported at one 7:5.6 canvas, so scaling to the column width lines every
@@ -206,11 +221,19 @@
 
     #v(10pt)
 
+    // Glossary: one term per line so a reader can scan for the acronym they
+    // don't know instead of reading a paragraph to find it.
     #text(size: 22pt, fill: muted)[
+      #set par(spacing: 0.5em)
       *F´ (F Prime)* — NASA JPL's open-source flight software framework.
-      *HIL* — hardware-in-the-loop. *GDS* — F´ Ground Data System.
-      *SWD* — Serial Wire Debug, a direct programming path to the
-      microcontroller. *PROVES* — an open-source CubeSat kit and program.
+
+      *HIL* — hardware-in-the-loop.
+
+      *GDS* — F´ Ground Data System.
+
+      *SWD* — Serial Wire Debug, a direct programming path to the microcontroller.
+
+      *PROVES* — an open-source CubeSat kit and program.
     ]
   ],
 
@@ -233,6 +256,13 @@
     #text(size: 21pt, fill: muted)[
       Measured from 1,917 commits, Aug 2025 – Aug 2026.
     ]
+
+    #v(18pt)
+
+    #shot(
+      "images/screenshot-github-checks.svg",
+      "Figure 1. The gate as a developer sees it: integration-uart and integration-radio run on a real satellite, and a red check blocks the merge.",
+    )
   ],
 
   // ============================================================ COLUMN 3 / R1
@@ -318,7 +348,7 @@
   panel("Per-Commit Pipeline", subtitle: "Commit to merge gate in ~18 minutes")[
     #set text(size: 23pt)
     // Numbered from the list so steps can be inserted without renumbering by
-    // hand. Keep the wording identical to Figure 1.
+    // hand. Keep the wording identical to Figure 2.
     #for (i, s) in (
       [Commit opens a pull request on GitHub.],
       [Cloud runners lint and run unit tests — no hardware needed.],
@@ -354,18 +384,18 @@
       // aspect ratios, and anything taller here pushes the poster onto a second
       // page. Re-check `pdfinfo poster.pdf | grep Pages` after changing this.
       fig-todo(
-        "Figure 1. Per-commit pipeline: GitHub to runner to build host to programmer and PSU to PROVES Kit to GDS to merge gate.",
-        height: 6.0in,
+        "Figure 2. Per-commit pipeline: GitHub to runner to build host to programmer and PSU to PROVES Kit to GDS to merge gate.",
+        height: 4.7in,
       ),
 
       fig(
         "images/ci-cube.jpeg",
-        "Figure 2. The skeleton CI cube on standoffs — parts swap without disassembling the satellite.",
-        height: 6.0in,
+        "Figure 3. The skeleton CI cube on standoffs — parts swap without disassembling the satellite.",
+        height: 4.7in,
       ),
     )
 
-    #v(0.6in)
+    #v(0.45in)
 
     // Bottom row: the three measured results, from 1,938 runs of the real
     // pipeline. All three share a canvas size so their titles align.
@@ -375,17 +405,17 @@
 
       chart(
         "figures/fig-pipeline-stages.svg",
-        "Figure 3. Satellite time is 70% of the critical path — the gate costs hardware minutes, not build minutes.",
+        "Figure 4. Satellite time is 70% of the critical path — the gate costs hardware minutes, not build minutes.",
       ),
 
       chart(
         "figures/fig-hil-reliability.svg",
-        "Figure 4. Pass rate rose 31% → 61% while monthly volume nearly tripled, as the state-reset fixes landed.",
+        "Figure 5. Pass rate rose 31% → 61% while monthly volume nearly tripled, as the state-reset fixes landed.",
       ),
 
       chart(
         "figures/fig-feedback-time.svg",
-        "Figure 5. Half of all commits get a hardware verdict within 18 minutes; 90% within 39.",
+        "Figure 6. Half of all commits get a hardware verdict within 18 minutes; 90% within 39.",
       ),
     )
   ],
