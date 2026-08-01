@@ -28,7 +28,9 @@ nix build             # -> result/poster.pdf
 |---|---|
 | `poster.typ` | The poster. Single source of truth for what gets printed. |
 | `poster-layout.md` | Layout plan — panel-by-panel content map with word budgets, derived from the `.potx` template's actual box coordinates. |
-| `notes-source-material.md` | Submitted and declined abstracts, plus the list of open items to resolve before printing. Not printed. |
+| `abstract.md` | The submitted abstract, on its own, for pasting into submission forms and program listings. |
+| `notes-source-material.md` | Submitted and declined abstracts, corrections to them, and the list of open items to resolve before printing. Not printed. |
+| `proves-ci-changes-code-review.md` | Review of the flight-software repo's CI/test history — where the poster's failure modes, mitigations, and pipeline description are sourced from. Not printed. |
 | `POSTER_ F Prime to Flight Faster_….md` | Original brain-dump outline. Kept for reference. |
 | `Research Poster Template 202506.potx` | Texas State PowerPoint template the layout is matched to. |
 | `IMG_7776.jpeg` | Figure 2 — the skeleton CI cube on standoffs. |
@@ -56,13 +58,14 @@ by accident.
 
 ### Before printing
 
-Search for `TODO` in `poster.typ` — it should return nothing. The open items
+Search for `#todo[` in `poster.typ` — it should return nothing. The open items
 are tracked in `notes-source-material.md`; the two that matter most:
 
 1. **Figure 1, the system architecture diagram, does not exist yet.** It is the
    single highest-value element on the poster and currently a placeholder.
-2. **The defect-catch count is missing.** The poster claims the gate caught
-   failures before `main` without quantifying it.
+2. **The defect-catch count is still soft.** The gate blocked 65 pull-request
+   branches, but CI history cannot separate a real regression from a bench
+   flake, so the poster cites that as a floor rather than a defect count.
 
 Then generate the QR code and swap it in:
 

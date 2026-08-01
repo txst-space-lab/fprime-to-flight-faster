@@ -53,19 +53,25 @@ Three short paragraphs, no bullets:
 ### Panel 1B — How It Works  ·  `y 22.0, h 13.0`  ·  ~110 words + numbered flow
 
 **Header:** Per-Commit Pipeline
-**Subheader:** Commit → real satellite → merge gate, in ~5 minutes
+**Subheader:** Commit → real satellite → merge gate, in ~18 minutes
 
 Numbered steps, one line each — this is the text twin of the system diagram in
 Figure 1, so keep the vocabulary identical between them:
 
 1. Commit opens a PR on GitHub.
-2. Self-hosted GitHub Actions runner picks up the job.
-3. Build machine compiles F´ flight software (separate from the test host).
+2. Cloud runners lint and run unit tests — no hardware needed.
+3. Build machine compiles F´ flight software (separate from the test host);
+   static gates fail here rather than on the bench.
 4. Programmable power supply cycles the engineering satellite.
 5. SWD/GDB flashes the microcontroller — no dependency on working flight code.
 6. SD card is reformatted to clear residual state.
 7. F´ GDS comes up; integration tests run over UART **and** radio.
-8. Result gates the merge. Red means no merge.
+8. The board is power-cycled and re-tested through a YAMCS ground segment.
+9. Result gates the merge. Red means no merge.
+
+> Steps 2 and 3 are the cheap tier and step 8 is the second ground system —
+> both were absent from the submitted abstract and both are load-bearing for the
+> "what made the difference" argument in Panel 4A.
 
 **Verified each run:** commanding · telemetry · eventing · IMU · thermal ·
 antenna deployment · RTC · filesystem · power management · hardware watchdog
@@ -85,20 +91,23 @@ single most important block on the poster.
 
 | Figure | Label |
 |---|---|
-| **1,550+** | commits gated on real hardware |
-| **~5,400** | minutes of hardware test runtime |
-| **~5 min** | median pipeline run time |
-| **2** | independent HIL stations (TXST, Cal Poly Pomona) |
+| **1,935** | test jobs run on real hardware |
+| **132 h** | of hardware test runtime |
+| **18 min** | median commit → hardware verdict |
+| **212** | pull requests gated on hardware |
 | **10** | flight-critical subsystems exercised per run |
 | **100%** | of merges to `main` hardware-validated |
 
-`[NEEDED]` The strongest number is still missing: **how many defects the gate
-caught before `main`.** A count — or a before/after integration-cycle-time
-comparison — converts the central claim from assertion into evidence. If the
-data isn't recoverable from CI history, say so and cite something narrower
-(e.g. "N runs failed on hardware after passing software-only tests").
+Measured from 1,917 commits, Aug 2025 – Aug 2026. The abstract's "~5 minutes"
+was an early estimate; the measured median is **18 minutes**, with 90% of
+commits inside 39. Update the abstract wording if it is reused in the talk.
 
-`[NEEDED]` Flake rate before vs. after the mitigations in Panel 3A.
+The gate blocked **65** pull-request branches until a later run passed. CI
+history cannot separate a real regression from a bench flake, so cite that as a
+*floor* on defects caught, not a defect count.
+
+`[NEEDED]` Team recollection: how many of the 65 were genuine flight-software
+defects? That is the number that converts the central claim into evidence.
 
 ---
 
@@ -117,14 +126,23 @@ team will recognize in their own lab, so lead with it.
 |---|---|---|
 | Board unreachable after a bad flash | Reprogramming depended on the software under test | Program over SWD/GDB — independent path to the MCU |
 | Watchdog resets mid-load | Hardware watchdog fired during long software loads | Programmable power supply; sequence power with the load |
-| Passes locally, fails in CI | Residual SD card state between runs | Reformat the SD card every run |
-| Same test, different result per site | Lab-to-lab hardware differences (e.g. RTC battery backup) | `[NEEDED — how was this resolved?]` Document per-site hardware profile |
-| Intermittent, unreproducible failures | Limited telemetry bandwidth, dropped packets | `[NEEDED]` retries? bandwidth budget? test redesign? |
+| Passes locally, fails in CI | Residual SD card state between runs | Reformat the SD card before **and** after every run — a crashed run leaves it dirty |
+| Same test, different result per site | Lab-to-lab hardware differences (e.g. RTC battery backup) | Tag each test with the hardware it needs; a station runs only what it can support |
+| Intermittent, unreproducible failures | Radio is half-duplex — the satellite cannot hear a command while it is transmitting | Retry with jittered exponential backoff; log all telemetry to correlate failures afterward |
 | CI silently offline | A machine was physically unplugged; no one could reach the lab | `[NEEDED]` Physical access control / remote power / liveness alert |
 
-> Every `[NEEDED]` row above is a mitigation the original outline listed as a
-> problem without a fix. A row with no fix is fine — label it "open" honestly —
-> but decide which it is before printing.
+> The last row is the only one still open. Label it "open" honestly on the
+> poster or drop it — do not print a `[NEEDED]`.
+>
+> The half-duplex root cause is the strongest row on the poster: the failure is
+> *physics*, not a bug, and the fix (backoff with jitter, so retries stop
+> colliding with the same downlink burst) is directly reusable by any team
+> testing over a radio. Lead with it if the table has to be cut for space.
+>
+> Two rows deliberately left off for space, both worth having in your pocket for
+> questions: identifying the board by USB vendor/product ID after a board
+> revision invalidated the device name, and killing leaked ground-software
+> processes that held the serial port between runs.
 
 ---
 
@@ -165,14 +183,22 @@ Captions are sentence-case, one line, and state the *finding*, not the subject
 **Subheader:** Ranked by impact
 
 1. **Deterministic hardware state.** Reformat storage, cycle power, flash over
-   an independent path. Most flakiness was state, not code.
+   an independent path, address the board by USB ID rather than a name a
+   revision can invalidate. Most flakiness was state, not code.
 2. **Separate build and integration machines.** Build load stopped perturbing
    timing-sensitive hardware tests.
 3. **Skeleton cube on standoffs.** Swapping a part went from disassembling a
    satellite to reaching in. Maintainability of the test rig *is* pipeline
    uptime.
-4. **Flight-like transport.** Adding radio alongside UART caught a class of
-   failures UART never saw.
+4. **Flight-like transport and ground segment.** Adding radio alongside UART
+   caught a class of failures UART never saw. Re-running the same board through
+   production ground software caught another.
+5. **Not everything needs the satellite.** Attitude math, time handling, and
+   frame parsing were pulled out of flight components and unit-tested in the
+   cloud in seconds — which is what keeps the fast tier fast.
+6. **Push failures left.** Once a hardware failure mode is understood, encode it
+   as a static check. A console setting that corrupted the downlink now fails
+   the build, not the bench.
 
 ### Panel 4B — Next  ·  `y 20.6, h 4.5`  ·  ~60 words
 
@@ -185,8 +211,12 @@ Captions are sentence-case, one line, and state the *finding*, not the subject
   outside reader, or drop the name]`
 - **Reproducible station setup** — Nix, bootable image, or Ansible, for both
   build and integration hosts
-- **Capability-tagged tests** so a station runs only what its hardware supports
 - **Remote power control** so a station is never lost to a physical unplug
+- **Job timeouts and queueing** so one hung board cannot monopolize the single
+  physical station
+
+> "Capability-tagged tests" moved out of this list — it shipped, and now appears
+> as the mitigation for the cross-site row in Panel 3A.
 
 ### Panel 4C — Build This Yourself  ·  `y 25.7, h 4.5`
 

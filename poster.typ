@@ -179,7 +179,10 @@
   row-gutter: 1in,
 
   // ============================================================ COLUMN 1 / R1
-  panel("The Problem", subtitle: "Integration is where small-sat teams slow down")[
+  panel(
+    "The Problem",
+    subtitle: "Integration is where small-sat teams slow down",
+  )[
     Small satellite flight software teams iterate quickly in development and
     then stall at integration, because the software must be validated against
     real hardware that is itself still changing.
@@ -218,8 +221,10 @@
       column-gutter: 20pt,
       stat("1,935", "test jobs run on real hardware"),
       stat("132 h", "of hardware test runtime"),
+
       stat("18 min", "median commit to hardware verdict"),
       stat("212", "pull requests gated on hardware"),
+
       stat("10", "flight-critical subsystems per run"),
       stat("100%", "of merges hardware-validated"),
     )
@@ -230,12 +235,15 @@
       pull-request branches until a later run passed. CI history cannot separate
       a real regression from a bench flake, so that figure is a floor on defects
       caught, not a defect count. #todo[team recollection: how many of the 65
-      were genuine flight-software defects?]
+        were genuine flight-software defects?]
     ]
   ],
 
   // ============================================================ COLUMN 3 / R1
-  panel("What Broke, and What Fixed It", subtitle: "The lessons other teams can reuse")[
+  panel(
+    "What Broke, and What Fixed It",
+    subtitle: "The lessons other teams can reuse",
+  )[
     #set text(size: 20pt)
     #table(
       columns: (1fr, 1fr, 1fr),
@@ -244,7 +252,9 @@
       stroke: (x, y) => (
         bottom: if y == 0 { 3pt + maroon } else { 1pt + rule },
       ),
-      fill: (x, y) => if y == 0 { white } else if calc.odd(y) { wash } else { white },
+      fill: (x, y) => if y == 0 { white } else if calc.odd(y) { wash } else {
+        white
+      },
 
       table.header(
         text(weight: 700, size: 22pt)[Symptom],
@@ -262,15 +272,15 @@
 
       [Passes locally, fails in CI],
       [Residual SD card state between runs],
-      [Reformat the SD card every run],
+      [Reformat the SD card before *and* after every run — a crashed run leaves it dirty],
 
       [Same test, different result per site],
       [Lab-to-lab hardware differences (e.g. RTC battery backup)],
-      [#todo[resolution?] Document a per-site hardware profile],
+      [Tag each test with the hardware it needs; a station runs only what it can support],
 
       [Intermittent, unreproducible failures],
-      [Limited telemetry bandwidth, dropped packets],
-      [#todo[retries? bandwidth budget? test redesign?]],
+      [Radio is half-duplex — the satellite cannot hear a command while it is transmitting],
+      [Retry with jittered exponential backoff; log all telemetry to correlate failures afterward],
 
       [CI silently offline],
       [A machine was unplugged; no one could reach the lab],
@@ -282,7 +292,8 @@
   panel("What Made the Difference", subtitle: "Ranked by impact")[
     #block(spacing: 22pt)[
       *1. Deterministic hardware state.* \
-      Reformat storage, cycle power, flash over an independent path. Most
+      Reformat storage, cycle power, flash over an independent path, address the
+      board by USB ID rather than a name a revision can invalidate. Most
       flakiness was state, not code.
     ]
     #block(spacing: 22pt)[
@@ -295,22 +306,42 @@
       Maintainability of the rig _is_ pipeline uptime.
     ]
     #block(spacing: 22pt)[
-      *4. Flight-like transport.* \
+      *4. Flight-like transport and ground segment.* \
       Adding radio alongside UART caught a class of failures UART never saw.
+      Re-running the same board through production ground software caught
+      another.
+    ]
+    #block(spacing: 22pt)[
+      *5. Not everything needs the satellite.* \
+      Attitude math, time handling, and frame parsing were pulled out of flight
+      components and unit-tested in the cloud in seconds.
+    ]
+    #block(spacing: 22pt)[
+      *6. Push failures left.* \
+      Once a hardware failure mode is understood, encode it as a static check. A
+      console setting that corrupted the downlink now fails the build, not the
+      bench.
     ]
   ],
 
   // ============================================================ COLUMN 1 / R2
   panel("Per-Commit Pipeline", subtitle: "Commit to merge gate in ~18 minutes")[
     #set text(size: 23pt)
-    #block(spacing: 16pt, step(1)[Commit opens a pull request on GitHub.])
-    #block(spacing: 16pt, step(2)[Self-hosted GitHub Actions runner picks up the job.])
-    #block(spacing: 16pt, step(3)[Build machine compiles F´ flight software.])
-    #block(spacing: 16pt, step(4)[Programmable power supply cycles the satellite.])
-    #block(spacing: 16pt, step(5)[SWD/GDB flashes the microcontroller.])
-    #block(spacing: 16pt, step(6)[SD card is reformatted to clear residual state.])
-    #block(spacing: 16pt, step(7)[F´ GDS comes up; tests run over UART and radio.])
-    #block(spacing: 16pt, step(8)[Result gates the merge. Red means no merge.])
+    // Numbered from the list so steps can be inserted without renumbering by
+    // hand. Keep the wording identical to Figure 1.
+    #for (i, s) in (
+      [Commit opens a pull request on GitHub.],
+      [Cloud runners lint and run unit tests — no hardware needed.],
+      [Build machine compiles F´ flight software; static gates fail here, not on the bench.],
+      [Programmable power supply cycles the satellite.],
+      [SWD/GDB flashes the microcontroller.],
+      [SD card is reformatted to clear residual state.],
+      [F´ GDS comes up; tests run over UART and radio.],
+      [The board is power-cycled and re-tested through a YAMCS ground segment.],
+      [Result gates the merge. Red means no merge.],
+    ).enumerate(start: 1) {
+      block(spacing: 16pt, step(i, s))
+    }
 
     #v(14pt)
     #block(width: 100%, inset: 18pt, fill: wash)[
@@ -329,12 +360,19 @@
       columns: (1fr, 1fr),
       column-gutter: 1in,
 
+      // 6.0in, not more: the three charts below size themselves from their SVG
+      // aspect ratios, and anything taller here pushes the poster onto a second
+      // page. Re-check `pdfinfo poster.pdf | grep Pages` after changing this.
       fig-todo(
         "Figure 1. Per-commit pipeline: GitHub to runner to build host to programmer and PSU to PROVES Kit to GDS to merge gate.",
-        height: 7.5in,
+        height: 6.0in,
       ),
 
-      fig("IMG_7776.jpeg", "Figure 2. The skeleton CI cube on standoffs — parts swap without disassembling the satellite.", height: 7.5in),
+      fig(
+        "IMG_7776.jpeg",
+        "Figure 2. The skeleton CI cube on standoffs — parts swap without disassembling the satellite.",
+        height: 6.0in,
+      ),
     )
 
     #v(0.6in)
@@ -371,9 +409,9 @@
       - *Backplane* instead of hand-built per-component wire harnesses
         #todo[full attribution for the OreSat / Manuel backplane work]
       - *Reproducible station setup* via Nix, a bootable image, or Ansible
-      - *Capability-tagged tests* so a station runs only what its hardware
-        supports
       - *Remote power control* so a station is never lost to a physical unplug
+      - *Job timeouts and queueing* so one hung board cannot monopolize the
+        single physical station
     ]
 
     v(1in)
@@ -412,7 +450,7 @@
     block(width: 100%, inset: 16pt, fill: wash)[
       #text(size: 19pt, fill: muted)[
         *Acknowledgments.* #todo[funding line, collaborators, department and
-        college names for the template affiliation block]
+          college names for the template affiliation block]
       ]
     ]
   },
