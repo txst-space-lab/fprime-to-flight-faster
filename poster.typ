@@ -231,11 +231,7 @@
 
     #v(10pt)
     #text(size: 21pt, fill: muted)[
-      Measured from 1,917 commits, Aug 2025 – Aug 2026. The gate blocked *65*
-      pull-request branches until a later run passed. CI history cannot separate
-      a real regression from a bench flake, so that figure is a floor on defects
-      caught, not a defect count. #todo[team recollection: how many of the 65
-        were genuine flight-software defects?]
+      Measured from 1,917 commits, Aug 2025 – Aug 2026.
     ]
   ],
 
@@ -266,7 +262,7 @@
       [Reprogramming depended on the software under test],
       [Program over SWD/GDB — an independent path to the MCU],
 
-      [Watchdog resets mid-load],
+      [Watchdog resets flash],
       [Hardware watchdog fired during long software loads],
       [Programmable power supply; sequence power with the load],
 
@@ -276,15 +272,11 @@
 
       [Same test, different result per site],
       [Lab-to-lab hardware differences (e.g. RTC battery backup)],
-      [Tag each test with the hardware it needs; a station runs only what it can support],
+      [Tag each test with the hardware it needs; a runner executes only the tests it can support],
 
       [Intermittent, unreproducible failures],
       [Radio is half-duplex — the satellite cannot hear a command while it is transmitting],
       [Retry with jittered exponential backoff; log all telemetry to correlate failures afterward],
-
-      [CI silently offline],
-      [A machine was unplugged; no one could reach the lab],
-      [#todo[remote power / liveness alert?]],
     )
   ],
 
@@ -293,26 +285,24 @@
     #block(spacing: 22pt)[
       *1. Deterministic hardware state.* \
       Reformat storage, cycle power, flash over an independent path, address the
-      board by USB ID rather than a name a revision can invalidate. Most
-      flakiness was state, not code.
+      board by USB ID. Most flakiness was state, not code.
     ]
     #block(spacing: 22pt)[
       *2. Separate build and integration machines.* \
-      Build load stopped perturbing timing-sensitive hardware tests.
+      Moving compilation off the bench host onto a dedicated build machine cut
+      about 10 minutes from every pipeline run.
     ]
     #block(spacing: 22pt)[
       *3. Skeleton cube on standoffs.* \
-      Swapping a part went from disassembling a satellite to reaching in.
+      Swapping a part went from disassembling a satellite to unscrewing 4 standoffs.
       Maintainability of the rig _is_ pipeline uptime.
     ]
     #block(spacing: 22pt)[
-      *4. Flight-like transport and ground segment.* \
-      Adding radio alongside UART caught a class of failures UART never saw.
-      Re-running the same board through production ground software caught
-      another.
+      *4. Flight-like comms and ground software.* \
+      Adding radio tests alongside existing UART tests caught a new class of failures.
     ]
     #block(spacing: 22pt)[
-      *5. Not everything needs the satellite.* \
+      *5. Not every test needs hardware.* \
       Attitude math, time handling, and frame parsing were pulled out of flight
       components and unit-tested in the cloud in seconds.
     ]
@@ -407,11 +397,11 @@
       - *Flat bench layout* replacing the cube form factor, so parts swap
         without rebuilding a structure
       - *Backplane* instead of hand-built per-component wire harnesses
-        #todo[full attribution for the OreSat / Manuel backplane work]
-      - *Reproducible station setup* via Nix, a bootable image, or Ansible
-      - *Remote power control* so a station is never lost to a physical unplug
+      - *Reproducible CI runner setup* via Nix, a bootable image, or Ansible
       - *Job timeouts and queueing* so one hung board cannot monopolize the
-        single physical station
+        single physical runner
+      - *Continue addressing flaky tests* to build trust in the pipeline and
+        keep results reliable
     ]
 
     v(1in)
@@ -426,21 +416,21 @@
             Every piece of hardware and software described here is open source.
 
             #v(10pt)
-            *PROVES Kit hardware* #linebreak() #todo[URL]
+            *PROVES Kit hardware* #linebreak() #text(font: mono, size: 20pt)[proveskit.com]
             #v(6pt)
-            *Flight software + CI* #linebreak() #todo[URL]
+            *Flight software + CI* #linebreak() #text(font: mono, size: 18pt)[github.com/Open-Source-Space-Foundation/ #linebreak() proves-core-reference]
             #v(6pt)
             *F´* #linebreak() #text(font: mono, size: 20pt)[github.com/nasa/fprime]
           ]
         },
-        // Generate with: qrencode -o qr.svg -t SVG -m 0 "<repo url>"
-        // then swap this placeholder for: image("qr.svg", width: 3.2in)
+        // Regenerate with:
+        //   qrencode -o images/qr-proves-core-reference.svg -t SVG -m 0 -l M \
+        //     "https://github.com/Open-Source-Space-Foundation/proves-core-reference"
+        // The white inset is the quiet zone scanners need (qrencode -m 0 omits it).
         block(
-          width: 3.2in,
-          height: 3.2in,
-          fill: wash,
-          stroke: (paint: rule, thickness: 3pt, dash: "dashed"),
-          align(center + horizon, text(size: 22pt, fill: muted)[QR]),
+          fill: white,
+          inset: 0.28in,
+          image("images/qr-proves-core-reference.svg", width: 3.2in),
         ),
       )
     ]

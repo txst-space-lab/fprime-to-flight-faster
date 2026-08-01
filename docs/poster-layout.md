@@ -127,7 +127,7 @@ team will recognize in their own lab, so lead with it.
 | Board unreachable after a bad flash | Reprogramming depended on the software under test | Program over SWD/GDB — independent path to the MCU |
 | Watchdog resets mid-load | Hardware watchdog fired during long software loads | Programmable power supply; sequence power with the load |
 | Passes locally, fails in CI | Residual SD card state between runs | Reformat the SD card before **and** after every run — a crashed run leaves it dirty |
-| Same test, different result per site | Lab-to-lab hardware differences (e.g. RTC battery backup) | Tag each test with the hardware it needs; a station runs only what it can support |
+| Same test, different result per site | Lab-to-lab hardware differences (e.g. RTC battery backup) | Tag each test with the hardware it needs; a runner executes only the tests it can support |
 | Intermittent, unreproducible failures | Radio is half-duplex — the satellite cannot hear a command while it is transmitting | Retry with jittered exponential backoff; log all telemetry to correlate failures afterward |
 | CI silently offline | A machine was physically unplugged; no one could reach the lab | `[NEEDED]` Physical access control / remote power / liveness alert |
 
@@ -159,7 +159,7 @@ Captions are sentence-case, one line, and state the *finding*, not the subject
 | 3 | `idx 13` — y23.3 x16.4 w7.0 | Passing checks in GitHub PR view | have |
 | 4 | `idx 19` — y23.3 x24.5 w7.0 | Pass/fail rate over time | `[NEEDED — export from CI]` |
 | 5 | `idx 15` — y28.1 x12.5 w11.0 | Before/after: assembled cube → skeleton cube | optional |
-| 6 | `idx 21` — y28.2 x24.5 w11.0 | Early bench setup, first integration station | optional |
+| 6 | `idx 21` — y28.2 x24.5 w11.0 | Early bench setup, first integration bench | optional |
 
 > **Figure 1 is the biggest gap in the whole poster.** The original visuals list
 > is entirely photographs and screenshots. One clean block diagram —
@@ -185,8 +185,9 @@ Captions are sentence-case, one line, and state the *finding*, not the subject
 1. **Deterministic hardware state.** Reformat storage, cycle power, flash over
    an independent path, address the board by USB ID rather than a name a
    revision can invalidate. Most flakiness was state, not code.
-2. **Separate build and integration machines.** Build load stopped perturbing
-   timing-sensitive hardware tests.
+2. **Separate build and integration machines.** Moving compilation off the bench
+   host onto a dedicated build machine cut about 10 minutes from every pipeline
+   run.
 3. **Skeleton cube on standoffs.** Swapping a part went from disassembling a
    satellite to reaching in. Maintainability of the test rig *is* pipeline
    uptime.
@@ -209,11 +210,11 @@ Captions are sentence-case, one line, and state the *finding*, not the subject
 - **Backplane** instead of hand-built wire harnesses per component
   (cf. OreSat's approach) `[Manuel — needs a full attribution for an
   outside reader, or drop the name]`
-- **Reproducible station setup** — Nix, bootable image, or Ansible, for both
+- **Reproducible runner setup** — Nix, bootable image, or Ansible, for both
   build and integration hosts
-- **Remote power control** so a station is never lost to a physical unplug
+- **Remote power control** so a runner is never lost to a physical unplug
 - **Job timeouts and queueing** so one hung board cannot monopolize the single
-  physical station
+  physical runner
 
 > "Capability-tagged tests" moved out of this list — it shipped, and now appears
 > as the mitigation for the cross-site row in Panel 3A.

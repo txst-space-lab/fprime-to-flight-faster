@@ -2,7 +2,7 @@ Small satellite flight software teams often move fast in development but slow do
 
 We implemented this pipeline using NASA JPL's open-source F Prime (F´) framework, leveraging F´'s integration test APIs as the primary accelerator. A self-hosted GitHub Actions runner automatically deployed and exercised flight software on an open-source PROVES Kit engineering satellite, brought up the F´ Ground Data System (GDS), and executed end-to-end tests that verified commanding, telemetry, eventing, and specific component behaviors. Each run completed in approximately 5 minutes.
 
-We operated two independent HIL stations, one at Texas State University and one at Cal Poly Pomona. Over 1,550 commits ran through the pipeline, totaling approximately 5,400 test-runtime minutes. Enforcing HIL tests as a pre-merge gate turned integration into a routine, automated workflow that caught failures before they reached the main branch and enabled rapid iteration as hardware and software changed.
+We operated two independent HIL runners, one at Texas State University and one at Cal Poly Pomona. Over 1,550 commits ran through the pipeline, totaling approximately 5,400 test-runtime minutes. Enforcing HIL tests as a pre-merge gate turned integration into a routine, automated workflow that caught failures before they reached the main branch and enabled rapid iteration as hardware and software changed.
 
 All hardware and software for this approach are open source.
 
