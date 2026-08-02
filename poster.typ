@@ -78,20 +78,6 @@
   },
 )
 
-// Numbered pipeline step.
-#let step(n, body) = grid(
-  columns: (auto, 1fr),
-  column-gutter: 12pt,
-  block(
-    width: 42pt,
-    height: 42pt,
-    radius: 21pt,
-    fill: maroon,
-    align(center + horizon, text(size: 24pt, weight: 700, fill: white, str(n))),
-  ),
-  block(inset: (top: 4pt), body),
-)
-
 // A photograph or screenshot, framed, with a finding-first caption. The GitHub
 // checks screenshot uses it; the CI cube photograph came off in the 48x36 ->
 // 36x36 reflow but is still in images/ and this is what puts it back.
@@ -185,9 +171,9 @@
 
 #let p-problem = panel(
   "The Problem",
-  subtitle: "Integration is where small-sat teams slow down",
+  subtitle: "Integration is where flight software teams slow down",
 )[
-  Small satellite flight software teams iterate quickly in development and then
+  Flight software teams iterate quickly in development and then
   slow down at integration, because the software must be validated against real
   hardware that is itself still changing.
 
@@ -258,35 +244,38 @@
   ]
 ]
 
-#let p-pipeline = panel(
-  "Per-Commit Pipeline",
+#let p-challenge = panel(
+  "Our Challenge",
+  subtitle: "The hardware moved while the software was being written",
 )[
-  // Numbered from the list so steps can be inserted without renumbering by hand.
-  #for (i, s) in (
-    [Commit opens a pull request on GitHub.],
-    [Cloud runners lint and run unit tests; no hardware needed.],
-    [Build machine compiles F´ flight software; static gates fail here, not on the bench.],
-    [Programmable power supply cycles the satellite.],
-    [SWD/GDB flashes the microcontroller.],
-    [SD card is reformatted to clear residual state.],
-    [F´ GDS comes up; tests run over UART and radio.],
-    [The board is power-cycled and re-tested through a YAMCS ground segment.],
-    [Result gates the merge. Red means no merge.],
-  ).enumerate(start: 1) {
-    block(spacing: 14pt, step(i, s))
-  }
+  Over one year the PROVES Kit went through three major and four minor board
+  revisions, plus two revisions of the solar face boards. Every one of them
+  changed something the flight software depended on: pin assignments, device
+  enumeration, power sequencing, which peripherals were even present.
 
-  #v(12pt)
-  #block(width: 100%, inset: 16pt, fill: wash)[
-    *Verified every run:* commanding · telemetry · eventing · IMU · thermal
-    management · antenna deployment · real-time clock · filesystem · power
-    management · hardware watchdog
-  ]
+  #v(8pt)
+
+  #grid(
+    columns: (1fr, 1fr, 1fr),
+    column-gutter: 16pt,
+    // Labels stay short enough to sit on one line at a third of a column;
+    // "over one year" is already established in the paragraph above.
+    stat("7", "board revisions"),
+    stat("23", "contributors"),
+    stat("1,917", "commits"),
+  )
+
+  #v(8pt)
+
+  A team this size, at this rate, cannot re-qualify a satellite by hand every
+  time either side changes. Hardware testing must be automated.
 ]
 
 #let p-results = panel(
   "Results",
-  subtitle: "Measured from 1,917 commits, Aug 2025 – July 2026.",
+  // The commit count moved to "Our Challenge"; repeating it here read as a
+  // second, different measurement.
+  subtitle: "Measured from every gated commit, Aug 2025 – July 2026.",
 )[
   #grid(
     columns: (1fr, 1fr),
@@ -500,8 +489,8 @@
     column-gutter: 0.8in,
     align: top,
 
-    // Column 1 — the problem, the mechanism that answers it, and what made it work.
-    column-of(p-problem, p-pipeline, p-difference),
+    // Column 1 — the problem, the scale of it here, and what made the answer work.
+    column-of(p-problem, p-challenge, p-difference),
 
     // Column 2 — the evidence: the numbers and all three charts.
     column-of(p-results, f-stages, f-reliability, f-feedback),
