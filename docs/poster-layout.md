@@ -200,7 +200,8 @@ one back — with a `height:` to crop a photograph, without one for a screenshot
 ### `p-difference` — What Made the Difference  ·  column 3  ·  7.0 in
 
 **Header:** What Made the Difference
-**Subheader:** Ranked by impact
+No subheader. The list is still ordered by impact — the numbering carries that
+without a line of type spending column height to say so.
 
 1. **Deterministic hardware state.** Reformat storage, cycle power, flash over
    an independent path, address the board by USB ID rather than a name a
@@ -221,9 +222,8 @@ one back — with a `height:` to crop a photograph, without one for a screenshot
    as a static check. A console setting that corrupted the downlink now fails
    the build, not the bench.
 
-> **Only 1–4 are printed.** Items 5 and 6 came off in the reflow to 36 × 36;
-> they are kept here because they are the two most likely to be asked about at
-> the poster, and because they go straight back in if a panel elsewhere shrinks.
+All six are printed. Items 5 and 6 came off during the reflow to 36 × 36 and
+went back on once the column had room again.
 
 ### `p-future` — Future Work  ·  column 2  ·  4.4 in  ·  ~60 words
 
@@ -275,7 +275,8 @@ inches long. What came off, and why it was the cheapest thing to lose:
   with no textual stand-in; "skeleton cube on standoffs" is now asserted in
   `p-difference` rather than shown. This is the first thing to put back if the
   poster ever grows.
-- **Ranked items 5 and 6** of What Made the Difference, per the note above.
+- **Ranked items 5 and 6** of What Made the Difference — since restored, once
+  Future Work moved to column 3 and freed the room.
 
 Two changes bought room without cutting anything:
 

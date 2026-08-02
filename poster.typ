@@ -274,7 +274,10 @@
   ]
 ]
 
-#let p-results = panel("Results", subtitle: "Measured from 1,917 commits, Aug 2025 – July 2026.")[
+#let p-results = panel(
+  "Results",
+  subtitle: "Measured from 1,917 commits, Aug 2025 – July 2026.",
+)[
   #grid(
     columns: (1fr, 1fr),
     column-gutter: 16pt,
@@ -333,10 +336,7 @@
   )
 ]
 
-#let p-difference = panel(
-  "What Made the Difference",
-  subtitle: "Ranked by impact",
-)[
+#let p-difference = panel("What Made the Difference")[
   #block(spacing: 18pt)[
     *1. Deterministic hardware state.* \
     Reformat storage, cycle power, flash over an independent path, address the
@@ -352,13 +352,20 @@
     Swapping a part went from disassembling a satellite to unscrewing 4
     standoffs. Maintainability of the rig _is_ pipeline uptime.
   ]
-  // Trimmed to the authors' top four for the 36x36 sheet. The two that came
-  // off the bottom of the ranking — "not every test needs hardware" and "push
-  // failures left" — are in docs/poster-layout.md if room opens up.
   #block(spacing: 18pt)[
     *4. Flight-like comms and ground software.* \
-    Adding radio tests alongside existing UART tests caught a new class of
-    failures.
+    Adding radio tests alongside existing UART tests caught a failure class.
+  ]
+  #block(spacing: 18pt)[
+    *5. Not every test needs hardware.* \
+    Attitude math, time handling, and frame parsing were pulled out of flight
+    components and unit-tested in the cloud in seconds.
+  ]
+  #block(spacing: 18pt)[
+    *6. Use static analysis.* \
+    Once a hardware failure mode is understood, encode it as a static check. A
+    configuration to enable UART console corrupted test comm downlink now fails
+    the build, not the HIL tests.
   ]
 ]
 
