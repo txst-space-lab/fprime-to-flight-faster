@@ -401,11 +401,11 @@
       Every piece of hardware and software described here is open source.
 
       #v(8pt)
+      *TXST Space Lab* #linebreak() #text(font: mono)[txstspacelab.org]
+      #v(6pt)
       *PROVES Kit hardware* #linebreak() #text(font: mono)[proveskit.com]
       #v(6pt)
       *Flight software + CI* #linebreak() #text(font: mono)[github.com/Open-Source-Space-Foundation/ #linebreak() proves-core-reference]
-      #v(6pt)
-      *F´* #linebreak() #text(font: mono)[github.com/nasa/fprime]
     ],
     // Regenerate with:
     //   qrencode -o images/qr-proves-core-reference.svg -t SVG -m 0 -l M \
@@ -421,8 +421,9 @@
 
 #let p-acknowledgments = block(width: 100%, inset: 14pt, fill: wash)[
   #text(size: 24pt, fill: muted)[
-    *Acknowledgments.* #todo[funding line, collaborators, department and college
-      names for the template affiliation block]
+    *Acknowledgments.* Texas State University Department of Physics, NASA Jet
+    Propulsion Laboratory, NASA CubeSat Launch Initiative, Cal Poly Pomona, Open Source Space Foundation, and
+    Ines Khouider.
   ]
 ]
 
