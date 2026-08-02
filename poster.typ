@@ -393,36 +393,28 @@
     results reliable
 ]
 
-#let p-build = panel("Build This Yourself", accent: gold)[
-  #grid(
-    columns: (1fr, auto),
-    column-gutter: 20pt,
-    [
-      Every piece of hardware and software described here is open source.
+#let p-build = panel(
+  "Build This Yourself",
+  accent: gold,
+)[
+  // No URLs in the body: the QR carries every link, so nobody has to retype a
+  // repo path off a printed poster.
+  Every piece of hardware and software described here is open source.
+  Scan QR code for links to get started as well as a digital copy of
+  this poster and author contact information.
 
-      #v(8pt)
-      *TXST Space Lab* #linebreak() #text(font: mono)[txstspacelab.org]
-      #v(6pt)
-      *PROVES Kit hardware* #linebreak() #text(font: mono)[proveskit.com]
-      #v(6pt)
-      *Flight software + CI* #linebreak() #text(font: mono)[github.com/Open-Source-Space-Foundation/ #linebreak() proves-core-reference]
-    ],
-    // Points at the project page, which carries all three links above plus the
-    // poster PDF — one code to scan instead of three URLs to retype.
-    // Regenerate with:
-    //   qrencode -o images/qr-poster-site.svg -t SVG -m 0 -l M \
-    //     "https://txst-space-lab.github.io/fprime-to-flight-faster/"
-    // The white inset is the quiet zone scanners need (qrencode -m 0 omits it).
-    block(
-      fill: white,
-      inset: 0.24in,
-      stack(
-        image("images/qr-poster-site.svg", width: 2.8in),
-        v(10pt),
-        align(center, text(size: 24pt, fill: muted)[All three, plus this poster]),
-      ),
-    ),
-  )
+  #v(20pt)
+  // Points at the project page, which carries all the links plus the poster PDF
+  // and contact details — one code to scan instead of several URLs to retype.
+  // Regenerate with:
+  //   qrencode -o images/qr-poster-site.svg -t SVG -m 0 -l M \
+  //     "https://txst-space-lab.github.io/fprime-to-flight-faster/"
+  // The white inset is the quiet zone scanners need (qrencode -m 0 omits it).
+  #align(center, block(
+    fill: white,
+    inset: 0.24in,
+    image("images/qr-poster-site.svg", width: 3.5in),
+  ))
 ]
 
 #let p-acknowledgments = block(width: 100%, inset: 14pt, fill: wash)[
