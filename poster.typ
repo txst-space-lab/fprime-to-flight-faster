@@ -92,8 +92,8 @@
 )
 
 // A photograph or screenshot, framed, with a finding-first caption. The GitHub
-// checks screenshot uses it; the CI cube photograph came off in the 48x36 ->
-// 36x36 reflow but is still in images/ and this is what puts it back.
+// checks screenshot uses it; the CI cube photograph in images/ is the other
+// candidate if a panel ever has room for it.
 #let fig(path, caption, height: none) = block(
   width: 100%,
   {
@@ -209,8 +209,8 @@
   #v(8pt)
 
   // Glossary: boxed and labeled so it reads as a reference sidebar rather than
-  // more body copy. One term per line so a reader can scan for the acronym they
-  // don't know instead of reading a paragraph to find it.
+  // more body copy. One term per line, alphabetical, so a reader can scan for
+  // the acronym they don't know instead of reading a paragraph to find it.
   #block(
     width: 100%,
     inset: (x: 18pt, top: 24pt, bottom: 18pt),
@@ -231,24 +231,20 @@
     #set text(size: 24pt, fill: muted)
     #for (term, defn) in (
       ([Commit], [one saved change to the software.]),
+      ([Continuous Integration (CI)], [builds and tests every change.]),
+      ([F Prime (F´)], [NASA JPL's open-source flight software framework.]),
+      ([GNU debugger (GDB)], [loads and runs code on the satellite.]),
+      ([Hardware-in-the-Loop (HIL)], [tests that run on satellite hardware.]),
+      ([Job], [a single automated check in CI.]),
+      ([PROVES], [an open-source CubeSat kit and program.]),
       (
         [Pull request (PR)],
         [a proposed change to the software.],
       ),
-      ([Continuous Integration (CI)], [builds and tests every change.]),
-      (
-        [Merge gate],
-        [an automated check every change must pass.],
-      ),
-      ([F Prime (F´)], [NASA JPL's open-source flight software framework.]),
-      ([Hardware-in-the-Loop (HIL)], [tests that run on satellite hardware.]),
-      ([Ground Data System (GDS)], [ground station application for F´.]),
       (
         [Serial Wire Debug (SWD)],
         [a direct path to program the satellite.],
       ),
-      ([GNU debugger (GDB)], [loads and runs code on the satellite.]),
-      ([PROVES], [an open-source CubeSat kit and program.]),
     ) {
       block[#text(weight: 700, fill: ink, term): #defn]
     }
@@ -271,7 +267,9 @@
     column-gutter: 16pt,
     // Labels stay short enough to sit on one line at a quarter of a column;
     // "over one year" is already established in the paragraph above.
-    stat("7", "board revisions"),
+    // 9 = three major + four minor mainboard revisions + two solar face
+    // revisions, the same nine the paragraph above enumerates.
+    stat("9", "board revisions"),
     stat("23", "contributors"),
     stat("1,917", "commits"),
     stat("212", "pull requests"),
@@ -362,7 +360,7 @@
 
   #fig(
     "images/screenshot-github-checks.svg",
-    "The gate as a developer sees it: integration-uart and integration-radio run on hardware, and a red check blocks the merge.",
+    "CI as a developer sees it: the integration jobs run on real hardware, and a failing check blocks the merge.",
   )
 ]
 
@@ -375,7 +373,7 @@
   #block(spacing: 18pt)[
     *2. Self-hosted build runner.* \
     No cache on free cloud runners meant a full submodule re-clone every build.
-    Self-hosted runner saved ~10 minutes saved per run.
+    Self-hosted runner saved about 10 minutes per run.
   ]
   #block(spacing: 18pt)[
     *3. Skeleton cube on standoffs.* \
@@ -448,9 +446,9 @@
 
 // Figures. Captions lead with the finding, not the mechanics.
 //
-// The square sheet holds three figures, not five. The GitHub checks screenshot
-// and the CI cube photograph came off in the 48x36 -> 36x36 reflow; both are
-// still in images/ and both are described in docs/poster-layout.md.
+// The square sheet holds three charts plus the GitHub checks screenshot, which
+// sits in "What Broke". The CI cube photograph is still in images/, unplaced;
+// see docs/poster-layout.md.
 
 #let f-stages = chart(
   "figures/fig-pipeline-stages.svg",

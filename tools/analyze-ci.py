@@ -278,7 +278,7 @@ def fig_hil_reliability(jobs):
     span = pd.PeriodIndex(g.index, freq="M")
     header(
         fig,
-        "The gate got more reliable as it got busier",
+        "CI became more reliable as it got busier",
         f"{g.total.sum():,} HIL jobs  ·  {span[0].strftime('%b %Y')} – {span[-1].strftime('%b %Y')}",
     )
     fig.legend(
