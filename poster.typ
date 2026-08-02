@@ -1,10 +1,16 @@
-// F Prime to Flight Faster: 48in x 36in research poster
+// F Prime to Flight Faster: 36in x 36in research poster
 //
 // Build:  typst compile poster.typ poster.pdf
 // Watch:  typst watch poster.typ
 //
-// Layout follows docs/poster-layout.md. Content marked TODO is tracked in
-// docs/notes-source-material.md under "Open items to resolve before printing".
+// Layout follows docs/poster-layout.md; the hard print constraints (square
+// canvas, 24pt type floor, one page) are in docs/requirements.md. Content
+// marked TODO is tracked in docs/notes-source-material.md under "Open items to
+// resolve before printing".
+//
+// The panels below are defined as named blocks and then composed into three
+// columns at the bottom of the file. Moving a panel between columns is a
+// one-line change there; nothing in a panel depends on which column it lands in.
 
 // ---------------------------------------------------------------- constants
 
@@ -21,14 +27,16 @@
 #let mono = ("JetBrains Mono", "DejaVu Sans Mono")
 
 #set page(
-  width: 48in,
+  width: 36in,
   height: 36in,
-  margin: (x: 1.5in, y: 1.2in),
+  margin: (x: 1.2in, y: 0.7in),
   fill: white,
 )
 
-#set text(font: sans, size: 26pt, fill: ink, lang: "en")
-#set par(justify: false, leading: 0.62em, spacing: 1.1em)
+// 24pt is the floor, not a starting point — see docs/requirements.md R2. Body
+// copy sits on it, so anything that needs to shrink has to be a figure.
+#set text(font: sans, size: 24pt, fill: ink, lang: "en")
+#set par(justify: false, leading: 0.62em, spacing: 1.0em)
 
 #show heading: set text(fill: maroon)
 
@@ -41,30 +49,30 @@
   {
     block(
       width: 100%,
-      inset: (bottom: 8pt),
+      inset: (bottom: 7pt),
       stroke: (bottom: 4pt + accent),
-      text(size: 44pt, weight: 700, fill: accent, title),
+      text(size: 38pt, weight: 700, fill: accent, title),
     )
     if subtitle != none {
       block(
         width: 100%,
-        inset: (top: 10pt),
-        text(size: 28pt, style: "italic", fill: muted, subtitle),
+        inset: (top: 8pt),
+        text(size: 26pt, style: "italic", fill: muted, subtitle),
       )
     }
-    block(width: 100%, inset: (top: 14pt), body)
+    block(width: 100%, inset: (top: 12pt), body)
   },
 )
 
 // One big number plus its label.
 #let stat(value, label) = block(
   width: 100%,
-  inset: (y: 10pt),
+  inset: (y: 6pt),
   {
-    // Extra leading on this one paragraph: the label sits 10pt further off the
+    // Extra leading on this one paragraph: the label sits 8pt further off the
     // number than the poster's default line spacing would put it.
-    set par(leading: 0.62em + 10pt)
-    text(size: 76pt, weight: 800, fill: maroon, value)
+    set par(leading: 0.62em + 8pt)
+    text(size: 58pt, weight: 800, fill: maroon, value)
     linebreak()
     text(size: 24pt, fill: muted, label)
   },
@@ -73,19 +81,22 @@
 // Numbered pipeline step.
 #let step(n, body) = grid(
   columns: (auto, 1fr),
-  column-gutter: 14pt,
+  column-gutter: 12pt,
   block(
-    width: 46pt,
-    height: 46pt,
-    radius: 23pt,
+    width: 42pt,
+    height: 42pt,
+    radius: 21pt,
     fill: maroon,
     align(center + horizon, text(size: 24pt, weight: 700, fill: white, str(n))),
   ),
-  block(inset: (top: 6pt), body),
+  block(inset: (top: 4pt), body),
 )
 
-// A real figure with a finding-first caption.
-#let fig(path, caption, height: 8in) = block(
+// A photograph or screenshot, framed, with a finding-first caption. Nothing
+// uses this on the square poster — the CI cube photograph and the GitHub checks
+// screenshot came off in the 48x36 -> 36x36 reflow — but both images are still
+// in images/ and this is what puts one back.
+#let fig(path, caption, height: none) = block(
   width: 100%,
   {
     block(
@@ -93,31 +104,27 @@
       height: height,
       clip: true,
       stroke: 2pt + rule,
-      image(path, width: 100%, height: 100%, fit: "cover"),
-    )
-    block(inset: (top: 8pt), text(size: 24pt, fill: muted, caption))
-  },
-)
-
-// A screenshot. Unlike `fig`, this scales to fit the full column width instead
-// of cropping, so no UI text is cut off and the image reads at arm's length.
-#let shot(path, caption) = block(
-  width: 100%,
-  {
-    block(
-      width: 100%,
-      clip: true,
-      stroke: 2pt + rule,
-      image(path, width: 100%),
+      // A fixed height crops to fill; without one the image scales to the
+      // column, which is what a screenshot needs so no UI text is cut off.
+      if height == none {
+        image(path, width: 100%)
+      } else {
+        image(path, width: 100%, height: 100%, fit: "cover")
+      },
     )
     block(inset: (top: 8pt), text(size: 24pt, fill: muted, caption))
   },
 )
 
 // A generated chart from tools/analyze-ci.py. Unlike `fig`, these get no frame
-// and no fixed height: the SVGs are transparent, carry their own titles, and are
-// all exported at one 7:5.6 canvas, so scaling to the column width lines every
-// chart in a row up on a common baseline. Regenerate before printing:
+// and no fixed height: the SVGs are transparent, carry their own titles, and
+// share one 7:4.8 canvas, so scaling to the column width lines every chart up
+// on a common baseline.
+//
+// The chart's own type must clear the 24pt floor once scaled. At one full
+// column (10.67in) a 7in-wide canvas scales 1.52x, so the 16pt matplotlib
+// minimum in tools/analyze-ci.py lands at 24.4pt. Do NOT render these narrower
+// than a column without re-checking that. Regenerate before printing:
 //   python3 tools/analyze-ci.py
 #let chart(path, caption) = block(
   width: 100%,
@@ -131,351 +138,351 @@
 
 // ---------------------------------------------------------------- title band
 
-#block(
+#let title-band = block(
   width: 100%,
-  inset: (bottom: 28pt),
+  inset: (bottom: 20pt),
   stroke: (bottom: 6pt + maroon),
   grid(
-  columns: (1fr, auto),
-  column-gutter: 1in,
-  align: (left + horizon, right + top),
-  {
-    text(size: 96pt, weight: 800, fill: maroon)[
-      F Prime to Flight Faster
-    ]
-    linebreak()
-    block(
-      inset: (top: 12pt),
-      text(size: 48pt, weight: 500, fill: ink)[
-        Hardware-in-the-Loop Continuous Integration for Accelerated CubeSat Development
-      ],
-    )
-    block(
-      inset: (top: 22pt),
-      text(size: 32pt, weight: 600)[
-        Nate Gay#super[1], Saidi Adams#super[1], Michael Pham#super[2]
-      ],
-    )
-    block(
-      inset: (top: 8pt),
-      text(size: 26pt, fill: muted)[
-        #super[1]Texas State University Space Lab
-        #h(18pt) · #h(18pt)
-        #super[2]Open Source Space Foundation
-        #h(18pt) · #h(18pt)
-        nategay\@txstate.edu
-      ],
-    )
-  },
+    columns: (1fr, auto),
+    column-gutter: 0.6in,
+    align: (left + horizon, right + horizon),
+    {
+      text(size: 68pt, weight: 800, fill: maroon)[
+        F Prime to Flight Faster
+      ]
+      linebreak()
+      block(
+        inset: (top: 10pt),
+        text(size: 36pt, weight: 500, fill: ink)[
+          Hardware-in-the-Loop Continuous Integration for Accelerated CubeSat
+          Development
+        ],
+      )
+      block(
+        inset: (top: 16pt),
+        text(size: 28pt, weight: 600)[
+          Nate Gay#super[1], Saidi Adams#super[1], Michael Pham#super[2]
+        ],
+      )
+      block(
+        inset: (top: 6pt),
+        text(size: 24pt, fill: muted)[
+          #super[1]Texas State University Space Lab
+          #h(14pt) · #h(14pt)
+          #super[2]Open Source Space Foundation
+          #h(14pt) · #h(14pt)
+          nategay\@txstate.edu
+        ],
+      )
+    },
 
-  // The dark wordmark reads directly on the white page; the -light variant is
-  // the white-on-transparent one and needs a maroon plate behind it.
-  image("images/txst-logo-dark.svg", width: 9in),
+    // The dark wordmark reads directly on the white page; the -light variant is
+    // the white-on-transparent one and needs a maroon plate behind it.
+    image("images/txst-logo-dark.svg", width: 5in),
   ),
 )
 
-#v(30pt)
+// ---------------------------------------------------------------- panels
+
+#let p-problem = panel(
+  "The Problem",
+  subtitle: "Integration is where small-sat teams slow down",
+)[
+  Small satellite flight software teams iterate quickly in development and then
+  stall at integration, because the software must be validated against real
+  hardware that is itself still changing.
+
+  Bench testing is manual, intermittent, and happens late. Defects surface days
+  after the commit that caused them, once the context is gone and the change has
+  been built on.
+
+  #v(8pt)
+
+  #block(
+    width: 100%,
+    inset: 18pt,
+    fill: wash,
+    stroke: (left: 8pt + gold),
+  )[
+    *Our claim:* hardware-in-the-loop testing can be a per-commit merge gate,
+    not a milestone. In the PROVES program, every commit ran on a real
+    engineering satellite before it could merge.
+  ]
+
+  #v(8pt)
+
+  // Glossary: boxed and labeled so it reads as a reference sidebar rather than
+  // more body copy. One term per line so a reader can scan for the acronym they
+  // don't know instead of reading a paragraph to find it.
+  #block(
+    width: 100%,
+    inset: (x: 18pt, top: 24pt, bottom: 18pt),
+    stroke: 3pt + maroon,
+  )[
+    // Label sits on the rule, knocked out with a white plate behind it.
+    #place(
+      top + left,
+      dy: -36pt,
+      dx: -6pt,
+      block(
+        fill: white,
+        inset: (x: 8pt),
+        text(size: 24pt, weight: 700, fill: maroon, tracking: 2pt)[TERMINOLOGY],
+      ),
+    )
+    #set par(spacing: 0.7em)
+    #set text(size: 24pt, fill: muted)
+    #for (term, defn) in (
+      ([F´ (F Prime)], [NASA JPL's open-source flight software framework.]),
+      ([HIL], [hardware-in-the-loop.]),
+      ([GDS], [F´ Ground Data System.]),
+      (
+        [SWD],
+        [Serial Wire Debug, a direct programming path to the microcontroller.],
+      ),
+      ([PROVES], [an open-source CubeSat kit and program.]),
+    ) {
+      block[#text(weight: 700, fill: ink, term): #defn]
+    }
+  ]
+]
+
+#let p-pipeline = panel(
+  "Per-Commit Pipeline",
+  subtitle: "Commit to merge gate in ~18 minutes",
+)[
+  // Numbered from the list so steps can be inserted without renumbering by hand.
+  #for (i, s) in (
+    [Commit opens a pull request on GitHub.],
+    [Cloud runners lint and run unit tests; no hardware needed.],
+    [Build machine compiles F´ flight software; static gates fail here, not on the bench.],
+    [Programmable power supply cycles the satellite.],
+    [SWD/GDB flashes the microcontroller.],
+    [SD card is reformatted to clear residual state.],
+    [F´ GDS comes up; tests run over UART and radio.],
+    [The board is power-cycled and re-tested through a YAMCS ground segment.],
+    [Result gates the merge. Red means no merge.],
+  ).enumerate(start: 1) {
+    block(spacing: 14pt, step(i, s))
+  }
+
+  #v(12pt)
+  #block(width: 100%, inset: 16pt, fill: wash)[
+    *Verified every run:* commanding · telemetry · eventing · IMU · thermal
+    management · antenna deployment · real-time clock · filesystem · power
+    management · hardware watchdog
+  ]
+]
+
+#let p-results = panel("Results", subtitle: "Measured from 1,917 commits, Aug 2025 – Aug 2026.")[
+  #grid(
+    columns: (1fr, 1fr),
+    column-gutter: 16pt,
+    row-gutter: 20pt,
+    stat("1,935", "test jobs run on real hardware"),
+    stat("132 h", "of hardware test runtime"),
+
+    stat("18 min", "median commit to hardware verdict"),
+    stat("212", "pull requests gated on hardware"),
+
+    stat("10", "flight-critical subsystems per run"),
+    stat("100%", "of merges hardware-validated"),
+  )
+]
+
+#let p-broke = panel(
+  "What Broke, and What Fixed It",
+  subtitle: "The lessons other teams can reuse",
+)[
+  #table(
+    columns: (1fr, 1fr, 1.15fr),
+    inset: 10pt,
+    align: left + top,
+    stroke: (x, y) => (
+      bottom: if y == 0 { 3pt + maroon } else { 1pt + rule },
+    ),
+    fill: (x, y) => if y == 0 { white } else if calc.odd(y) { wash } else {
+      white
+    },
+
+    table.header(
+      text(weight: 700)[Symptom],
+      text(weight: 700)[Root cause],
+      text(weight: 700)[Mitigation],
+    ),
+
+    [Board unreachable after a bad flash],
+    [Reprogramming depended on the software under test],
+    [Program over SWD/GDB, an independent path to the MCU],
+
+    [Watchdog resets flash],
+    [Hardware watchdog fired during long software loads],
+    [Programmable power supply; sequence power with the load],
+
+    [Passes locally, fails in CI],
+    [Residual SD card state between runs],
+    [Reformat the SD card before *and* after every run; a crashed run leaves it dirty],
+
+    [Same test, different result per site],
+    [Lab-to-lab hardware differences (e.g. RTC battery backup)],
+    [Tag each test with the hardware it needs; a runner executes only the tests it can support],
+
+    [Intermittent, unreproducible failures],
+    [Various],
+    [Log and archive all telemetry to correlate failures after runs],
+  )
+]
+
+#let p-difference = panel(
+  "What Made the Difference",
+  subtitle: "Ranked by impact",
+)[
+  #block(spacing: 18pt)[
+    *1. Deterministic hardware state.* \
+    Reformat storage, cycle power, flash over an independent path, address the
+    board by USB ID. Most flakiness was state, not code.
+  ]
+  #block(spacing: 18pt)[
+    *2. Separate build and integration machines.* \
+    Moving compilation off the bench host onto a dedicated build machine cut
+    about 10 minutes from every pipeline run.
+  ]
+  #block(spacing: 18pt)[
+    *3. Skeleton cube on standoffs.* \
+    Swapping a part went from disassembling a satellite to unscrewing 4
+    standoffs. Maintainability of the rig _is_ pipeline uptime.
+  ]
+  // Trimmed to the authors' top four for the 36x36 sheet. The two that came
+  // off the bottom of the ranking — "not every test needs hardware" and "push
+  // failures left" — are in docs/poster-layout.md if room opens up.
+  #block(spacing: 18pt)[
+    *4. Flight-like comms and ground software.* \
+    Adding radio tests alongside existing UART tests caught a new class of
+    failures.
+  ]
+]
+
+#let p-future = panel("Future Work")[
+  - *Flat bench layout* replacing the cube form factor, so parts swap without
+    rebuilding a structure
+  - *Backplane* instead of hand-built per-component wire harnesses
+  - *Reproducible CI runner setup* via Nix, a bootable image, or Ansible
+  - *Job timeouts and queueing* so one hung board cannot monopolize the single
+    physical runner
+  - *Continue addressing flaky tests* to build trust in the pipeline and keep
+    results reliable
+]
+
+#let p-build = panel("Build This Yourself", accent: gold)[
+  #grid(
+    columns: (1fr, auto),
+    column-gutter: 20pt,
+    [
+      Every piece of hardware and software described here is open source.
+
+      #v(8pt)
+      *PROVES Kit hardware* #linebreak() #text(font: mono)[proveskit.com]
+      #v(6pt)
+      *Flight software + CI* #linebreak() #text(font: mono)[github.com/Open-Source-Space-Foundation/ #linebreak() proves-core-reference]
+      #v(6pt)
+      *F´* #linebreak() #text(font: mono)[github.com/nasa/fprime]
+    ],
+    // Regenerate with:
+    //   qrencode -o images/qr-proves-core-reference.svg -t SVG -m 0 -l M \
+    //     "https://github.com/Open-Source-Space-Foundation/proves-core-reference"
+    // The white inset is the quiet zone scanners need (qrencode -m 0 omits it).
+    block(
+      fill: white,
+      inset: 0.24in,
+      image("images/qr-proves-core-reference.svg", width: 2.8in),
+    ),
+  )
+]
+
+#let p-acknowledgments = block(width: 100%, inset: 14pt, fill: wash)[
+  #text(size: 24pt, fill: muted)[
+    *Acknowledgments.* #todo[funding line, collaborators, department and college
+      names for the template affiliation block]
+  ]
+]
+
+// Figures. Captions lead with the finding, not the mechanics.
+//
+// The square sheet holds three figures, not five. The GitHub checks screenshot
+// and the CI cube photograph came off in the 48x36 -> 36x36 reflow; both are
+// still in images/ and both are described in docs/poster-layout.md.
+
+#let f-stages = chart(
+  "figures/fig-pipeline-stages.svg",
+  "Figure 1. Satellite time is 70% of the critical path; the gate costs hardware minutes, not build minutes.",
+)
+
+#let f-reliability = chart(
+  "figures/fig-hil-reliability.svg",
+  "Figure 2. Pass rate rose 31% → 61% while monthly volume nearly tripled, as the state-reset fixes landed.",
+)
+
+#let f-feedback = chart(
+  "figures/fig-feedback-time.svg",
+  "Figure 3. Half of all commits get a hardware verdict within 18 minutes; 90% within 39.",
+)
 
 // ---------------------------------------------------------------- body grid
 //
-// Four columns matching the template: 10in / 11in / 11in / 10in.
-// Row 1 is text; row 2 puts the figure zone across the two center columns.
+// Three equal columns. At 36in wide with 1.2in margins and a 0.8in gutter that
+// is 10.67in each — the narrowest column that still holds the failure-mode
+// table's three sub-columns at 24pt.
+//
+// Reading order is down each column, then across. Column 1 sets up the problem
+// and the mechanism, column 2 carries the evidence, column 3 carries the
+// takeaways.
 
-#grid(
-  columns: (10in, 11in, 11in, 10in),
-  column-gutter: 1in,
-  row-gutter: 1in,
+// Column height is fixed so the three columns can be justified to a common
+// bottom edge: panels are separated by a 0.45in minimum plus an equal share of
+// whatever slack the column has left. Ragged column bottoms are the thing that
+// most makes a poster look thrown together.
+//
+// This is also the overflow tripwire. If a column's content exceeds
+// `column-height`, Typst pushes the excess onto a second page rather than
+// silently overlapping — so `pdfinfo poster.pdf | grep Pages` reporting 1 is a
+// real check that everything fits (docs/requirements.md R3).
+// 36in sheet - 2x0.7in margin - 3.3in title band - 0.3in gap below it, less a
+// hair so rounding cannot spill a blank second page.
+#let column-height = 30.9in
+#let column-gap = 0.45in
 
-  // ============================================================ COLUMN 1 / R1
-  panel(
-    "The Problem",
-    subtitle: "Integration is where small-sat teams slow down",
-  )[
-    Small satellite flight software teams iterate quickly in development and
-    then stall at integration, because the software must be validated against
-    real hardware that is itself still changing.
+// Panels are composed with the built-in `stack` rather than by dropping them
+// into the flow: flow layout would add its own block spacing at every seam —
+// about a third of an inch each, enough to push a column onto page 2 — and
+// suppressing that with a `set` rule would also flatten the spacing *inside*
+// the panels. A stack adds exactly what it is told to.
+#let column-of(..items) = block(
+  width: 100%,
+  height: column-height,
+  stack(
+    dir: ttb,
+    ..items.pos().map(it => (it, column-gap, 1fr)).join().slice(0, -2), // trailing gap + spacer after the last panel
+  ),
+)
 
-    Bench testing is manual, intermittent, and happens late. Defects surface
-    days after the commit that caused them, once the context is gone and the
-    change has been built on.
+// Stacked for the same reason the columns are: the seam below the title band is
+// 0.3in because it says 0.3in, not 0.3in plus whatever the flow adds.
+#stack(
+  dir: ttb,
+  title-band,
+  0.3in,
+  grid(
+    columns: (1fr, 1fr, 1fr),
+    column-gutter: 0.8in,
+    align: top,
 
-    #v(10pt)
+    // Column 1 — the problem and the mechanism that answers it.
+    column-of(p-problem, p-pipeline, p-build),
 
-    #block(
-      width: 100%,
-      inset: 20pt,
-      fill: wash,
-      stroke: (left: 8pt + gold),
-    )[
-      *Our claim:* hardware-in-the-loop testing can be a per-commit merge gate,
-      not a milestone. In the PROVES program, every commit ran on a real
-      engineering satellite before it could merge.
-    ]
+    // Column 2 — the evidence, and where it points next.
+    column-of(p-results, f-stages, f-reliability, p-future),
 
-    #v(10pt)
-
-    // Glossary: boxed and labeled so it reads as a reference sidebar rather
-    // than more body copy. One term per line so a reader can scan for the
-    // acronym they don't know instead of reading a paragraph to find it.
-    #block(
-      width: 100%,
-      inset: (x: 20pt, top: 26pt, bottom: 20pt),
-      stroke: 3pt + maroon,
-    )[
-      // Label sits on the rule, knocked out with a white plate behind it.
-      #place(
-        top + left,
-        dy: -38pt,
-        dx: -6pt,
-        block(
-          fill: white,
-          inset: (x: 8pt),
-          text(size: 24pt, weight: 700, fill: maroon, tracking: 2pt)[TERMINOLOGY],
-        ),
-      )
-      #set par(spacing: 0.75em)
-      #set text(size: 24pt, fill: muted)
-      #for (term, defn) in (
-        ([F´ (F Prime)], [NASA JPL's open-source flight software framework.]),
-        ([HIL], [hardware-in-the-loop.]),
-        ([GDS], [F´ Ground Data System.]),
-        ([SWD], [Serial Wire Debug, a direct programming path to the microcontroller.]),
-        ([PROVES], [an open-source CubeSat kit and program.]),
-      ) {
-        block[#text(weight: 700, fill: ink, term): #defn]
-      }
-    ]
-  ],
-
-  // ============================================================ COLUMN 2 / R1
-  panel("Results", subtitle: "Confidence with every commit")[
-    #grid(
-      columns: (1fr, 1fr),
-      column-gutter: 20pt,
-      row-gutter: 30pt,
-      stat("1,935", "test jobs run on real hardware"),
-      stat("132 h", "of hardware test runtime"),
-
-      stat("18 min", "median commit to hardware verdict"),
-      stat("212", "pull requests gated on hardware"),
-
-      stat("10", "flight-critical subsystems per run"),
-      stat("100%", "of merges hardware-validated"),
-    )
-
-    #v(10pt)
-    #text(size: 24pt, fill: muted)[
-      Measured from 1,917 commits, Aug 2025 – Aug 2026.
-    ]
-  ],
-
-  // ============================================================ COLUMN 3 / R1
-  panel(
-    "What Broke, and What Fixed It",
-    subtitle: "The lessons other teams can reuse",
-  )[
-    #set text(size: 24pt)
-    #table(
-      columns: (1fr, 1fr, 1fr),
-      inset: 12pt,
-      align: left + top,
-      stroke: (x, y) => (
-        bottom: if y == 0 { 3pt + maroon } else { 1pt + rule },
-      ),
-      fill: (x, y) => if y == 0 { white } else if calc.odd(y) { wash } else {
-        white
-      },
-
-      table.header(
-        text(weight: 700, size: 24pt)[Symptom],
-        text(weight: 700, size: 24pt)[Root cause],
-        text(weight: 700, size: 24pt)[Mitigation],
-      ),
-
-      [Board unreachable after a bad flash],
-      [Reprogramming depended on the software under test],
-      [Program over SWD/GDB, an independent path to the MCU],
-
-      [Watchdog resets flash],
-      [Hardware watchdog fired during long software loads],
-      [Programmable power supply; sequence power with the load],
-
-      [Passes locally, fails in CI],
-      [Residual SD card state between runs],
-      [Reformat the SD card before *and* after every run; a crashed run leaves it dirty],
-
-      [Same test, different result per site],
-      [Lab-to-lab hardware differences (e.g. RTC battery backup)],
-      [Tag each test with the hardware it needs; a runner executes only the tests it can support],
-
-      [Intermittent, unreproducible failures],
-      [Various],
-      [Log and archive all telemetry to correlate failures after runs],
-    )
-  ],
-
-  // ============================================================ COLUMN 4 / R1
-  panel("What Made the Difference", subtitle: "Ranked by impact")[
-    #block(spacing: 22pt)[
-      *1. Deterministic hardware state.* \
-      Reformat storage, cycle power, flash over an independent path, address the
-      board by USB ID. Most flakiness was state, not code.
-    ]
-    #block(spacing: 22pt)[
-      *2. Separate build and integration machines.* \
-      Moving compilation off the bench host onto a dedicated build machine cut
-      about 10 minutes from every pipeline run.
-    ]
-    #block(spacing: 22pt)[
-      *3. Skeleton cube on standoffs.* \
-      Swapping a part went from disassembling a satellite to unscrewing 4 standoffs.
-      Maintainability of the rig _is_ pipeline uptime.
-    ]
-    #block(spacing: 22pt)[
-      *4. Flight-like comms and ground software.* \
-      Adding radio tests alongside existing UART tests caught a new class of failures.
-    ]
-    #block(spacing: 22pt)[
-      *5. Not every test needs hardware.* \
-      Attitude math, time handling, and frame parsing were pulled out of flight
-      components and unit-tested in the cloud in seconds.
-    ]
-    #block(spacing: 22pt)[
-      *6. Push failures left.* \
-      Once a hardware failure mode is understood, encode it as a static check. A
-      console setting that corrupted the downlink now fails the build, not the
-      bench.
-    ]
-  ],
-
-  // ============================================================ COLUMN 1 / R2
-  panel("Per-Commit Pipeline", subtitle: "Commit to merge gate in ~18 minutes")[
-    #set text(size: 24pt)
-    // Numbered from the list so steps can be inserted without renumbering by
-    // hand.
-    #for (i, s) in (
-      [Commit opens a pull request on GitHub.],
-      [Cloud runners lint and run unit tests; no hardware needed.],
-      [Build machine compiles F´ flight software; static gates fail here, not on the bench.],
-      [Programmable power supply cycles the satellite.],
-      [SWD/GDB flashes the microcontroller.],
-      [SD card is reformatted to clear residual state.],
-      [F´ GDS comes up; tests run over UART and radio.],
-      [The board is power-cycled and re-tested through a YAMCS ground segment.],
-      [Result gates the merge. Red means no merge.],
-    ).enumerate(start: 1) {
-      block(spacing: 16pt, step(i, s))
-    }
-
-    #v(14pt)
-    #block(width: 100%, inset: 18pt, fill: wash)[
-      #text(size: 24pt)[
-        *Verified every run:* commanding · telemetry · eventing · IMU ·
-        thermal management · antenna deployment · real-time clock · filesystem ·
-        power management · hardware watchdog
-      ]
-    ]
-  ],
-
-  // ================================================= FIGURE ZONE / R2 (2 cols)
-  grid.cell(colspan: 2)[
-    // Top row: the two "what it is" visuals, side by side at equal height.
-    #grid(
-      columns: (1fr, 1fr),
-      column-gutter: 1in,
-
-      // 6.0in, not more: the three charts below size themselves from their SVG
-      // aspect ratios, and anything taller here pushes the poster onto a second
-      // page. Re-check `pdfinfo poster.pdf | grep Pages` after changing this.
-      shot(
-        "images/screenshot-github-checks.svg",
-        "Figure 1. The gate as a developer sees it: integration-uart and integration-radio run on a real satellite, and a red check blocks the merge.",
-      ),
-
-      fig(
-        "images/ci-cube.jpeg",
-        "Figure 2. The skeleton CI cube on standoffs; parts swap without disassembling the satellite.",
-        height: 4.7in,
-      ),
-    )
-
-    #v(0.45in)
-
-    // Bottom row: the three measured results, from 1,938 runs of the real
-    // pipeline. All three share a canvas size so their titles align.
-    #grid(
-      columns: (1fr, 1fr, 1fr),
-      column-gutter: 0.7in,
-
-      chart(
-        "figures/fig-pipeline-stages.svg",
-        "Figure 3. Satellite time is 70% of the critical path; the gate costs hardware minutes, not build minutes.",
-      ),
-
-      chart(
-        "figures/fig-hil-reliability.svg",
-        "Figure 4. Pass rate rose 31% → 61% while monthly volume nearly tripled, as the state-reset fixes landed.",
-      ),
-
-      chart(
-        "figures/fig-feedback-time.svg",
-        "Figure 5. Half of all commits get a hardware verdict within 18 minutes; 90% within 39.",
-      ),
-    )
-  ],
-
-  // ============================================================ COLUMN 4 / R2
-  {
-    panel("Future Work")[
-      #set text(size: 24pt)
-      - *Flat bench layout* replacing the cube form factor, so parts swap
-        without rebuilding a structure
-      - *Backplane* instead of hand-built per-component wire harnesses
-      - *Reproducible CI runner setup* via Nix, a bootable image, or Ansible
-      - *Job timeouts and queueing* so one hung board cannot monopolize the
-        single physical runner
-      - *Continue addressing flaky tests* to build trust in the pipeline and
-        keep results reliable
-    ]
-
-    v(0.7in)
-
-    panel("Build This Yourself", accent: gold)[
-      #grid(
-        columns: (1fr, auto),
-        column-gutter: 24pt,
-        {
-          set text(size: 24pt)
-          [
-            Every piece of hardware and software described here is open source.
-
-            #v(10pt)
-            *PROVES Kit hardware* #linebreak() #text(font: mono, size: 24pt)[proveskit.com]
-            #v(6pt)
-            *Flight software + CI* #linebreak() #text(font: mono, size: 24pt)[github.com/Open-Source-Space-Foundation/ #linebreak() proves-core-reference]
-            #v(6pt)
-            *F´* #linebreak() #text(font: mono, size: 24pt)[github.com/nasa/fprime]
-          ]
-        },
-        // Regenerate with:
-        //   qrencode -o images/qr-proves-core-reference.svg -t SVG -m 0 -l M \
-        //     "https://github.com/Open-Source-Space-Foundation/proves-core-reference"
-        // The white inset is the quiet zone scanners need (qrencode -m 0 omits it).
-        block(
-          fill: white,
-          inset: 0.28in,
-          image("images/qr-proves-core-reference.svg", width: 3.2in),
-        ),
-      )
-    ]
-
-    v(0.4in)
-
-    block(width: 100%, inset: 16pt, fill: wash)[
-      #text(size: 24pt, fill: muted)[
-        *Acknowledgments.* #todo[funding line, collaborators, department and
-          college names for the template affiliation block]
-      ]
-    ]
-  },
+    // Column 3 — what the program learned, and the measurement that closes it.
+    column-of(p-broke, p-difference, f-feedback, p-acknowledgments),
+  ),
 )

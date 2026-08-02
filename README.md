@@ -4,8 +4,9 @@ Poster source for **"F Prime to Flight Faster: Hardware-in-the-Loop Continuous
 Integration for Accelerated CubeSat Development"** — Nate Gay, Saidi Adams,
 Michael Pham.
 
-Built with [Typst](https://typst.app). Output is a single 48 in × 36 in
-landscape PDF sized for the Texas State research poster template.
+Built with [Typst](https://typst.app). Output is a single 36 in × 36 in square
+PDF. The print constraints it has to satisfy — canvas size, a 24 pt type floor,
+one page — are in `docs/requirements.md`.
 
 ## Prerequisites
 
@@ -35,7 +36,7 @@ nix build             # -> result/poster.pdf
 ```
 poster.typ  the poster — single source of truth for what gets printed
 figures/    generated SVG charts, plus _proof.typ for previewing them
-images/     photographs used as figures
+images/     logos, QR code, and photographs (not all are on the poster)
 docs/       prose: abstract, layout plan, source material. Not printed.
 data/       CI export and the derived CSVs behind every number on the poster
 tools/      fetch + analysis scripts that produce data/ and figures/
@@ -44,10 +45,10 @@ tools/      fetch + analysis scripts that produce data/ and figures/
 | File | What it is |
 |---|---|
 | `poster.typ` | The poster. Single source of truth for what gets printed. |
-| `images/ci-cube.jpeg` | Figure 2 — the skeleton CI cube on standoffs. |
-| `images/screenshot-github-checks.png` | Figure 1 — the GitHub merge-gate checks view. Derived from `images/screenshot-github-failing-checks.png` (bottom row faded to imply the list continues). |
+| `images/ci-cube.jpeg` | The skeleton CI cube on standoffs. Not on the square poster — kept for slides and for the day the poster has room again. |
+| `images/screenshot-github-checks.svg` | The GitHub merge-gate checks view. Also not on the square poster: its UI type renders around 10 pt at column width, under the 24 pt floor. |
 | `docs/requirements.md` | Hard print requirements — canvas size, minimum font size, and how to verify them. Read before changing layout. |
-| `docs/poster-layout.md` | Layout plan — panel-by-panel content map with word budgets, derived from the `.potx` template's actual box coordinates. |
+| `docs/poster-layout.md` | Layout plan — panel-by-panel content map with word budgets, the column assignment, and a record of what came off the sheet when it went square. |
 | `docs/abstract.md` | The submitted abstract, on its own, for pasting into submission forms and program listings. |
 | `docs/notes-source-material.md` | Submitted and declined abstracts, corrections to them, and the list of open items to resolve before printing. |
 | `docs/proves-ci-changes-code-review.md` | Review of the flight-software repo's CI/test history — where the poster's failure modes, mitigations, and pipeline description are sourced from. |
@@ -55,15 +56,22 @@ tools/      fetch + analysis scripts that produce data/ and figures/
 | `data/README.md` | What each CSV is and how the headline numbers are defined. |
 | `flake.nix` / `.envrc` | Reproducible toolchain (Typst, tinymist, typstyle, image tools, pinned fonts). |
 
-The Texas State PowerPoint template (`Research Poster Template 202506.potx`)
-that the layout is matched to is not checked in; `docs/poster-layout.md` records
-its box coordinates.
+The poster was originally laid out on the Texas State PowerPoint template
+(`Research Poster Template 202506.potx`, 48 in × 36 in, four columns). It is no
+longer built to that template's geometry — see `docs/poster-layout.md`.
 
 ## Editing the poster
 
-`poster.typ` is organized as a four-column grid matching the template:
-10 in / 11 in / 11 in / 10 in, with a 1 in gutter. Row 1 is text panels; row 2
-puts the figure zone across the two center columns.
+`poster.typ` is three equal 10.67 in columns with a 0.8 in gutter. Each panel is
+a named block (`p-problem`, `f-stages`, …) and the columns are composed from
+those names at the bottom of the file, so moving a panel between columns is a
+one-line change. Panels are justified to a common bottom edge: a column is a
+fixed-height block and leftover space is split evenly between its panels.
+
+Every vertical space on the page is written down. Typst's default block spacing
+would add about a third of an inch at each seam — over an inch per column, more
+than the tightest column has to spare — so the title band and the columns are
+composed with `stack`, which adds only what it is told to.
 
 Everything on the poster is built from a few helpers defined at the top of the
 file:
@@ -71,8 +79,10 @@ file:
 - `panel(title, subtitle: ..., accent: ...)[body]` — a titled section
 - `stat(value, label)` — one large number with its caption
 - `step(n)[text]` — a numbered pipeline step
-- `fig(path, caption, height: ...)` — a real figure
-- `shot(path, caption, height: ...)` — a screenshot, scaled to fit rather than cropped
+- `fig(path, caption, height: ...)` — a photograph or screenshot, framed. With a
+  `height:` it crops to fill; without one it scales to the column, which is what
+  a screenshot needs. Nothing uses it at the moment — see `images/` above
+- `chart(path, caption)` — a generated SVG chart, unframed
 - `todo[note]` — inline red marker for unresolved content
 
 Placeholders are deliberately loud. An unanswered number should be impossible
@@ -87,14 +97,13 @@ are tracked in `docs/notes-source-material.md`; the one that matters most:
    branches, but CI history cannot separate a real regression from a bench
    flake, so the poster cites that as a floor rather than a defect count.
 
-Then generate the QR code and swap it in:
+The QR code in the "Build This Yourself" panel is real, not a placeholder. It
+points at the flight-software repo; regenerate it if that URL changes:
 
 ```sh
-qrencode -o qr.svg -t SVG -m 0 "https://github.com/<org>/<repo>"
+qrencode -o images/qr-proves-core-reference.svg -t SVG -m 0 -l M \
+  "https://github.com/Open-Source-Space-Foundation/proves-core-reference"
 ```
-
-Replace the dashed `QR` placeholder block in the "Build This Yourself" panel
-with `image("qr.svg", width: 3.2in)`.
 
 ### Checking it fits
 
@@ -106,8 +115,15 @@ confirm the output is exactly one page:
 typst compile poster.typ poster.pdf && pdfinfo poster.pdf | grep Pages
 ```
 
-If it is two pages, shrink figure heights before shrinking type. Body text
-below ~22 pt stops being readable at four feet.
+Each column is a fixed-height block, so a column that overruns pushes its
+excess onto page 2 rather than silently overlapping — a one-page result is a
+real fit check, not just an absence of complaints.
+
+If it is two pages, shrink figures. Type may not go below 24 pt
+(`docs/requirements.md` R2), so figures are the only slack there is — and a
+chart rendered narrower than a full column takes its own labels under the floor,
+so shrink by re-exporting from `tools/analyze-ci.py`, not by scaling down in
+`poster.typ`.
 
 ## Fonts
 
@@ -119,6 +135,6 @@ must be built from inside `nix develop`. Verify with `typst fonts`.
 
 ## Print
 
-- Final size 48 in × 36 in, landscape, no bleed
+- Final size 36 in × 36 in, square, no bleed
 - Export at full scale; do not let the print shop "fit to page"
 - Check the maroon (`#501214`) reproduces acceptably in CMYK before a full run

@@ -39,10 +39,14 @@ FIGS = ROOT / "figures"
 # how much hardware testing the current gate does.
 CURRENT_ERA = pd.Timestamp("2026-05-19", tz="UTC")
 
-# All three figures share one canvas size so they can sit in a single row on the
-# poster with their titles and captions on a common baseline. 7in matches the
-# template's picture placeholder width; Typst places them at native size.
-FIGSIZE = (7, 5.6)
+# All three figures share one canvas size so their titles and captions sit on a
+# common baseline wherever they land. 7in is the reference width: the square
+# poster scales them to a 10.67in column, and every font size here is chosen so
+# it clears 24pt after that 1.52x scale. The 7:5 ratio is what makes three
+# charts fit the 36x36 sheet at all — a taller canvas costs about an inch of
+# column height per chart, and there is under an inch of slack in the tightest
+# column.
+FIGSIZE = (7, 4.8)
 
 # Palette: poster ink/maroon plus the validated categorical slots 1-2 and the
 # reserved status pair. Slots 1-2 clear the all-pairs CVD and normal-vision
@@ -95,6 +99,10 @@ def setup_fonts():
         {
             "font.family": "sans-serif",
             "font.sans-serif": stack or ["DejaVu Sans"],
+            # 16pt is the floor for anything in these charts. The SVGs are a
+            # 7in canvas rendered at one poster column (10.67in), a 1.52x
+            # scale, so 16pt prints at 24.4pt — just over the poster's 24pt
+            # minimum (docs/requirements.md R2). Nothing here may go lower.
             "font.size": 19,
             "text.color": INK,
             "axes.labelcolor": MUTED,
@@ -294,7 +302,7 @@ def fig_hil_reliability(jobs):
             fontweight="bold",
             color=INK,
         )
-    ax2.set_xticks(list(x), [m[2:] for m in g.index], rotation=45, fontsize=15)
+    ax2.set_xticks(list(x), [m[2:] for m in g.index], rotation=45, fontsize=16)
     for lbl in ax2.get_xticklabels():
         lbl.set_ha("right")
     save(fig, "fig-hil-reliability")

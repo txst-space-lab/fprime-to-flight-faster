@@ -1,37 +1,56 @@
 # Poster Layout — F Prime to Flight Faster
 
-Mapped to `Research Poster Template 202506.potx`, **Poster A** layout.
-Canvas: **48 in × 36 in landscape**. Four columns.
+Canvas: **36 in × 36 in square** (`docs/requirements.md` R1). **Three columns**
+of 10.67 in with a 0.8 in gutter and 1.2 in side margins; 30.9 in of column
+height under the title band.
 
-Panel coordinates below are inches from the top-left of the poster and match the
-template's existing text boxes and picture placeholders — drop content in, don't
-move the boxes.
+This file is the content plan. `poster.typ` is what prints, and panels there are
+named blocks composed into columns at the bottom of the file — the panel names
+below (`p-problem`, `f-stages`, …) are those bindings.
 
 `[NEEDED]` marks content that does not exist yet in the source outline.
 Word budgets are enforceable: at poster type sizes, going over means shrinking
-the font below readable-at-4-feet.
+the font below the 24 pt floor.
+
+The column geometry below replaced a four-column 48 in × 36 in layout mapped to
+`Research Poster Template 202506.potx`. That template's box coordinates are no
+longer what the poster is built to; see **What the square canvas cost** at the
+end of this file for what came off in the reflow.
+
+### Column assignment
+
+| Column | Panels, top to bottom |
+|---|---|
+| 1 | The Problem (with terminology sidebar) · Per-Commit Pipeline · Build This Yourself |
+| 2 | Results · Figure 1 · Figure 2 · Future Work |
+| 3 | What Broke, and What Fixed It · What Made the Difference · Figure 3 · Acknowledgments |
+
+Panels are justified to a common bottom edge: each column is a fixed-height
+block and leftover space is split evenly between its panels. A column whose
+content exceeds that height spills onto a second page, which is what makes
+`pdfinfo poster.pdf | grep Pages` a real fit check.
 
 ---
 
-## TITLE BAND — `y 1.0–4.6`, full width
+## TITLE BAND — full width, 3.3 in tall
 
-**Title** (`Title 23`, y1.0 h1.9)
+**Title** (68 pt)
 
 > F Prime to Flight Faster: Hardware-in-the-Loop Continuous Integration for Accelerated CubeSat Development
 
-**Authors** (`Text Placeholder 58`, y2.8 h1.0)
+**Authors** (28 pt)
 
 > Nate Gay¹, Saidi Adams¹, Michael Pham²
 
-**Affiliations** (`Text Placeholder 59`, y3.9 h0.7)
+**Affiliations** (24 pt)
 
 > ¹Texas State University Space Lab · ²Open Source Space Foundation · nategay@txstate.edu
 
 ---
 
-## COLUMN 1 — `x 1.5, w 10.0`
+## COLUMN 1 — the problem and the mechanism
 
-### Panel 1A — The Problem  ·  `y 6.5, h 15.0`  ·  ~120 words
+### `p-problem` — The Problem  ·  10.0 in  ·  ~120 words
 
 **Header:** Integration Is Where Small-Sat Teams Slow Down
 
@@ -50,7 +69,7 @@ Three short paragraphs, no bullets:
 > **HIL (hardware-in-the-loop)**, **GDS (Ground Data System)**,
 > **PROVES**, **SWD (Serial Wire Debug)**.
 
-### Panel 1B — How It Works  ·  `y 22.0, h 13.0`  ·  ~110 words + numbered flow
+### `p-pipeline` — Per-Commit Pipeline  ·  10.8 in  ·  ~110 words + numbered flow
 
 **Header:** Per-Commit Pipeline
 **Subheader:** Commit → real satellite → merge gate, in ~18 minutes
@@ -71,16 +90,16 @@ path on the poster, so keep the vocabulary consistent with the captions:
 
 > Steps 2 and 3 are the cheap tier and step 8 is the second ground system —
 > both were absent from the submitted abstract and both are load-bearing for the
-> "what made the difference" argument in Panel 4A.
+> "what made the difference" argument in `p-difference`.
 
 **Verified each run:** commanding · telemetry · eventing · IMU · thermal ·
 antenna deployment · RTC · filesystem · power management · hardware watchdog
 
 ---
 
-## COLUMN 2 — `x 12.5, w 11.0`
+## COLUMN 2 — the evidence
 
-### Panel 2A — Results  ·  `y 6.5, h 11.2`  ·  numbers, not prose
+### `p-results` — Results  ·  7.4 in  ·  numbers, not prose
 
 **Header:** Results
 **Subheader:** Two sites, eighteen months, every commit
@@ -111,9 +130,9 @@ defects? That is the number that converts the central claim into evidence.
 
 ---
 
-## COLUMN 3 — `x 24.5, w 11.0`
+## COLUMN 3 — what the program learned
 
-### Panel 3A — Failure Modes & Fixes  ·  `y 6.5, h 11.2`  ·  table
+### `p-broke` — What Broke, and What Fixed It  ·  10.2 in  ·  table
 
 **Header:** What Broke, and What Fixed It
 **Subheader:** The parts other teams will photograph
@@ -146,35 +165,35 @@ team will recognize in their own lab, so lead with it.
 
 ---
 
-## FIGURE ZONE — center, `x 12.5–35.5, y 18.4–35.0`
+## FIGURES — three, one per chart, 8.5 in each
 
-The template supplies six picture placeholders with paired caption boxes.
-Captions are sentence-case, one line, and state the *finding*, not the subject
-("Flake rate fell after X" beats "Graph of test results").
+Captions are sentence-case and state the *finding*, not the subject ("Flake rate
+fell after X" beats "Graph of test results").
 
-| Slot | Placeholder | Figure | Status |
+| # | Binding | File | Finding |
 |---|---|---|---|
-| 1 | `idx 17` — y18.4 x12.5 w7.0 | Checks in GitHub PR view | placed as Figure 1, in the figure zone |
-| 2 | `idx 23` — y18.4 x24.5 w7.0 | Current CI cube on standoffs | have (`images/ci-cube.jpeg`?) |
-| 3 | `idx 13` — y23.3 x16.4 w7.0 | — | dropped |
-| 4 | `idx 19` — y23.3 x24.5 w7.0 | Pass/fail rate over time | `[NEEDED — export from CI]` |
-| 5 | `idx 15` — y28.1 x12.5 w11.0 | Before/after: assembled cube → skeleton cube | optional |
-| 6 | `idx 21` — y28.2 x24.5 w11.0 | Early bench setup, first integration bench | optional |
+| 1 | `f-stages` | `figures/fig-pipeline-stages.svg` | Satellite time is 70% of the critical path |
+| 2 | `f-reliability` | `figures/fig-hil-reliability.svg` | Pass rate 31% → 61% as volume nearly tripled |
+| 3 | `f-feedback` | `figures/fig-feedback-time.svg` | Median verdict in 18 min, 90% inside 39 |
 
-> The system architecture diagram was dropped; the numbered steps in the
-> Per-Commit Pipeline panel carry the hardware path instead, and the GitHub
-> checks screenshot takes the top-left figure slot.
->
-> Slots 5 and 6 are the first things to cut if space gets tight. The "at my
-> house" photo is charming but only earns a slot if it makes a point about how
-> low the barrier to entry is — which is actually a good point, if you frame the
-> caption that way.
+All three come from `tools/analyze-ci.py` on one 7 × 4.8 in canvas. A column
+scales them 1.52×, which is what makes the script's 16 pt minimum land at
+24.4 pt on the sheet — **rendering a chart narrower than a full column breaks
+the 24 pt floor**, so don't.
+
+Two images are kept in `images/` but are not on the square poster (see below):
+`screenshot-github-checks.svg`, the merge-gate checks view, and `ci-cube.jpeg`,
+the skeleton cube on standoffs. The `fig()` helper in `poster.typ` is what puts
+one back — with a `height:` to crop a photograph, without one for a screenshot.
+
+> The system architecture diagram was dropped early; the numbered steps in the
+> Per-Commit Pipeline panel carry the hardware path instead.
 
 ---
 
-## COLUMN 4 — `x 36.5, w 10.0`
+## PANELS SPREAD ACROSS THE COLUMNS
 
-### Panel 4A — What Worked  ·  `y 6.5, h 13.5`  ·  ~100 words
+### `p-difference` — What Made the Difference  ·  column 3  ·  7.0 in
 
 **Header:** What Made the Difference
 **Subheader:** Ranked by impact
@@ -198,7 +217,11 @@ Captions are sentence-case, one line, and state the *finding*, not the subject
    as a static check. A console setting that corrupted the downlink now fails
    the build, not the bench.
 
-### Panel 4B — Next  ·  `y 20.6, h 4.5`  ·  ~60 words
+> **Only 1–4 are printed.** Items 5 and 6 came off in the reflow to 36 × 36;
+> they are kept here because they are the two most likely to be asked about at
+> the poster, and because they go straight back in if a panel elsewhere shrinks.
+
+### `p-future` — Future Work  ·  column 2  ·  4.4 in  ·  ~60 words
 
 **Header:** Future Work
 
@@ -214,9 +237,9 @@ Captions are sentence-case, one line, and state the *finding*, not the subject
   physical runner
 
 > "Capability-tagged tests" moved out of this list — it shipped, and now appears
-> as the mitigation for the cross-site row in Panel 3A.
+> as the mitigation for the cross-site row in `p-broke`.
 
-### Panel 4C — Build This Yourself  ·  `y 25.7, h 4.5`
+### `p-build` — Build This Yourself  ·  column 1  ·  5.9 in
 
 **Header:** Everything Here Is Open Source
 
@@ -229,6 +252,37 @@ The poster's actual call to action — give it real estate and a **large QR code
   point the QR at the repo README instead]`
 
 Acknowledgments + funding line, one line, small type.
+
+---
+
+## What the square canvas cost
+
+36 × 36 is 25% less sheet than the 48 × 36 the poster was first laid out on, and
+the 24 pt floor means the lost area has to come out of content rather than type.
+Measured against the three-column budget, the old content ran about 17 column-
+inches long. What came off, and why it was the cheapest thing to lose:
+
+- **Figure: the GitHub checks screenshot** (`images/screenshot-github-checks.svg`).
+  Its point — a red check blocks the merge — is already carried by step 9 of the
+  pipeline panel and by the "100% of merges hardware-validated" stat. Its UI type
+  also renders around 10 pt at column width, so it was the one figure that could
+  not satisfy the 24 pt floor at any size that fit.
+- **Figure: the CI cube photograph** (`images/ci-cube.jpeg`). The only casualty
+  with no textual stand-in; "skeleton cube on standoffs" is now asserted in
+  `p-difference` rather than shown. This is the first thing to put back if the
+  poster ever grows.
+- **Ranked items 5 and 6** of What Made the Difference, per the note above.
+
+Two changes bought room without cutting anything:
+
+- Charts were re-exported on a 7 × 4.8 canvas instead of 7 × 5.6, about an inch
+  of column height each.
+- Every vertical seam on the page is now explicit. Typst's default block spacing
+  was adding roughly a third of an inch per seam — over an inch per column, more
+  than the slack the tightest column has.
+
+The tightest column has under an inch to spare. Anything added has to displace
+something, and the fit check is `pdfinfo poster.pdf | grep Pages`.
 
 ---
 

@@ -16,11 +16,8 @@ The poster must be **36 inches wide by 36 inches tall** — square.
   breaks every other requirement on this page at once.
 - No bleed.
 
-**Status: not met.** `poster.typ` is currently `48in × 36in` landscape, matching
-the four-column Texas State template recorded in `docs/poster-layout.md`.
-Squaring the canvas removes 12 in of width, so the four-column grid
-(10 / 11 / 11 / 10 with 1 in gutters) does not survive as-is — see *Consequences*
-below.
+**Status: met.** `poster.typ` is `36in × 36in` with 1.2 in side margins, 0.7 in
+top and bottom, and three 10.67 in columns separated by a 0.8 in gutter.
 
 ## R2 — Minimum font size: 24 pt
 
@@ -35,9 +32,19 @@ headers, footnotes, references, URLs, and any type baked into an image or SVG.
 - Scaling a figure with `height:` scales its embedded type. Shrinking a figure
   to make content fit can silently push its labels under the floor.
 
-**Status: met in `poster.typ`.** Every explicit `size:` is 24 pt or larger and
-the document default is 26 pt. Embedded type in figures has not been audited
-against this floor.
+**Status: met.** Every explicit `size:` in `poster.typ` is 24 pt or larger and
+the document default is 24 pt. The generated charts are audited too: they are a
+7 in canvas rendered at a 10.67 in column, a 1.52× scale, and
+`tools/analyze-ci.py` holds a 16 pt minimum so the smallest tick label prints at
+24.4 pt. That audit is why the charts may not be rendered narrower than a full
+column — at the old two-thirds-column size their labels printed at about 15 pt.
+
+One consequence worth stating plainly: **a screenshot of a user interface cannot
+meet this requirement.** The GitHub checks screenshot carries type at roughly
+10 pt at column width, and enlarging it far enough to fix that leaves no room
+for the rest of the poster. It is off the sheet (see `docs/poster-layout.md`);
+if it ever goes back on, it goes on as a violation of R2 that you are choosing
+knowingly, not as an oversight.
 
 ## R3 — One page
 
@@ -79,17 +86,14 @@ on both axes.
 
 ---
 
-## Consequences of R1 + R2 together
+## R1 + R2 together
 
-The two hard requirements pull against each other, and the resolution is a
-content decision, not a formatting one:
+These two pull against each other, and the tension is permanent, not a one-time
+migration cost. At a fixed 24 pt floor the sheet area *is* the word budget:
+36 × 36 holds about three quarters of what 48 × 36 held. Squaring the canvas cost
+two figures and two ranked list items; `docs/poster-layout.md` records exactly
+what and why.
 
-- 36 × 36 is 25% less area than 48 × 36. At a fixed 24 pt floor, that area is
-  the word budget — roughly a quarter of the current content has to go, or the
-  figures shrink to absorb it (which then risks R2 inside the figures).
-- Four columns at 24 pt+ do not fit in 36 in of width. A square poster wants
-  **three columns** (about 10.5 in each with 1 in gutters and 1.5 in margins),
-  or two wide columns with a full-width figure band.
-- The title band and the figure zone both currently assume 48 in of width; both
-  need re-flowing, and `docs/poster-layout.md` needs to be re-derived rather
-  than patched.
+The practical rule that falls out of it: **nothing gets added to this poster
+without something else coming off.** The tightest column has under an inch of
+slack. When content has to shrink, shrink figures — type has nowhere to go.
