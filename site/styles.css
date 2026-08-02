@@ -1,0 +1,296 @@
+/* F Prime to Flight Faster — project page.
+   Colors track the poster: Texas State maroon #501214 with a gold accent. */
+
+:root {
+  --maroon: #501214;
+  --maroon-bright: #7a2427;
+  --gold: #b8892b;
+  --ink: #1a1416;
+  --muted: #5f565a;
+  --page: #ffffff;
+  --wash: #f6f3f2;
+  --rule: #e2dcda;
+  --measure: 68rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #f2eceb;
+    --muted: #a89ea0;
+    --page: #141011;
+    --wash: #1e1819;
+    --rule: #322a2c;
+    --maroon-bright: #d4787c;
+    --gold: #d9a94e;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: Inter, "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+.wrap {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+a { color: var(--maroon-bright); }
+
+h1, h2, h3 { line-height: 1.2; margin: 0; }
+
+code {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--wash);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+/* ---------------------------------------------------------------- masthead */
+
+.masthead {
+  background: var(--maroon);
+  color: #fff;
+  padding: 4rem 0 3.25rem;
+  border-bottom: 6px solid var(--gold);
+}
+
+.masthead .eyebrow {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.masthead h1 {
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: 0.75rem 0 0;
+  font-size: clamp(1.125rem, 2.6vw, 1.5rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 44ch;
+}
+
+.byline {
+  margin: 1.75rem 0 0.25rem;
+  font-weight: 600;
+  font-size: 1.0625rem;
+}
+
+.affil {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.cta {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.65rem 1.25rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.btn:hover { border-color: #fff; background: rgba(255, 255, 255, 0.1); }
+
+.btn-primary {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #1a1416;
+}
+
+.btn-primary:hover { background: #d9a94e; border-color: #d9a94e; }
+
+.btn-small {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.8125rem;
+  border-color: var(--rule);
+  color: var(--maroon-bright);
+}
+
+.btn-small:hover { background: var(--wash); border-color: var(--muted); }
+
+/* ---------------------------------------------------------------- sections */
+
+main section {
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+main section:last-child { border-bottom: 0; }
+
+main h2 {
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.25rem;
+}
+
+main h2::after {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 3px;
+  background: var(--gold);
+  margin-top: 0.6rem;
+}
+
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-head h2 { margin-bottom: 1.25rem; }
+
+.abstract p { max-width: 72ch; }
+
+.lede {
+  max-width: 60ch;
+  color: var(--muted);
+  margin-top: -0.5rem;
+}
+
+.note {
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+/* ---------------------------------------------------------------- poster */
+
+.poster-frame {
+  display: block;
+  margin-top: 0.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.poster-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.caption {
+  margin: 0.85rem 0 0;
+  font-size: 0.9375rem;
+  color: var(--muted);
+  max-width: 60ch;
+}
+
+/* ---------------------------------------------------------------- cards */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--wash);
+  color: inherit;
+  text-decoration: none;
+}
+
+.card:hover { border-color: var(--maroon-bright); }
+
+.card h3 { font-size: 1.125rem; }
+
+.card p {
+  margin: 0.6rem 0 1.25rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.card-link {
+  margin-top: auto;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8125rem;
+  color: var(--maroon-bright);
+  overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------------- authors */
+
+.person {
+  padding: 1.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  text-align: center;
+}
+
+.person img {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.person h3 { font-size: 1.125rem; }
+
+.role {
+  margin: 0.35rem 0 0.75rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.contact {
+  margin: 0;
+  font-size: 0.9375rem;
+  overflow-wrap: anywhere;
+}
+
+.contact.placeholder {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.authors .note { margin-top: 1.5rem; }
+
+/* ---------------------------------------------------------------- footer */
+
+footer {
+  background: var(--wash);
+  border-top: 1px solid var(--rule);
+  padding: 2.5rem 0;
+  font-size: 0.9375rem;
+}
+
+footer p { margin: 0 0 0.4rem; }
+
+.fine { color: var(--muted); font-size: 0.875rem; }

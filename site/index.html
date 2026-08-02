@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F Prime to Flight Faster — Hardware-in-the-Loop CI for CubeSats</title>
+<meta name="description" content="Conference poster: hardware-in-the-loop continuous integration for accelerated CubeSat development, built on NASA JPL's F Prime and the open-source PROVES Kit.">
+<meta property="og:title" content="F Prime to Flight Faster">
+<meta property="og:description" content="Hardware-in-the-loop continuous integration for accelerated CubeSat development.">
+<meta property="og:image" content="poster.png">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23501214'/><text x='16' y='23' font-size='18' text-anchor='middle' fill='white' font-family='sans-serif'>F</text></svg>">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">Texas State University Space Lab &middot; Open Source Space Foundation</p>
+    <h1>F Prime to Flight Faster</h1>
+    <p class="subtitle">Hardware-in-the-Loop Continuous Integration for Accelerated CubeSat Development</p>
+    <p class="byline">Nate Gay<sup>1</sup> &middot; Saidi Adams<sup>1</sup> &middot; Michael Pham<sup>2</sup></p>
+    <p class="affil"><sup>1</sup>Texas State University Space Lab &nbsp;&nbsp;<sup>2</sup>Open Source Space Foundation</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="poster.pdf" download>Download poster (PDF)</a>
+      <a class="btn" href="#poster">View poster</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="abstract" id="abstract">
+    <h2>Abstract</h2>
+    <p>Small satellite flight software teams often move fast in development but slow down at
+    integration, especially when software must be validated against real hardware. In the PROVES
+    program, we reduced integration risk by making continuous integration (CI) hardware-in-the-loop
+    (HIL) testing a per-commit requirement. Every commit was validated on an engineering satellite
+    before it could be merged.</p>
+    <p>We implemented this pipeline using NASA JPL's open-source F Prime (F&prime;) framework,
+    leveraging F&prime;'s integration test APIs as the primary accelerator. A self-hosted GitHub
+    Actions runner automatically deployed and exercised flight software on an open-source PROVES Kit
+    engineering satellite, brought up the F&prime; Ground Data System (GDS), and executed end-to-end
+    tests that verified commanding, telemetry, eventing, and specific component behaviors. Each run
+    completed in approximately 5 minutes.</p>
+    <p>We operated two independent HIL runners, one at Texas State University and one at Cal Poly
+    Pomona. Over 1,550 commits ran through the pipeline, totaling approximately 5,400
+    test-runtime minutes. Enforcing HIL tests as a pre-merge gate turned integration into a routine,
+    automated workflow that caught failures before they reached the main branch and enabled rapid
+    iteration as hardware and software changed.</p>
+    <p class="note">All hardware and software for this approach are open source.</p>
+  </section>
+
+  <section id="poster" class="poster">
+    <div class="section-head">
+      <h2>The poster</h2>
+      <a class="btn btn-small" href="poster.pdf" download>PDF &middot; 36&Prime; &times; 36&Prime;</a>
+    </div>
+    <a href="poster.pdf" class="poster-frame" aria-label="Open the full-resolution poster PDF">
+      <img src="poster.png" alt="Conference poster: F Prime to Flight Faster — Hardware-in-the-Loop Continuous Integration for Accelerated CubeSat Development" width="1584" height="1584" loading="lazy">
+    </a>
+    <p class="caption">Rendered at 36&Prime; &times; 36&Prime;. The PDF is the print-ready file &mdash; export at full
+    scale, and do not let a print shop &ldquo;fit to page.&rdquo;</p>
+  </section>
+
+  <section id="project" class="links">
+    <h2>The project</h2>
+    <p class="lede">Every piece of hardware and software described on the poster is open source.</p>
+    <div class="card-grid">
+
+      <a class="card" href="https://txstspacelab.org">
+        <h3>TXST Space Lab</h3>
+        <p>The Texas State University lab behind the engineering satellite, the HIL bench, and one of
+        the two runners in the pipeline.</p>
+        <span class="card-link">txstspacelab.org</span>
+      </a>
+
+      <a class="card" href="https://proveskit.com">
+        <h3>PROVES Kit hardware</h3>
+        <p>The open-source CubeSat kit the flight software is deployed to and exercised on for every
+        pull request.</p>
+        <span class="card-link">proveskit.com</span>
+      </a>
+
+      <a class="card" href="https://github.com/Open-Source-Space-Foundation/proves-core-reference">
+        <h3>Flight software &amp; CI</h3>
+        <p>The F&prime; reference flight software, the integration tests, and the GitHub Actions
+        workflows that run them on real hardware.</p>
+        <span class="card-link">github.com/Open-Source-Space-Foundation/proves-core-reference</span>
+      </a>
+
+    </div>
+  </section>
+
+  <section id="authors" class="authors">
+    <h2>Authors</h2>
+    <div class="card-grid">
+
+      <article class="person">
+        <img src="headshots/nate-gay.svg" alt="Placeholder headshot for Nate Gay" width="400" height="400">
+        <h3>Nate Gay</h3>
+        <p class="role">Mathematics, Texas State University</p>
+        <p class="contact"><a href="mailto:nategay@txstate.edu">nategay@txstate.edu</a></p>
+      </article>
+
+      <article class="person">
+        <img src="headshots/saidi-adams.svg" alt="Placeholder headshot for Saidi Adams" width="400" height="400">
+        <h3>Saidi Adams</h3>
+        <p class="role">Electrical Engineering, Texas State University</p>
+        <p class="contact placeholder">Contact &mdash; to be added</p>
+      </article>
+
+      <article class="person">
+        <img src="headshots/michael-pham.svg" alt="Placeholder headshot for Michael Pham" width="400" height="400">
+        <h3>Michael Pham</h3>
+        <p class="role">PROVES Lead Engineer, Open Source Space Foundation</p>
+        <p class="contact placeholder">Contact &mdash; to be added</p>
+      </article>
+
+    </div>
+    <p class="note">Headshots are placeholders. Drop real images into
+    <code>site/headshots/</code> and point the <code>&lt;img&gt;</code> tags at them.</p>
+  </section>
+
+  <section class="ack">
+    <h2>Acknowledgments</h2>
+    <p>Texas State University Department of Physics, NASA Jet Propulsion Laboratory, NASA CubeSat
+    Launch Initiative, Cal Poly Pomona, Open Source Space Foundation, and Ines Khouider.</p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Poster source and build:
+      <a href="https://github.com/txst-space-lab/fprime-to-flight-faster">github.com/txst-space-lab/fprime-to-flight-faster</a>
+    </p>
+    <p class="fine">Built from <code>poster.typ</code> with Typst on every push to <code>main</code>.</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -8,6 +8,10 @@ result-*
 *.pdf
 !docs/**/*.pdf
 
+# the site's copy of the poster — built by .github/workflows/pages.yml, never
+# committed, so the published page can never drift from poster.typ
+site/poster.png
+
 # raw GitHub API payloads behind data/*.csv — regenerate with tools/fetch-ci-data.sh
 .cache/
 

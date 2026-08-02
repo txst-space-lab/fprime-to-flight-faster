@@ -1,0 +1,62 @@
+name: pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Required by actions/deploy-pages: the deploy job trades this token for a
+# Pages deployment. Nothing else in the repo needs write access.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; a queued run supersedes a waiting one but is never
+# allowed to cancel a deploy that has already started.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@v16
+      - uses: DeterminateSystems/magic-nix-cache-action@v8
+
+      # Same derivation the poster workflow builds, so the PDF on the site is
+      # byte-for-byte the one the dev shell and `nix build` produce.
+      - name: Build poster
+        run: nix build --print-build-logs
+
+      # A 36 in canvas at 44 dpi is a ~1600 px preview — enough to read the
+      # panel headings in a browser without shipping a 20 MB PNG. Anyone who
+      # wants detail follows the image through to the PDF.
+      - name: Render poster preview
+        run: |
+          nix develop --command pdftoppm -png -r 44 -singlefile \
+            result/poster.pdf site/poster
+
+      - name: Assemble site
+        run: cp result/poster.pdf site/poster.pdf
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    # Pull requests build the site to prove it still assembles, but only main
+    # is published.
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

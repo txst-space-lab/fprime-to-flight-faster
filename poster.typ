@@ -407,14 +407,20 @@
       #v(6pt)
       *Flight software + CI* #linebreak() #text(font: mono)[github.com/Open-Source-Space-Foundation/ #linebreak() proves-core-reference]
     ],
+    // Points at the project page, which carries all three links above plus the
+    // poster PDF — one code to scan instead of three URLs to retype.
     // Regenerate with:
-    //   qrencode -o images/qr-proves-core-reference.svg -t SVG -m 0 -l M \
-    //     "https://github.com/Open-Source-Space-Foundation/proves-core-reference"
+    //   qrencode -o images/qr-poster-site.svg -t SVG -m 0 -l M \
+    //     "https://txst-space-lab.github.io/fprime-to-flight-faster/"
     // The white inset is the quiet zone scanners need (qrencode -m 0 omits it).
     block(
       fill: white,
       inset: 0.24in,
-      image("images/qr-proves-core-reference.svg", width: 2.8in),
+      stack(
+        image("images/qr-poster-site.svg", width: 2.8in),
+        v(10pt),
+        align(center, text(size: 24pt, fill: muted)[All three, plus this poster]),
+      ),
     ),
   )
 ]

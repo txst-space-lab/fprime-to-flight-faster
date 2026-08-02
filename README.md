@@ -40,6 +40,7 @@ images/     logos, QR code, and photographs (not all are on the poster)
 docs/       prose: abstract, layout plan, source material. Not printed.
 data/       CI export and the derived CSVs behind every number on the poster
 tools/      fetch + analysis scripts that produce data/ and figures/
+site/       the GitHub Pages project page — abstract, links, authors, poster
 ```
 
 | File | What it is |
@@ -98,11 +99,25 @@ are tracked in `docs/notes-source-material.md`; the one that matters most:
    flake, so the poster cites that as a floor rather than a defect count.
 
 The QR code in the "Build This Yourself" panel is real, not a placeholder. It
-points at the flight-software repo; regenerate it if that URL changes:
+points at the project page (see [The web page](#the-web-page) below), which
+carries all three of the panel's links plus the poster PDF — one code to scan
+rather than three URLs to retype off a wall. Regenerate it if that URL changes:
 
 ```sh
-qrencode -o images/qr-proves-core-reference.svg -t SVG -m 0 -l M \
-  "https://github.com/Open-Source-Space-Foundation/proves-core-reference"
+qrencode -o images/qr-poster-site.svg -t SVG -m 0 -l M \
+  "https://txst-space-lab.github.io/fprime-to-flight-faster/"
+```
+
+Verify what it actually encodes before printing — a QR nobody can scan is worse
+than no QR:
+
+```sh
+rsvg-convert -w 600 images/qr-poster-site.svg -o /tmp/qr.png
+# qrencode -m 0 omits the quiet zone; poster.typ supplies it as white inset,
+# so add one here or the decoder will not find the code
+magick /tmp/qr.png -bordercolor white -border 40 /tmp/qr-bordered.png
+nix shell nixpkgs#zbar --command zbarimg -q /tmp/qr-bordered.png
+# -> QR-Code:https://txst-space-lab.github.io/fprime-to-flight-faster/
 ```
 
 ### Checking it fits
@@ -132,6 +147,36 @@ exports `TYPST_FONT_PATHS`, so the poster renders identically on every machine.
 The font stacks in `poster.typ` include fallbacks so it still compiles outside
 the Nix shell — but a fallback font reflows the layout, so the print-ready PDF
 must be built from inside `nix develop`. Verify with `typst fonts`.
+
+## The web page
+
+`site/` is a static project page published to GitHub Pages at
+**https://txst-space-lab.github.io/fprime-to-flight-faster/** — the abstract,
+links to the lab, the PROVES Kit, and the flight-software repo, the authors,
+and the poster with a PDF download.
+
+`.github/workflows/pages.yml` builds it on every push to `main`:
+`nix build` produces the PDF, `pdftoppm` renders the on-page preview, and both
+land in `site/` before it is uploaded. Neither is committed — the published
+poster is always the one `poster.typ` currently produces, and cannot drift from
+the source.
+
+Enable it once under **Settings → Pages → Source → GitHub Actions**. Pull
+requests build the site but do not deploy.
+
+To preview locally:
+
+```sh
+typst compile poster.typ poster.pdf
+pdftoppm -png -r 44 -singlefile poster.pdf site/poster
+cp poster.pdf site/poster.pdf
+python3 -m http.server -d site 8000   # -> http://localhost:8000
+```
+
+Two things in `site/index.html` are still placeholders: the headshots in
+`site/headshots/` are generated initial avatars, and Saidi Adams and Michael
+Pham have no contact line. Replace the images and fill in the `.contact`
+paragraphs when you have them.
 
 ## Print
 

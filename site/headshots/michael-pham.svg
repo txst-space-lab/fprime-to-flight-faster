@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Placeholder headshot">
+  <rect width="400" height="400" fill="#501214"/>
+  <circle cx="200" cy="158" r="66" fill="#ffffff" opacity="0.22"/>
+  <path d="M200 244c-70 0-126 44-136 106h272c-10-62-66-106-136-106z" fill="#ffffff" opacity="0.22"/>
+  <text x="200" y="372" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-size="44" font-weight="600" fill="#ffffff" opacity="0.75">MP</text>
+</svg>
