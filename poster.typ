@@ -152,11 +152,9 @@
       block(
         inset: (top: 6pt),
         text(size: 24pt, fill: muted)[
-          #super[1]Texas State University Space Lab
+          #super[1]Texas State University
           #h(14pt) · #h(14pt)
           #super[2]Open Source Space Foundation
-          #h(14pt) · #h(14pt)
-          nategay\@txstate.edu
         ],
       )
     },
