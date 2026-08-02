@@ -92,16 +92,15 @@
   block(inset: (top: 4pt), body),
 )
 
-// A photograph or screenshot, framed, with a finding-first caption. Nothing
-// uses this on the square poster — the CI cube photograph and the GitHub checks
-// screenshot came off in the 48x36 -> 36x36 reflow — but both images are still
-// in images/ and this is what puts one back.
+// A photograph or screenshot, framed, with a finding-first caption. The GitHub
+// checks screenshot uses it; the CI cube photograph came off in the 48x36 ->
+// 36x36 reflow but is still in images/ and this is what puts it back.
 #let fig(path, caption, height: none) = block(
   width: 100%,
   {
     block(
       width: 100%,
-      height: height,
+      height: if height == none { auto } else { height },
       clip: true,
       stroke: 2pt + rule,
       // A fixed height crops to fill; without one the image scales to the
@@ -295,7 +294,7 @@
 
 #let p-broke = panel(
   "What Broke, and What Fixed It",
-  subtitle: "The lessons other teams can reuse",
+  subtitle: "Lessons other teams can reuse",
 )[
   #table(
     columns: (1fr, 1fr, 1.15fr),
@@ -333,6 +332,13 @@
     [Intermittent, unreproducible failures],
     [Various],
     [Log and archive all telemetry to correlate failures after runs],
+  )
+
+  #v(16pt)
+
+  #fig(
+    "images/screenshot-github-checks.svg",
+    "The gate as a developer sees it: integration-uart and integration-radio run on hardware, and a red check blocks the merge.",
   )
 ]
 
@@ -483,13 +489,13 @@
     column-gutter: 0.8in,
     align: top,
 
-    // Column 1 — the problem and the mechanism that answers it.
-    column-of(p-problem, p-pipeline, p-build),
+    // Column 1 — the problem, the mechanism that answers it, and what made it work.
+    column-of(p-problem, p-pipeline, p-difference),
 
     // Column 2 — the evidence: the numbers and all three charts.
     column-of(p-results, f-stages, f-reliability, f-feedback),
 
-    // Column 3 — what the program learned, and where it goes next.
-    column-of(p-broke, p-difference, p-future, p-acknowledgments),
+    // Column 3 — what the program learned, where it goes next, and how to reuse it.
+    column-of(p-broke, p-future, p-build, p-acknowledgments),
   ),
 )
