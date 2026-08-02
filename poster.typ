@@ -301,7 +301,7 @@
   "Results",
   // The commit count moved to "Our Challenge"; repeating it here read as a
   // second, different measurement.
-  subtitle: "Measured from every gated commit, Aug 2025 – July 2026.",
+  subtitle: "1,917 commits · Aug 2025 – July 2026.",
 )[
   #grid(
     columns: (1fr, 1fr),
