@@ -269,11 +269,11 @@ def fig_hil_reliability(jobs):
     ax1.set_ylabel("HIL jobs run", fontsize=17)
     ax1.tick_params(labelbottom=False)
     style_axes(ax1, ygrid=True)
-    header(
-        fig,
-        "The gate got more reliable as it got busier",
-        f"complete months only, {g.index[0]} – {g.index[-1]}",
-    )
+    # No subtitle: the x axis already labels every month it charts, and the
+    # partial-month exclusion above is documented in data/README.md. The legend
+    # and axes keep their positions so this chart still lines up with the other
+    # two on the poster.
+    header(fig, "The gate got more reliable as it got busier")
     fig.legend(
         handles=[Patch(facecolor=GOOD, label="passed"), Patch(facecolor=CRITICAL, label="failed")],
         loc="upper left",

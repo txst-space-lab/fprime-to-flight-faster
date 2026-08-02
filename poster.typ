@@ -274,7 +274,7 @@
   ]
 ]
 
-#let p-results = panel("Results", subtitle: "Measured from 1,917 commits, Aug 2025 – Aug 2026.")[
+#let p-results = panel("Results", subtitle: "Measured from 1,917 commits, Aug 2025 – July 2026.")[
   #grid(
     columns: (1fr, 1fr),
     column-gutter: 16pt,
@@ -282,7 +282,7 @@
     stat("1,935", "test jobs run on real hardware"),
     stat("132 h", "of hardware test runtime"),
 
-    stat("18 min", "median commit to hardware verdict"),
+    stat("18 min", "median commit to HIL verdict"),
     stat("212", "pull requests gated on hardware"),
 
     stat("10", "flight-critical subsystems per run"),
@@ -414,17 +414,17 @@
 
 #let f-stages = chart(
   "figures/fig-pipeline-stages.svg",
-  "Figure 1. Satellite time is 70% of the critical path; the gate costs hardware minutes, not build minutes.",
+  "Figure 1. HIL time is 70% of the critical path.",
 )
 
 #let f-reliability = chart(
   "figures/fig-hil-reliability.svg",
-  "Figure 2. Pass rate rose 31% → 61% while monthly volume nearly tripled, as the state-reset fixes landed.",
+  "Figure 2. Pass rate rose 31% → 61% while monthly volume tripled.",
 )
 
 #let f-feedback = chart(
   "figures/fig-feedback-time.svg",
-  "Figure 3. Half of all commits get a hardware verdict within 18 minutes; 90% within 39.",
+  "Figure 3. Half of all commits get a HIL verdict within 18 minutes.",
 )
 
 // ---------------------------------------------------------------- body grid
@@ -479,10 +479,10 @@
     // Column 1 — the problem and the mechanism that answers it.
     column-of(p-problem, p-pipeline, p-build),
 
-    // Column 2 — the evidence, and where it points next.
-    column-of(p-results, f-stages, f-reliability, p-future),
+    // Column 2 — the evidence: the numbers and all three charts.
+    column-of(p-results, f-stages, f-reliability, f-feedback),
 
-    // Column 3 — what the program learned, and the measurement that closes it.
-    column-of(p-broke, p-difference, f-feedback, p-acknowledgments),
+    // Column 3 — what the program learned, and where it goes next.
+    column-of(p-broke, p-difference, p-future, p-acknowledgments),
   ),
 )

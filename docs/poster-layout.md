@@ -22,8 +22,12 @@ end of this file for what came off in the reflow.
 | Column | Panels, top to bottom |
 |---|---|
 | 1 | The Problem (with terminology sidebar) · Per-Commit Pipeline · Build This Yourself |
-| 2 | Results · Figure 1 · Figure 2 · Future Work |
-| 3 | What Broke, and What Fixed It · What Made the Difference · Figure 3 · Acknowledgments |
+| 2 | Results · Figure 1 · Figure 2 · Figure 3 |
+| 3 | What Broke, and What Fixed It · What Made the Difference · Future Work · Acknowledgments |
+
+Column 2 currently overruns the sheet: all three charts plus the stats run about
+3 in past the bottom margin, and Figure 3's x-axis label and caption fall off the
+printed page.
 
 Panels are justified to a common bottom edge: each column is a fixed-height
 block and leftover space is split evenly between its panels. A column whose
