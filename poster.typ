@@ -188,7 +188,7 @@
   subtitle: "Integration is where small-sat teams slow down",
 )[
   Small satellite flight software teams iterate quickly in development and then
-  stall at integration, because the software must be validated against real
+  slow down at integration, because the software must be validated against real
   hardware that is itself still changing.
 
   Bench testing is manual, intermittent, and happens late. Defects surface days
@@ -203,9 +203,11 @@
     fill: wash,
     stroke: (left: 8pt + gold),
   )[
-    *Our claim:* hardware-in-the-loop testing can be a per-commit merge gate,
-    not a milestone. In the PROVES program, every commit ran on a real
-    engineering satellite before it could merge.
+    *Our claim:* a per-commit hardware merge gate keeps integration from slowing
+    delivery down. Automated testing on real satellite hardware, run on every
+    commit, verifies correctness before merge and lets reviewers judge pending
+    changes on design rather than on whether the code works, increasing team
+    throughput.
   ]
 
   #v(8pt)
@@ -232,13 +234,23 @@
     #set par(spacing: 0.7em)
     #set text(size: 24pt, fill: muted)
     #for (term, defn) in (
-      ([F´ (F Prime)], [NASA JPL's open-source flight software framework.]),
-      ([HIL], [hardware-in-the-loop.]),
-      ([GDS], [F´ Ground Data System.]),
+      ([Commit], [one saved change to the software.]),
       (
-        [SWD],
-        [Serial Wire Debug, a direct programming path to the microcontroller.],
+        [Pull request (PR)],
+        [a proposed change to the software.],
       ),
+      (
+        [Merge gate],
+        [an automated check every change must pass.],
+      ),
+      ([F Prime (F´)], [NASA JPL's open-source flight software framework.]),
+      ([Hardware-in-the-Loop (HIL)], [tests that run on satellite hardware.]),
+      ([Ground Data System (GDS)], [ground station application for F´.]),
+      (
+        [Serial Wire Debug (SWD)],
+        [a direct path to program the satellite.],
+      ),
+      ([GNU debugger (GDB)], [loads and runs code on the satellite.]),
       ([PROVES], [an open-source CubeSat kit and program.]),
     ) {
       block[#text(weight: 700, fill: ink, term): #defn]
@@ -248,7 +260,6 @@
 
 #let p-pipeline = panel(
   "Per-Commit Pipeline",
-  subtitle: "Commit to merge gate in ~18 minutes",
 )[
   // Numbered from the list so steps can be inserted without renumbering by hand.
   #for (i, s) in (
