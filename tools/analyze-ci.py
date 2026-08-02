@@ -261,7 +261,9 @@ def fig_hil_reliability(jobs):
 
     fig = plt.figure(figsize=FIGSIZE)
     ax1 = fig.add_axes([0.155, 0.465, 0.825, 0.31])
-    ax2 = fig.add_axes([0.155, 0.135, 0.825, 0.235], sharex=ax1)
+    # Bottom margin is sized for the rotated month labels, which run past the
+    # axis by more than their line height at 45 degrees.
+    ax2 = fig.add_axes([0.155, 0.20, 0.825, 0.19], sharex=ax1)
     x = range(len(g))
     ax1.bar(x, g.passed, color=GOOD, width=0.66, linewidth=0, label="passed")
     # A 2px surface-colored edge is the gap between stacked segments.
@@ -269,15 +271,20 @@ def fig_hil_reliability(jobs):
     ax1.set_ylabel("HIL jobs run", fontsize=17)
     ax1.tick_params(labelbottom=False)
     style_axes(ax1, ygrid=True)
-    # No subtitle: the x axis already labels every month it charts, and the
-    # partial-month exclusion above is documented in data/README.md. The legend
-    # and axes keep their positions so this chart still lines up with the other
-    # two on the poster.
-    header(fig, "The gate got more reliable as it got busier")
+    # The subtitle states the charted window explicitly. The x axis labels every
+    # month, but a reader scanning the poster from six feet away sees the header
+    # first — and the window is not the whole export, since the partial final
+    # month is dropped above (documented in data/README.md).
+    span = pd.PeriodIndex(g.index, freq="M")
+    header(
+        fig,
+        "The gate got more reliable as it got busier",
+        f"{g.total.sum():,} HIL jobs  ·  {span[0].strftime('%b %Y')} – {span[-1].strftime('%b %Y')}",
+    )
     fig.legend(
         handles=[Patch(facecolor=GOOD, label="passed"), Patch(facecolor=CRITICAL, label="failed")],
         loc="upper left",
-        bbox_to_anchor=(0.012, 0.865),
+        bbox_to_anchor=(0.012, 0.855),
         frameon=False,
         fontsize=17,
         ncol=2,
@@ -350,7 +357,7 @@ def fig_feedback_time(runs, jobs):
     header(
         fig,
         "Hardware feedback in minutes, not days",
-        f"{len(cur):,} runs since {CURRENT_ERA.date()}  ·  90% inside {p90:.0f} min",
+        f"{len(cur):,} runs  ·  {CURRENT_ERA.date()} – {cur.created_at.max().date()}",
     )
     save(fig, "fig-feedback-time")
     return cur, med, p90

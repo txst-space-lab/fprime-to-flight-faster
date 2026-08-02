@@ -444,7 +444,7 @@
 
 #let f-feedback = chart(
   "figures/fig-feedback-time.svg",
-  "Figure 3. Half of all commits get a HIL verdict within 18 minutes.",
+  "Figure 3. 90% of commits get a HIL verdict within 39 minutes.",
 )
 
 // ---------------------------------------------------------------- body grid
