@@ -383,7 +383,7 @@
     standoffs. Maintainability of the rig _is_ pipeline uptime.
   ]
   #block(spacing: 18pt)[
-    *4. Flight-like comms and ground software.* \
+    *4. Flight-like communications and ground software.* \
     Adding radio tests alongside existing UART tests caught a failure class.
   ]
   #block(spacing: 18pt)[
