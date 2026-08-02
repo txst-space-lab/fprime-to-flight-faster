@@ -274,7 +274,12 @@
 
   // The scope of what has to be re-qualified on every one of those commits;
   // "Results" counts these ten as a stat.
-  #block(width: 100%, inset: 16pt, fill: wash)[
+  #block(
+    width: 100%,
+    inset: 18pt,
+    fill: wash,
+    stroke: (left: 8pt + gold),
+  )[
     *Verified every run:* commanding · telemetry · eventing · IMU · thermal
     management · antenna deployment · real-time clock · filesystem · power
     management · hardware watchdog
@@ -418,12 +423,15 @@
   ))
 ]
 
-#let p-acknowledgments = block(width: 100%, inset: 14pt, fill: wash)[
-  #text(size: 24pt, fill: muted)[
-    *Acknowledgments.* Texas State University Department of Physics, NASA Jet
-    Propulsion Laboratory, NASA CubeSat Launch Initiative, Cal Poly Pomona, Open Source Space Foundation, and
-    Ines Khouider.
-  ]
+#let p-acknowledgments = block(
+  width: 100%,
+  inset: 18pt,
+  fill: wash,
+  stroke: (left: 8pt + gold),
+)[
+  *Acknowledgments.* Texas State University Department of Physics, Open Source
+  Space Foundation, NASA Jet Propulsion Laboratory, NASA CubeSat Launch
+  Initiative, Cal Poly Pomona, and Ines Khouider.
 ]
 
 // Figures. Captions lead with the finding, not the mechanics.
