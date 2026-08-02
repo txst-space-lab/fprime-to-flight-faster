@@ -200,13 +200,6 @@ main h2::after {
   height: auto;
 }
 
-.caption {
-  margin: 0.85rem 0 0;
-  font-size: 0.9375rem;
-  color: var(--muted);
-  max-width: 60ch;
-}
-
 /* ---------------------------------------------------------------- cards */
 
 .card-grid {
@@ -275,12 +268,6 @@ main h2::after {
   overflow-wrap: anywhere;
 }
 
-.contact.placeholder {
-  color: var(--muted);
-  font-style: italic;
-}
-
-.authors .note { margin-top: 1.5rem; }
 
 /* ---------------------------------------------------------------- footer */
 
