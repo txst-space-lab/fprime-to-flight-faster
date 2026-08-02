@@ -440,9 +440,10 @@
   fill: wash,
   stroke: (left: 8pt + gold),
 )[
-  *Acknowledgments.* Texas State University Department of Physics, Open Source
-  Space Foundation, NASA Jet Propulsion Laboratory, NASA CubeSat Launch
-  Initiative, Cal Poly Pomona, and Ines Khouider.
+  *Acknowledgments.* Dr. Blagoy Rangelov, Evan Jellison, Ines
+  Khouider, Texas State University Department of Physics, Cal Poly Pomona, Open
+  Source Space Foundation, NASA Jet Propulsion Laboratory, and NASA CubeSat
+  Launch Initiative.
 ]
 
 // Figures. Captions lead with the finding, not the mechanics.
