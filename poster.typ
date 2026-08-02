@@ -399,8 +399,9 @@
 )[
   // No URLs in the body: the QR carries every link, so nobody has to retype a
   // repo path off a printed poster.
-  Every piece of hardware and software described here is open source.
-  Scan QR code for links to get started as well as a digital copy of
+  Every piece of hardware and software described here is *open source.*
+
+  *Scan QR code* for links to get started as well as a digital copy of
   this poster and author contact information.
 
   #v(20pt)
