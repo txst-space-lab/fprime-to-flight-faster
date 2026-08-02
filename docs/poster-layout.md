@@ -1,8 +1,12 @@
 # Poster Layout — F Prime to Flight Faster
 
-Canvas: **36 in × 36 in square** (`docs/requirements.md` R1). **Three columns**
-of 10.67 in with a 0.8 in gutter and 1.2 in side margins; 30.9 in of column
-height under the title band.
+Canvas: **45 in × 45 in square** (`docs/requirements.md` R1), composed at 36 in
+and scaled 1.25× onto the sheet in one place at the bottom of `poster.typ`.
+**Every measurement in this file is a composed 36 in-sheet measurement** — the
+proportions are what the layout is about, and they are what the source says.
+
+**Three columns** of 10.67 in with a 0.8 in gutter and 1.2 in side margins;
+30.9 in of column height under the title band.
 
 This file is the content plan. `poster.typ` is what prints, and panels there are
 named blocks composed into columns at the bottom of the file — the panel names
@@ -261,7 +265,8 @@ Acknowledgments + funding line, one line, small type.
 
 ## What the square canvas cost
 
-36 × 36 is 25% less sheet than the 48 × 36 the poster was first laid out on, and
+The 36 × 36 composition is 25% less sheet than the 48 × 36 the poster was first
+laid out on, and
 the 24 pt floor means the lost area has to come out of content rather than type.
 Measured against the three-column budget, the old content ran about 17 column-
 inches long. What came off, and why it was the cheapest thing to lose:

@@ -7,22 +7,32 @@ layout has to obey.
 
 ---
 
-## R1 — Canvas size: 36 in × 36 in
+## R1 — Canvas size: 45 in × 45 in
 
-The poster must be **36 inches wide by 36 inches tall** — square.
+The poster must be **45 inches wide by 45 inches tall** — square.
 
-- Set in `poster.typ` via `#set page(width: 36in, height: 36in, ...)`.
+- Set in `poster.typ` via the `print-size` constant. The layout is composed at
+  a 36 in `design-size` and scaled onto the sheet in one place at the bottom of
+  the file, so every length and type size in the source is a 36 in value and
+  prints 1.25× larger. Change `print-size` alone to change the sheet.
 - Export at full scale. Never let the print shop "fit to page"; a rescale
   breaks every other requirement on this page at once.
 - No bleed.
 
-**Status: met.** `poster.typ` is `36in × 36in` with 1.2 in side margins, 0.7 in
-top and bottom, and three 10.67 in columns separated by a 0.8 in gutter.
+**Status: met.** `poster.typ` renders a 3240 × 3240 pt page. In composed units
+that is 36 in × 36 in with 1.2 in side margins, 0.7 in top and bottom, and three
+10.67 in columns separated by a 0.8 in gutter — on paper, 1.5 in / 0.875 in
+margins and three 13.33 in columns on a 1 in gutter.
 
 ## R2 — Minimum font size: 24 pt
 
 **No text may render below 24 pt.** That includes figure captions, table
 headers, footnotes, references, URLs, and any type baked into an image or SVG.
+
+Sizes below are **composed** sizes — the numbers in `poster.typ`. The 1.25×
+print scale (R1) lifts every one of them, so the composed 24 pt floor prints at
+30 pt. Keep auditing against the composed floor anyway: it is the number in the
+source, and it holds the poster readable if the sheet ever shrinks back.
 
 - Body text is 26 pt; 24 pt is the floor used for captions, table cells, and
   the terminology block.
@@ -41,7 +51,7 @@ column — at the old two-thirds-column size their labels printed at about 15 pt
 
 One consequence worth stating plainly: **a screenshot of a user interface cannot
 meet this requirement.** The GitHub checks screenshot carries type at roughly
-10 pt at column width, and enlarging it far enough to fix that leaves no room
+10 pt composed (12.5 pt printed) at column width, and enlarging it far enough to fix that leaves no room
 for the rest of the poster. It is off the sheet (see `docs/poster-layout.md`);
 if it ever goes back on, it goes on as a violation of R2 that you are choosing
 knowingly, not as an oversight.
@@ -75,14 +85,15 @@ change. Verify with `typst fonts`.
 
 | Requirement | Check |
 |---|---|
-| R1 size | `pdfinfo poster.pdf \| grep "Page size"` → 2592 × 2592 pts |
+| R1 size | `pdfinfo poster.pdf \| grep "Page size"` → 3240 × 3240 pts |
 | R2 min font | `grep -n "size: [0-9]*pt" poster.typ` → no value under 24; plus a visual pass over every figure |
 | R3 one page | `pdfinfo poster.pdf \| grep Pages` → 1 |
 | R4 placeholders | `grep -n '#todo\[' poster.typ` → no output |
 | R5 fonts | built inside `nix develop`; `typst fonts` lists Inter and JetBrains Mono |
 
-`pdfinfo` reports page size in PostScript points at 72 pt/in, so 36 in = 2592 pt
-on both axes.
+`pdfinfo` reports page size in PostScript points at 72 pt/in, so 45 in = 3240 pt
+on both axes. A page reporting 2592 pt is the old 36 in sheet — `print-size` in
+`poster.typ` was changed or lost.
 
 ---
 
@@ -94,6 +105,13 @@ migration cost. At a fixed 24 pt floor the sheet area *is* the word budget:
 two figures and two ranked list items; `docs/poster-layout.md` records exactly
 what and why.
 
+Going to 45 × 45 did **not** buy that content back. The sheet grew and the
+composition was scaled with it, so the word budget is unchanged and everything
+simply prints larger and more legibly at a distance. Spending the extra area on
+content instead would mean re-laying out at 45 in composed units — a different,
+larger job than this change, and one that has to re-audit R2 from scratch.
+
 The practical rule that falls out of it: **nothing gets added to this poster
 without something else coming off.** The tightest column has under an inch of
-slack. When content has to shrink, shrink figures — type has nowhere to go.
+composed slack. When content has to shrink, shrink figures — type has nowhere
+to go.

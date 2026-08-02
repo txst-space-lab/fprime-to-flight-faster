@@ -1,4 +1,4 @@
-// F Prime to Flight Faster: 36in x 36in research poster
+// F Prime to Flight Faster: 45in x 45in research poster
 //
 // Build:  typst compile poster.typ poster.pdf
 // Watch:  typst watch poster.typ
@@ -26,15 +26,28 @@
 #let sans = ("Inter", "Source Sans 3", "Helvetica", "Liberation Sans")
 #let mono = ("JetBrains Mono", "DejaVu Sans Mono")
 
+// The sheet prints at 45in but is composed at 36in: every length and type size
+// in this file is a 36in-sheet value, and the whole composition is scaled once
+// at the bottom of the file. Scaling instead of reflowing keeps the column
+// geometry that was tuned to fit and lifts the type floor with the paper —
+// 24pt composed prints at 30pt. To change the print size, change `print-size`
+// alone; nothing else in this file is in printed units.
+#let design-size = 36in
+#let print-size = 45in
+#let print-scale = print-size / design-size
+#let design-margin = (x: 1.2in, y: 0.7in)
+
 #set page(
-  width: 36in,
-  height: 36in,
-  margin: (x: 1.2in, y: 0.7in),
+  width: print-size,
+  height: print-size,
+  // Margins live on the scaled block below so they scale with everything else.
+  margin: 0pt,
   fill: white,
 )
 
 // 24pt is the floor, not a starting point — see docs/requirements.md R2. Body
-// copy sits on it, so anything that needs to shrink has to be a figure.
+// copy sits on it, so anything that needs to shrink has to be a figure. These
+// are composed sizes; on paper they print `print-scale` larger.
 #set text(font: sans, size: 24pt, fill: ink, lang: "en")
 #set par(justify: false, leading: 0.62em, spacing: 1.0em)
 
@@ -455,9 +468,10 @@
 
 // ---------------------------------------------------------------- body grid
 //
-// Three equal columns. At 36in wide with 1.2in margins and a 0.8in gutter that
-// is 10.67in each — the narrowest column that still holds the failure-mode
-// table's three sub-columns at 24pt.
+// Three equal columns. At the 36in composed width with 1.2in margins and a
+// 0.8in gutter that is 10.67in each — the narrowest column that still holds the
+// failure-mode table's three sub-columns at 24pt. On the 45in sheet every one of
+// these numbers prints `print-scale` larger; the proportions are what matter.
 //
 // Reading order is down each column, then across. Column 1 sets up the problem
 // and the mechanism, column 2 carries the evidence, column 3 carries the
@@ -472,8 +486,8 @@
 // `column-height`, Typst pushes the excess onto a second page rather than
 // silently overlapping — so `pdfinfo poster.pdf | grep Pages` reporting 1 is a
 // real check that everything fits (docs/requirements.md R3).
-// 36in sheet - 2x0.7in margin - 3.3in title band - 0.3in gap below it, less a
-// hair so rounding cannot spill a blank second page.
+// 36in composed sheet - 2x0.7in margin - 3.3in title band - 0.3in gap below it,
+// less a hair so rounding cannot spill a blank second page.
 #let column-height = 30.9in
 #let column-gap = 0.45in
 
@@ -493,7 +507,7 @@
 
 // Stacked for the same reason the columns are: the seam below the title band is
 // 0.3in because it says 0.3in, not 0.3in plus whatever the flow adds.
-#stack(
+#let sheet = stack(
   dir: ttb,
   title-band,
   0.3in,
@@ -510,5 +524,22 @@
 
     // Column 3 — what the program learned, where it goes next, and how to reuse it.
     column-of(p-broke, p-future, p-build, p-acknowledgments),
+  ),
+)
+
+// The one place the composed sheet meets the printed one. The block is the full
+// design canvas including its margins; scaling it from the top-left corner of a
+// zero-margin page maps it onto the sheet exactly, with no reflow — text sizes,
+// rules, insets, and the SVGs all grow by the same factor.
+#scale(
+  x: print-scale * 100%,
+  y: print-scale * 100%,
+  origin: top + left,
+  reflow: true,
+  block(
+    width: design-size,
+    height: design-size,
+    inset: design-margin,
+    sheet,
   ),
 )

@@ -33,12 +33,13 @@ jobs:
       - name: Build poster
         run: nix build --print-build-logs
 
-      # A 36 in canvas at 44 dpi is a ~1600 px preview — enough to read the
+      # A 45 in canvas at 35 dpi is a ~1600 px preview — enough to read the
       # panel headings in a browser without shipping a 20 MB PNG. Anyone who
-      # wants detail follows the image through to the PDF.
+      # wants detail follows the image through to the PDF. Keep the dpi and the
+      # img width/height in site/index.html in step with the sheet size.
       - name: Render poster preview
         run: |
-          nix develop --command pdftoppm -png -r 44 -singlefile \
+          nix develop --command pdftoppm -png -r 35 -singlefile \
             result/poster.pdf site/poster
 
       - name: Assemble site

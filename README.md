@@ -4,8 +4,10 @@ Poster source for **"F Prime to Flight Faster: Hardware-in-the-Loop Continuous
 Integration for Accelerated CubeSat Development"** — Nate Gay, Saidi Adams,
 Michael Pham.
 
-Built with [Typst](https://typst.app). Output is a single 36 in × 36 in square
-PDF. The print constraints it has to satisfy — canvas size, a 24 pt type floor,
+Built with [Typst](https://typst.app). Output is a single 45 in × 45 in square
+PDF. The layout is composed at 36 in and scaled 1.25× onto the sheet in one
+place at the bottom of `poster.typ`, so every size in the source is a composed
+36 in value; change `print-size` to change the printed sheet. The print constraints it has to satisfy — canvas size, a 24 pt type floor,
 one page — are in `docs/requirements.md`.
 
 ## Prerequisites
@@ -168,7 +170,7 @@ To preview locally:
 
 ```sh
 typst compile poster.typ poster.pdf
-pdftoppm -png -r 44 -singlefile poster.pdf site/poster
+pdftoppm -png -r 35 -singlefile poster.pdf site/poster   # ~1575 px from a 45 in sheet
 cp poster.pdf site/poster.pdf
 python3 -m http.server -d site 8000   # -> http://localhost:8000
 ```
@@ -180,6 +182,6 @@ paragraphs when you have them.
 
 ## Print
 
-- Final size 36 in × 36 in, square, no bleed
+- Final size 45 in × 45 in, square, no bleed
 - Export at full scale; do not let the print shop "fit to page"
 - Check the maroon (`#501214`) reproduces acceptably in CMYK before a full run
