@@ -189,8 +189,7 @@
     fill: wash,
     stroke: (left: 8pt + gold),
   )[
-    *Our claim:* a per-commit hardware merge gate keeps integration from slowing
-    delivery down. Automated testing on real satellite hardware, run on every
+    *Our claim:* Automated testing on real satellite hardware, run on every
     commit, verifies correctness before merge and lets reviewers judge pending
     changes on design rather than on whether the code works, increasing team
     throughput.
@@ -256,19 +255,30 @@
   #v(8pt)
 
   #grid(
-    columns: (1fr, 1fr, 1fr),
+    columns: (1fr, 1fr, 1fr, 1fr),
     column-gutter: 16pt,
-    // Labels stay short enough to sit on one line at a third of a column;
+    // Labels stay short enough to sit on one line at a quarter of a column;
     // "over one year" is already established in the paragraph above.
     stat("7", "board revisions"),
     stat("23", "contributors"),
     stat("1,917", "commits"),
+    stat("212", "pull requests"),
   )
 
   #v(8pt)
 
   A team this size, at this rate, cannot re-qualify a satellite by hand every
   time either side changes. Hardware testing must be automated.
+
+  #v(12pt)
+
+  // The scope of what has to be re-qualified on every one of those commits;
+  // "Results" counts these ten as a stat.
+  #block(width: 100%, inset: 16pt, fill: wash)[
+    *Verified every run:* commanding · telemetry · eventing · IMU · thermal
+    management · antenna deployment · real-time clock · filesystem · power
+    management · hardware watchdog
+  ]
 ]
 
 #let p-results = panel(
@@ -281,11 +291,8 @@
     columns: (1fr, 1fr),
     column-gutter: 16pt,
     row-gutter: 20pt,
-    stat("1,935", "test jobs run on real hardware"),
     stat("132 h", "of hardware test runtime"),
-
     stat("18 min", "median commit to HIL verdict"),
-    stat("212", "pull requests gated on hardware"),
 
     stat("10", "flight-critical subsystems per run"),
     stat("100%", "of merges hardware-validated"),
@@ -315,7 +322,7 @@
 
     [Board unreachable after a bad flash],
     [Reprogramming depended on the software under test],
-    [Program over SWD/GDB, an independent path to the MCU],
+    [Program satellite hardware over SWD with GDB],
 
     [Watchdog resets flash],
     [Hardware watchdog fired during long software loads],
@@ -323,10 +330,10 @@
 
     [Passes locally, fails in CI],
     [Residual SD card state between runs],
-    [Reformat the SD card before *and* after every run; a crashed run leaves it dirty],
+    [Reformat the SD card before each run to remove leftover state],
 
     [Same test, different result per site],
-    [Lab-to-lab hardware differences (e.g. RTC battery backup)],
+    [Lab-to-lab hardware differences],
     [Tag each test with the hardware it needs; a runner executes only the tests it can support],
 
     [Intermittent, unreproducible failures],
