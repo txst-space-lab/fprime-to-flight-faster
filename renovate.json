@@ -1,0 +1,33 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard"
+  ],
+  "timezone": "Etc/UTC",
+  "schedule": [
+    "before 6am on monday"
+  ],
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 5,
+  "labels": [
+    "dependencies"
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": [
+      "before 6am on monday"
+    ],
+    "automerge": true
+  },
+  "packageRules": [
+    {
+      "description": "This repo only builds a poster and a static site, so action bumps are low risk. One PR per week keeps the noise down.",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "groupName": "github actions",
+      "automerge": true
+    }
+  ]
+}
