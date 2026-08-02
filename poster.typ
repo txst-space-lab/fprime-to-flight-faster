@@ -235,6 +235,7 @@
         [Pull request (PR)],
         [a proposed change to the software.],
       ),
+      ([Continuous Integration (CI)], [builds and tests every change.]),
       (
         [Merge gate],
         [an automated check every change must pass.],
@@ -372,9 +373,9 @@
     board by USB ID. Most flakiness was state, not code.
   ]
   #block(spacing: 18pt)[
-    *2. Separate build and integration machines.* \
-    Moving compilation off the bench host onto a dedicated build machine cut
-    about 10 minutes from every pipeline run.
+    *2. Self-hosted build runner.* \
+    No cache on free cloud runners meant a full submodule re-clone every build.
+    Self-hosted runner saved ~10 minutes saved per run.
   ]
   #block(spacing: 18pt)[
     *3. Skeleton cube on standoffs.* \
@@ -391,10 +392,9 @@
     components and unit-tested in the cloud in seconds.
   ]
   #block(spacing: 18pt)[
-    *6. Use static analysis.* \
-    Once a hardware failure mode is understood, encode it as a static check. A
-    configuration to enable UART console corrupted test comm downlink now fails
-    the build, not the HIL tests.
+    *6. Shift failures earlier in the pipeline.* \
+    Encode known hardware failure modes as static checks. A config setting
+    that broke test downlink now fails the build, not HIL.
   ]
 ]
 

@@ -87,8 +87,8 @@ path on the poster, so keep the vocabulary consistent with the captions:
 
 1. Commit opens a PR on GitHub.
 2. Cloud runners lint and run unit tests — no hardware needed.
-3. Build machine compiles F´ flight software (separate from the test host);
-   static gates fail here rather than on the bench.
+3. Self-hosted build runner compiles F´ flight software; static gates fail here
+   rather than on the bench.
 4. Programmable power supply cycles the engineering satellite.
 5. SWD/GDB flashes the microcontroller — no dependency on working flight code.
 6. SD card is reformatted to clear residual state.
@@ -210,9 +210,9 @@ without a line of type spending column height to say so.
 1. **Deterministic hardware state.** Reformat storage, cycle power, flash over
    an independent path, address the board by USB ID rather than a name a
    revision can invalidate. Most flakiness was state, not code.
-2. **Separate build and integration machines.** Moving compilation off the bench
-   host onto a dedicated build machine cut about 10 minutes from every pipeline
-   run.
+2. **Self-hosted build runner.** No cache on free cloud runners meant a full
+   submodule re-clone every build (10+ min). Self-hosted runner: about 10
+   minutes saved per run.
 3. **Skeleton cube on standoffs.** Swapping a part went from disassembling a
    satellite to reaching in. Maintainability of the test rig *is* pipeline
    uptime.
