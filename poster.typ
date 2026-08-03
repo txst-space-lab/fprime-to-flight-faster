@@ -245,7 +245,7 @@
         [Serial Wire Debug (SWD)],
         [a direct path to program the satellite.],
       ),
-      ([YAMCS], [open-source ground software for satellite.]),
+      ([YAMCS], [open-source ground software for spacecraft.]),
     ) {
       block[#text(weight: 700, fill: ink, term): #defn]
     }
