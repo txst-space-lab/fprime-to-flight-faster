@@ -14,12 +14,19 @@
 
 // ---------------------------------------------------------------- constants
 
-#let maroon = rgb("#501214") // Texas State primary
-#let gold = rgb("#907040")
+// Texas State Branding Colors
+// https://brand.txst.edu/visual-identity/colors.html
+
+// Texas State Primary
+#let maroon = rgb("#501214") // Texas State Maroon
+#let gold = rgb("#AC9155") // Texas State Dark Gold
+
+// Texas State Web-Exclusive
+#let sandstone = rgb("#f5f1ee") // Texas State Sandstone
+
+// Other colors
 #let ink = rgb("#1a1a1a")
 #let muted = rgb("#5c5c5c")
-#let rule = rgb("#d4d4d4")
-#let wash = rgb("#f4f1ee")
 
 // Font stacks list fallbacks so the poster still compiles outside the Nix
 // shell, but the pinned fonts are what the print-ready PDF should use.
@@ -101,7 +108,7 @@
       width: 100%,
       height: if height == none { auto } else { height },
       clip: true,
-      stroke: 2pt + rule,
+      stroke: 2pt + sandstone,
       // A fixed height crops to fill; without one the image scales to the
       // column, which is what a screenshot needs so no UI text is cut off.
       if height == none {
@@ -197,7 +204,7 @@
   #block(
     width: 100%,
     inset: 18pt,
-    fill: wash,
+    fill: sandstone,
     stroke: (left: 8pt + gold),
   )[
     *Our claim:* Automated testing on real satellite hardware, run on every
@@ -288,7 +295,7 @@
   #block(
     width: 100%,
     inset: 18pt,
-    fill: wash,
+    fill: sandstone,
     stroke: (left: 8pt + gold),
   )[
     *Verified every run:* commanding · telemetry · eventing · IMU · thermal
@@ -324,9 +331,9 @@
     inset: 10pt,
     align: left + top,
     stroke: (x, y) => (
-      bottom: if y == 0 { 3pt + maroon } else { 1pt + rule },
+      bottom: if y == 0 { 3pt + maroon } else { 1pt + sandstone },
     ),
-    fill: (x, y) => if y == 0 { white } else if calc.odd(y) { wash } else {
+    fill: (x, y) => if y == 0 { white } else if calc.odd(y) { sandstone } else {
       white
     },
 
@@ -436,7 +443,7 @@
 #let p-acknowledgments = block(
   width: 100%,
   inset: 18pt,
-  fill: wash,
+  fill: sandstone,
   stroke: (left: 8pt + gold),
 )[
   *Acknowledgments.* Dr. Blagoy Rangelov, Evan Jellison, Ines
