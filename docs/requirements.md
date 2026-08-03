@@ -84,15 +84,19 @@ change. Verify with `typst fonts`.
 **Every color that carries meaning must come from the Texas State brand
 palette**: <https://brand.txst.edu/visual-identity/colors.html>. This is a
 university-branded poster shown under university letterhead, so off-brand hues
-are a rejection risk, not a taste question.
+are a rejection risk, not a taste question. The GitHub Pages site carries the
+same poster under the same university name, so it is held to the same rule.
 
-Two files define color and both must draw from the same guide, with the brand
+Three files define color and all must draw from the same guide, with the brand
 name in a comment next to each value:
 
 - `poster.typ` — Primary (Maroon, Dark Gold) and Web-Exclusive (Sandstone).
 - `tools/analyze-ci.py` — Primary (Maroon) for figure titles, Tertiary
   (Spring Lake Blue, Wild Rice Green, Eat 'Em Up Peach, Green Hills) for the
   marks.
+- `site/styles.css` — Primary (Maroon, Dark Gold, Bright Gold) and
+  Web-Exclusive (Charcoal, Sandstone), declared once as custom properties and
+  referenced by role everywhere else.
 
 Exempt: neutrals that are structure rather than meaning — ink, muted grey, grid
 and axis hairlines, white — and the `#todo[]` marker, which never reaches print
@@ -108,11 +112,18 @@ Two constraints ride along with the palette and outrank hue preference:
   under normal vision *and* red-green CVD. The brand palette is small enough
   that this rules out some otherwise valid pairs.
 
-**Status: met.** Every hue in `poster.typ` and `tools/analyze-ci.py` is a brand
-color, grouped under the guide's own section names with the URL beside them.
-One known compromise: green does double duty — hardware jobs in figure 1,
-passed jobs in figure 2 — which is unambiguous only because no single figure
-plots both encodings.
+**Status: met.** Every hue in `poster.typ`, `tools/analyze-ci.py`, and
+`site/styles.css` is a brand color, grouped under the guide's own section names
+with the URL beside them. One known compromise: green does double duty —
+hardware jobs in figure 1, passed jobs in figure 2 — which is unambiguous only
+because no single figure plots both encodings.
+
+The site's dark colour scheme is a second compromise worth naming. Its
+background and rules are neutrals (exempt above), because the guide offers no
+dark background other than Web-Exclusive Dark Gold, and Charcoal is explicitly
+barred as a fill. Maroon is too dark to read as link text on that field, so the
+accent moves from Maroon to Bright Gold there; the masthead stays maroon in
+both schemes so the brand still anchors the page.
 
 ---
 
@@ -125,7 +136,7 @@ plots both encodings.
 | R3 one page | `pdfinfo poster.pdf \| grep Pages` → 1 |
 | R4 placeholders | `grep -n '#todo\[' poster.typ` → no output |
 | R5 fonts | built inside `nix develop`; `typst fonts` lists Inter and JetBrains Mono |
-| R6 brand colors | `grep -niE '#[0-9a-f]{6}' poster.typ tools/analyze-ci.py` → every hit is a brand color or a listed neutral |
+| R6 brand colors | `grep -niE '(#\|%23)[0-9a-f]{6}' poster.typ tools/analyze-ci.py site/styles.css site/headshots/*.svg site/index.html` → every hit is a brand color or a listed neutral (the `%23` form catches the inline-SVG favicon in `index.html`) |
 
 `pdfinfo` reports page size in PostScript points at 72 pt/in, so 45 in = 3240 pt
 on both axes. A page reporting 2592 pt is the old 36 in sheet — `print-size` in

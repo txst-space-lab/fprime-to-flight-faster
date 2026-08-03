@@ -1,27 +1,44 @@
 /* F Prime to Flight Faster — project page.
-   Colors track the poster: Texas State maroon #501214 with a gold accent. */
+   Colors track the poster (R6 in docs/requirements.md): every hue that carries
+   meaning is a Texas State brand color, named in a comment beside its value.
+
+   Texas State Branding Colors
+   https://brand.txst.edu/visual-identity/colors.html */
 
 :root {
-  --maroon: #501214;
-  --maroon-bright: #7a2427;
-  --gold: #b8892b;
-  --ink: #1a1416;
-  --muted: #5f565a;
+  /* Texas State Primary */
+  --maroon: #501214;      /* Texas State Maroon */
+  --dark-gold: #ac9155;   /* Texas State Dark Gold */
+  --bright-gold: #d7bd8a; /* Texas State Bright Gold */
+
+  /* Texas State Web-Exclusive */
+  --charcoal: #363534;    /* body copy on light backgrounds only */
+  --sandstone: #f5f1ee;   /* light background alternative to white */
+
+  /* Semantic roles. Neutrals below — page white, muted grey, hairline rules —
+     are structure rather than meaning and are exempt from the palette. */
+  --accent: var(--maroon);
+  --gold: var(--dark-gold);
+  --ink: var(--charcoal);
+  --muted: #5c5c5c;
   --page: #ffffff;
-  --wash: #f6f3f2;
-  --rule: #e2dcda;
+  --wash: var(--sandstone);
+  --rule: #e1e0d9;
   --measure: 68rem;
 }
 
+/* Dark mode inverts the neutrals only. Maroon is too dark to read as link text
+   on a dark field, so the accent moves to Bright Gold — still brand, and the
+   maroon masthead keeps anchoring the page in both schemes. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --ink: #f2eceb;
-    --muted: #a89ea0;
-    --page: #141011;
-    --wash: #1e1819;
-    --rule: #322a2c;
-    --maroon-bright: #d4787c;
-    --gold: #d9a94e;
+    --accent: var(--bright-gold);
+    --gold: var(--bright-gold);
+    --ink: var(--sandstone);
+    --muted: #a3a09c;
+    --page: #171615;
+    --wash: #211f1e;
+    --rule: #38352f;
   }
 }
 
@@ -44,7 +61,7 @@ body {
   padding: 0 1.5rem;
 }
 
-a { color: var(--maroon-bright); }
+a { color: var(--accent); }
 
 h1, h2, h3 { line-height: 1.2; margin: 0; }
 
@@ -119,19 +136,21 @@ code {
 
 .btn:hover { border-color: #fff; background: rgba(255, 255, 255, 0.1); }
 
+/* Maroon on gold rather than charcoal on gold: charcoal reads at 4.0:1 against
+   Dark Gold, under AA for this size, and maroon clears it at 4.8:1. */
 .btn-primary {
   background: var(--gold);
   border-color: var(--gold);
-  color: #1a1416;
+  color: var(--maroon);
 }
 
-.btn-primary:hover { background: #d9a94e; border-color: #d9a94e; }
+.btn-primary:hover { background: var(--bright-gold); border-color: var(--bright-gold); }
 
 .btn-small {
   padding: 0.4rem 0.85rem;
   font-size: 0.8125rem;
   border-color: var(--rule);
-  color: var(--maroon-bright);
+  color: var(--accent);
 }
 
 .btn-small:hover { background: var(--wash); border-color: var(--muted); }
@@ -219,7 +238,7 @@ main h2::after {
   text-decoration: none;
 }
 
-.card:hover { border-color: var(--maroon-bright); }
+.card:hover { border-color: var(--accent); }
 
 .card h3 { font-size: 1.125rem; }
 
@@ -233,7 +252,7 @@ main h2::after {
   margin-top: auto;
   font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.8125rem;
-  color: var(--maroon-bright);
+  color: var(--accent);
   overflow-wrap: anywhere;
 }
 
