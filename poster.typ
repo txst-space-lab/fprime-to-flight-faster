@@ -245,6 +245,7 @@
         [Serial Wire Debug (SWD)],
         [a direct path to program the satellite.],
       ),
+      ([YAMCS], [open-source ground software for satellite.]),
     ) {
       block[#text(weight: 700, fill: ink, term): #defn]
     }
@@ -300,7 +301,7 @@
   "Results",
   // The commit count moved to "Our Challenge"; repeating it here read as a
   // second, different measurement.
-  subtitle: "1,917 commits · Aug 2025 – July 2026.",
+  subtitle: "1,917 commits · Aug 2025 – July 2026",
 )[
   #grid(
     columns: (1fr, 1fr),
