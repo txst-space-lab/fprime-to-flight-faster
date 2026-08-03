@@ -79,6 +79,41 @@ The print-ready PDF must be built inside `nix develop` (or with direnv active).
 Fallback fonts reflow the layout, which can break R2 and R3 without any source
 change. Verify with `typst fonts`.
 
+## R6 — Texas State branding colors
+
+**Every color that carries meaning must come from the Texas State brand
+palette**: <https://brand.txst.edu/visual-identity/colors.html>. This is a
+university-branded poster shown under university letterhead, so off-brand hues
+are a rejection risk, not a taste question.
+
+Two files define color and both must draw from the same guide, with the brand
+name in a comment next to each value:
+
+- `poster.typ` — Primary (Maroon, Dark Gold) and Web-Exclusive (Sandstone).
+- `tools/analyze-ci.py` — Primary (Maroon) for figure titles, Tertiary
+  (Spring Lake Blue, Wild Rice Green, Eat 'Em Up Peach, Green Hills) for the
+  marks.
+
+Exempt: neutrals that are structure rather than meaning — ink, muted grey, grid
+and axis hairlines, white — and the `#todo[]` marker, which never reaches print
+(R4).
+
+Two constraints ride along with the palette and outrank hue preference:
+
+- **Contrast.** Any brand color used for a data mark or for text must stay
+  legible at 4 ft on white. Tints meant as background fills — River Jump, for
+  one — sit near 1.2:1 and disappear as bars or lines no matter how well they
+  fit the brand.
+- **Categorical separation.** Series colors in one chart must be tellable apart
+  under normal vision *and* red-green CVD. The brand palette is small enough
+  that this rules out some otherwise valid pairs.
+
+**Status: met.** Every hue in `poster.typ` and `tools/analyze-ci.py` is a brand
+color, grouped under the guide's own section names with the URL beside them.
+One known compromise: green does double duty — hardware jobs in figure 1,
+passed jobs in figure 2 — which is unambiguous only because no single figure
+plots both encodings.
+
 ---
 
 ## Verification
@@ -90,6 +125,7 @@ change. Verify with `typst fonts`.
 | R3 one page | `pdfinfo poster.pdf \| grep Pages` → 1 |
 | R4 placeholders | `grep -n '#todo\[' poster.typ` → no output |
 | R5 fonts | built inside `nix develop`; `typst fonts` lists Inter and JetBrains Mono |
+| R6 brand colors | `grep -niE '#[0-9a-f]{6}' poster.typ tools/analyze-ci.py` → every hit is a brand color or a listed neutral |
 
 `pdfinfo` reports page size in PostScript points at 72 pt/in, so 45 in = 3240 pt
 on both axes. A page reporting 2592 pt is the old 36 in sheet — `print-size` in

@@ -48,34 +48,44 @@ CURRENT_ERA = pd.Timestamp("2026-05-19", tz="UTC")
 # column.
 FIGSIZE = (7, 4.8)
 
-# Palette: poster ink/maroon plus the validated categorical slots 1-2 and the
-# reserved status pair. Slots 1-2 clear the all-pairs CVD and normal-vision
-# floors on a white surface; pass/fail is state, so it takes status colors and
-# never the series hues.
-MAROON = "#501214"
+# Palette: every hue in the figures comes from the Texas State brand palette so
+# the charts and poster.typ stay in one system. Green doubles as the
+# hardware-job hue in figure 1 and the passed-job hue in figure 2, which is
+# unambiguous because no figure plots the hardware/software split and pass/fail
+# together.
+#
+# Texas State Branding Colors
+# https://brand.txst.edu/visual-identity/colors.html
+
+# Texas State Primary
+MAROON = "#501214"  # Texas State Maroon
+
+# Texas State Tertiary
+SPRING_LAKE_BLUE = "#007096"  # software-only jobs
+EAT_EM_UP_PEACH = "#EA664D"  # failed HIL jobs
+GREEN_HILLS = "#266725"  # median callout in the feedback-time figure
+WILD_RICE_GREEN = "#419E69"  # hardware jobs, and passed HIL jobs
+
+# Other colors
 INK = "#1a1a1a"
 MUTED = "#5c5c5c"
 GRID = "#e1e0d9"
 AXIS = "#c3c2b7"
-CLOUD = "#2a78d6"  # categorical slot 1 - software-only jobs
-HARDWARE = "#eb6834"  # categorical slot 2 - jobs against the real satellite
 
 # The split that matters for the poster is "does this job need the satellite",
 # not "is the runner self-hosted" — `build` runs on the lab's own build box
 # (deathstar) but never touches flight hardware, so it sits with the cloud jobs.
 SOFTWARE_ONLY = "software only"
 ON_SATELLITE = "real satellite"
-GOOD = "#0ca30c"
-CRITICAL = "#d03b3b"
 
 # Stage display names and where each one runs. Order is pipeline order.
 STAGES = [
-    ("lint", "Lint", CLOUD),
-    ("unit-test", "Unit tests", CLOUD),
-    ("build", "Build", CLOUD),
-    ("yamcs-build", "YAMCS check", CLOUD),
-    ("integration-uart", "HIL: UART", HARDWARE),
-    ("integration-radio", "HIL: Radio", HARDWARE),
+    ("lint", "Lint", SPRING_LAKE_BLUE),
+    ("unit-test", "Unit tests", SPRING_LAKE_BLUE),
+    ("build", "Build", SPRING_LAKE_BLUE),
+    ("yamcs-build", "YAMCS check", SPRING_LAKE_BLUE),
+    ("integration-uart", "HIL: UART", WILD_RICE_GREEN),
+    ("integration-radio", "HIL: Radio", WILD_RICE_GREEN),
 ]
 
 
@@ -176,7 +186,7 @@ def fig_pipeline_stages(jobs):
             {
                 "stage": name,
                 "label": label,
-                "runs_on": ON_SATELLITE if color == HARDWARE else SOFTWARE_ONLY,
+                "runs_on": ON_SATELLITE if color == WILD_RICE_GREEN else SOFTWARE_ONLY,
                 "n": len(d),
                 "median_s": round(d.median()),
                 "p90_s": round(d.quantile(0.9)),
@@ -188,7 +198,7 @@ def fig_pipeline_stages(jobs):
     fig = plt.figure(figsize=FIGSIZE)
     ax = fig.add_axes([0.30, 0.16, 0.68, 0.60])
     y = range(len(df))
-    colors = [HARDWARE if r == ON_SATELLITE else CLOUD for r in df.runs_on]
+    colors = [WILD_RICE_GREEN if r == ON_SATELLITE else SPRING_LAKE_BLUE for r in df.runs_on]
     # p90 sits behind the median bar as a lighter tail rather than an errorbar,
     # so the "usual" number is the one that reads first.
     ax.barh(y, df.p90_s, height=0.6, color=colors, alpha=0.22, linewidth=0)
@@ -221,8 +231,8 @@ def fig_pipeline_stages(jobs):
     )
     fig.legend(
         handles=[
-            Patch(facecolor=CLOUD, label="Software only"),
-            Patch(facecolor=HARDWARE, label="Hardware-in-the-Loop (HIL)"),
+            Patch(facecolor=SPRING_LAKE_BLUE, label="Software only"),
+            Patch(facecolor=WILD_RICE_GREEN, label="Hardware-in-the-Loop (HIL)"),
         ],
         loc="upper left",
         bbox_to_anchor=(0.012, 0.855),
@@ -265,9 +275,9 @@ def fig_hil_reliability(jobs):
     # axis by more than their line height at 45 degrees.
     ax2 = fig.add_axes([0.155, 0.20, 0.825, 0.19], sharex=ax1)
     x = range(len(g))
-    ax1.bar(x, g.passed, color=GOOD, width=0.66, linewidth=0, label="passed")
+    ax1.bar(x, g.passed, color=WILD_RICE_GREEN, width=0.66, linewidth=0, label="passed")
     # A 2px surface-colored edge is the gap between stacked segments.
-    ax1.bar(x, g.failed, bottom=g.passed, color=CRITICAL, width=0.66, linewidth=2, edgecolor="white", label="failed")
+    ax1.bar(x, g.failed, bottom=g.passed, color=EAT_EM_UP_PEACH, width=0.66, linewidth=2, edgecolor="white", label="failed")
     ax1.set_ylabel("HIL jobs run", fontsize=17)
     ax1.tick_params(labelbottom=False)
     style_axes(ax1, ygrid=True)
@@ -282,7 +292,7 @@ def fig_hil_reliability(jobs):
         f"{g.total.sum():,} HIL jobs  ·  {span[0].strftime('%b %Y')} – {span[-1].strftime('%b %Y')}",
     )
     fig.legend(
-        handles=[Patch(facecolor=GOOD, label="passed"), Patch(facecolor=CRITICAL, label="failed")],
+        handles=[Patch(facecolor=WILD_RICE_GREEN, label="passed"), Patch(facecolor=EAT_EM_UP_PEACH, label="failed")],
         loc="upper left",
         bbox_to_anchor=(0.012, 0.855),
         frameon=False,
@@ -292,7 +302,7 @@ def fig_hil_reliability(jobs):
         columnspacing=1.4,
     )
 
-    ax2.plot(x, g.pass_rate_pct, color=CLOUD, linewidth=3, marker="o", markersize=9, zorder=3)
+    ax2.plot(x, g.pass_rate_pct, color=SPRING_LAKE_BLUE, linewidth=3, marker="o", markersize=9, zorder=3)
     ax2.set_ylim(-6, 122)
     ax2.set_yticks([0, 50, 100], ["0", "50", "100"], fontsize=16)
     ax2.set_ylabel("pass rate (%)", fontsize=17)
@@ -333,8 +343,8 @@ def fig_feedback_time(runs, jobs):
     ax = fig.add_axes([0.135, 0.185, 0.845, 0.60])
     # The tail is long and thin; clipping into a final ">60" bucket keeps the
     # bulk of the distribution legible instead of squashing it against the axis.
-    ax.hist(cur.duration_min.clip(upper=60), bins=range(0, 63, 3), color=CLOUD, linewidth=2, edgecolor="white")
-    ax.axvline(med, color=MAROON, linewidth=3, zorder=5)
+    ax.hist(cur.duration_min.clip(upper=60), bins=range(0, 63, 3), color=SPRING_LAKE_BLUE, linewidth=2, edgecolor="white")
+    ax.axvline(med, color=GREEN_HILLS, linewidth=3, zorder=5)
     # Reserve headroom above the tallest bar so the median callout sits in clear
     # space instead of on top of the modal bin.
     tallest = ax.get_ylim()[1]
@@ -347,7 +357,7 @@ def fig_feedback_time(runs, jobs):
         va="top",
         fontsize=19,
         fontweight="bold",
-        color=MAROON,
+        color=GREEN_HILLS,
     )
     ax.set_xticks([0, 15, 30, 45, 60], ["0", "15", "30", "45", "60+"], fontsize=16)
     ax.set_xlabel("commit to hardware verdict (minutes)", fontsize=17)
