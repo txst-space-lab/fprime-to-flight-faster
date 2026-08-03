@@ -129,8 +129,21 @@ def header(fig, title, subtitle=None):
     Titles go on the figure rather than the axes so a long one can run the full
     width instead of being clipped to the plot box, and so the legend can sit
     directly beneath it without colliding with the marks.
+
+    Figure text is not clipped to the canvas: a title wider than 7in runs past
+    the SVG's edge and Typst draws it over the neighbouring column. Shrink to
+    fit rather than let that happen, but never below the 16pt floor (R2) — if a
+    title cannot fit at 16pt it has to be rewritten shorter, so raise instead of
+    printing something illegible.
     """
-    fig.text(0.012, 0.965, title, color=MAROON, fontsize=21, fontweight="bold", va="top", ha="left")
+    t = fig.text(0.012, 0.965, title, color=MAROON, fontsize=21, fontweight="bold", va="top", ha="left")
+    renderer = fig.canvas.get_renderer()
+    limit = 0.988 * fig.get_size_inches()[0] * fig.dpi
+    while t.get_window_extent(renderer).width > limit:
+        size = t.get_fontsize() - 0.5
+        if size < 16:
+            raise ValueError(f"title too long for the canvas at the 16pt floor: {title!r}")
+        t.set_fontsize(size)
     if subtitle:
         fig.text(0.012, 0.893, subtitle, color=MUTED, fontsize=16, va="top", ha="left")
 
@@ -288,7 +301,7 @@ def fig_hil_reliability(jobs):
     span = pd.PeriodIndex(g.index, freq="M")
     header(
         fig,
-        "Testing became more reliable as it got busier",
+        "Testing got more reliable as it scaled",
         f"{g.total.sum():,} HIL jobs  ·  {span[0].strftime('%b %Y')} – {span[-1].strftime('%b %Y')}",
     )
     fig.legend(
