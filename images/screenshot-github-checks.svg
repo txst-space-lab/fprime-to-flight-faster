@@ -42,7 +42,7 @@
     <path d="M0 -36 A36 36 0 0 0 -25.5 25.5" fill="none" stroke="#f85149" stroke-width="12"/>
   </g>
 
-  <text x="128" y="64" font-size="38" font-weight="700" fill="#e6edf3">Checks awaiting conflict resolution</text>
+  <text x="128" y="64" font-size="38" font-weight="700" fill="#e6edf3">Some checks were not successful</text>
   <text x="128" y="119" font-size="31" fill="#8b949e">2 failing, 5 successful checks</text>
 
   <!-- ===== failing section ===== -->
