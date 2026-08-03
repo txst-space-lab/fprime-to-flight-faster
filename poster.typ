@@ -230,12 +230,12 @@
     #set par(spacing: 0.7em)
     #set text(size: 24pt, fill: muted)
     #for (term, defn) in (
+      ([Check], [a single step (lint, unit test, build, etc.) in a CI run.]),
       ([Commit], [one saved change to the software.]),
       ([Continuous Integration (CI)], [builds and tests every change.]),
       ([F Prime (F´)], [NASA JPL's open-source flight software framework.]),
       ([GNU debugger (GDB)], [loads and runs code on the satellite.]),
       ([Hardware-in-the-Loop (HIL)], [tests that run on satellite hardware.]),
-      ([Job], [a single automated check in CI.]),
       ([PROVES], [an open-source CubeSat kit and program.]),
       (
         [Pull request (PR)],
@@ -360,7 +360,7 @@
 
   #fig(
     "images/screenshot-github-checks.svg",
-    "CI as a developer sees it: the integration jobs run on real hardware, and a failing check blocks the merge.",
+    "CI as a developer sees it: the integration checks run on real hardware, and a failing check blocks the merge.",
   )
 ]
 
@@ -378,7 +378,7 @@
   #block(spacing: 18pt)[
     *3. Skeleton cube on standoffs.* \
     Swapping a part went from disassembling a satellite to unscrewing 4
-    standoffs. Maintainability of the rig _is_ pipeline uptime.
+    standoffs. Maintainability of the rig _is_ CI uptime.
   ]
   #block(spacing: 18pt)[
     *4. Flight-like communications and ground software.* \
@@ -390,7 +390,7 @@
     components and unit-tested in the cloud in seconds.
   ]
   #block(spacing: 18pt)[
-    *6. Shift failures earlier in the pipeline.* \
+    *6. Shift failures earlier in the CI run.* \
     Encode known hardware failure modes as static checks. A config setting
     that broke test downlink now fails the build, not HIL.
   ]
@@ -401,7 +401,7 @@
     rebuilding a structure
   - *Backplane* instead of hand-built per-component wire harnesses
   - *Reproducible CI runner setup* via Nix, a bootable image, or Ansible
-  - *Job timeouts and queueing* so one hung board cannot monopolize the single
+  - *CI run timeouts and queueing* so one hung board or runner cannot monopolize the single
     physical runner
   - *Continue addressing flaky tests* to build trust in the pipeline and keep
     results reliable
