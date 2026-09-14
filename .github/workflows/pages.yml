@@ -25,8 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: DeterminateSystems/nix-installer-action@v22
-      - uses: DeterminateSystems/magic-nix-cache-action@v14
+      - uses: DeterminateSystems/nix-installer-action@v23
+      - uses: DeterminateSystems/magic-nix-cache-action@v15
 
       # Same derivation the poster workflow builds, so the PDF on the site is
       # byte-for-byte the one the dev shell and `nix build` produce.

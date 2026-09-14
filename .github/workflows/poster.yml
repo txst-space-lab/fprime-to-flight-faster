@@ -12,8 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: DeterminateSystems/nix-installer-action@v22
-      - uses: DeterminateSystems/magic-nix-cache-action@v14
+      - uses: DeterminateSystems/nix-installer-action@v23
+      - uses: DeterminateSystems/magic-nix-cache-action@v15
 
       # Builds packages.default from flake.nix -> result/poster.pdf, with the
       # pinned font set, so CI renders byte-for-byte what the dev shell does.
